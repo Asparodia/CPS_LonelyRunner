@@ -21,11 +21,12 @@
 
   <target name="run" depends="compile"
           description="run example">
-    <!--<echo>================ Run Maleva simulator ================</echo>-->
     <java classname="lonelyrunner.main.lonelyRunnerMain" classpath="${bin}" />
-    <!--   <arg value="100"/>
-    </java>-->
   </target>
+	 <target name="test" depends="compile"
+	          description="run example">
+	    <java classname="lonelyrunner.test.lonelyRunnerTest" classpath="${bin}" />
+	  </target>
 
   <target name="dist" depends="init,clean"
         description="Generer la distribution" >
