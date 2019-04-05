@@ -1,5 +1,9 @@
 package lonelyrunner.service;
 
-public interface EnvironmentService {
+public interface EnvironmentService extends ScreeService {
+
+    //Observators
+
+    public NouvelClasseCharacter+Item
 
 }
