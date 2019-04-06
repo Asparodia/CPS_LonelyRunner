@@ -5,6 +5,7 @@
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="bin" location="bin"/>
+<property name="nom1" value="BAH_Thierno"/>
 
   <target name="init">
     <!-- Create the time stamp -->
