@@ -1,5 +1,23 @@
 package lonelyrunner.service;
 
-public interface EditableScreenService {
+import lonelyrunner.service.utils.Cell;
+
+public interface EditableScreenService extends ScreenService {
+	
+	// Observators
+	
+	public boolean isPlayable();
+	
+	// Operators
+	
+	// \pre : setNature(x,y,c) req 0<=y<getHeigh() and 0<=x<getWidth()
+	// \post : // \forall u:int and v:int with 0<=u<getWidth() and 0<=v<getHeight() 
+					// (x != u or y != v) \implies getCellNature(u,v) = getCellNature(u,v)@pre
+	public void setNature(int x, int y, Cell c);
+	
+	// invariants 
+	// isPlayable() =min= // \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
+								// getCellNature(x,y) != HOL and // \forall u:int with 0<=x<getWidth() getCellNature(x,0) = MTL 
+	
 
 }

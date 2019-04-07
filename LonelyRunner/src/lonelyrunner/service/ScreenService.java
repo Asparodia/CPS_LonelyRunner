@@ -1,5 +1,7 @@
 package lonelyrunner.service;
 
+import lonelyrunner.service.utils.Cell;
+
 public interface ScreenService {
 	
 	/*Observators*/
@@ -8,7 +10,7 @@ public interface ScreenService {
 	
 	public int getWidth();
 	
-	//\pre : getCellNature(S,i,j) requires 0 ≤ j < Height(S) and 0 ≤ i < Width(S)
+	//\pre : getCellNature(S,i,j) requires 0 <= j < Height(S) and 0 <= i < Width(S)
 	public Cell getCellNature(int i, int j);
 	
 	/*Constructors*/

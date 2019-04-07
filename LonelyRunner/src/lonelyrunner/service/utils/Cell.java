@@ -1,4 +1,4 @@
-package lonelyrunner.service;
+package lonelyrunner.service.utils;
 
 public enum Cell {
 	EMP, //Empty
