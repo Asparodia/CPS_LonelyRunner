@@ -3,57 +3,56 @@ package lonelyrunner.decorators;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.utils.Cell;
 
-public class EditableScreenDecorator implements EditableScreenService{
-	private final EditableScreenService delegate;
+public class EditableScreenDecorator extends ScreenDecorator implements EditableScreenService{
 	
 	public EditableScreenDecorator(EditableScreenService ess) {
-		this.delegate = ess;
+		super(ess);
 	}
 	
 	public EditableScreenService getDelegate() {
-		return delegate;
+		return (EditableScreenService) super.getDelegate();
 	}
 	
 	@Override
 	public boolean isPlayable() {
-		return delegate.isPlayable();
+		return getDelegate().isPlayable();
 	}
 
 	@Override
 	public void setNature(int x, int y, Cell c) {
-		delegate.setNature(x, y, c);
+		getDelegate().setNature(x, y, c);
 		
 	}
 
 	@Override
 	public int getHeight() {
-		return delegate.getHeight();
+		return getDelegate().getHeight();
 	}
 
 	@Override
 	public int getWidth() {
-		return delegate.getWidth();
+		return getDelegate().getWidth();
 	}
 
 	@Override
 	public Cell getCellNature(int i, int j) {
-		return delegate.getCellNature(i, j);
+		return getDelegate().getCellNature(i, j);
 	}
 
 	@Override
 	public void init(int h, int w) {
-		delegate.init(h, w);
+		getDelegate().init(h, w);
 		
 	}
 
 	@Override
 	public void dig(int u, int v) {
-		delegate.dig(u, v);
+		getDelegate().dig(u, v);
 	}
 
 	@Override
 	public void fill(int x, int y) {
-		delegate.fill(x, y);
+		getDelegate().fill(x, y);
 	}
 
 	

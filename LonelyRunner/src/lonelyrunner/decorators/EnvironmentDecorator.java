@@ -6,52 +6,52 @@ import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EnvironmentService;
 
-public class EnvironmentDecorator implements EnvironmentService{
+public class EnvironmentDecorator extends ScreenDecorator implements EnvironmentService{
 	
-	public EnvironmentService delegate;
+	
 
 	public EnvironmentDecorator(EnvironmentService delegate) {
-		this.delegate = delegate;
+		super(delegate);
 	}
 
 	public EnvironmentService getDelegate() {
-		return delegate;
+		return (EnvironmentService) super.getDelegate();
 	}
 	
 	@Override
 	public Couple<CharacterService, Item> getCellContent(int x, int y) {
-		return delegate.getCellContent(x, y);
+		return getDelegate().getCellContent(x, y);
 	}
 
 	@Override
 	public int getHeight() {
-		return delegate.getHeight();
+		return getDelegate().getHeight();
 	}
 
 	@Override
 	public int getWidth() {
-		return delegate.getWidth();
+		return getDelegate().getWidth();
 	}
 
 	@Override
 	public Cell getCellNature(int i, int j) {
-		return delegate.getCellNature(i, j);
+		return getDelegate().getCellNature(i, j);
 	}
 
 	@Override
 	public void init(int h, int w) {
-		delegate.init(h, w);
+		getDelegate().init(h, w);
 		
 	}
 
 	@Override
 	public void dig(int u, int v) {
-		delegate.dig(u, v);
+		getDelegate().dig(u, v);
 	}
 
 	@Override
 	public void fill(int x, int y) {
-		delegate.fill(x, y);
+		getDelegate().fill(x, y);
 	}
 
 	
