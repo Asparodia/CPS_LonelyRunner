@@ -1,18 +1,51 @@
 package lonelyrunner.decorators;
 
+import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.GuardService;
+import lonelyrunner.service.utils.Move;
 
-public class GuardDecorator implements GuardService{
-	private final GuardService delegate;
+public class GuardDecorator extends CharacterDecorator implements GuardService{
 
 	
 
 	public GuardDecorator(GuardService delegate) {
-		this.delegate = delegate;
+		super(delegate);
 	}
 	
 	public GuardService getDelegate() {
-		return delegate;
+		return (GuardDecorator) super.getDelegate();
+	}
+
+	@Override
+	public int getId() {
+		return getDelegate().getId();
+	}
+
+	@Override
+	public Move getBehaviour() {
+		return getDelegate().getBehaviour();
+	}
+
+	@Override
+	public CharacterService getTarget() {
+		return getDelegate().getTarget();
+	}
+
+	@Override
+	public int getTimeInHole() {
+		return getDelegate().getTimeInHole();
+	}
+
+	@Override
+	public void climbLeft() {
+		getDelegate().climbLeft();
+		
+	}
+
+	@Override
+	public void step() {
+		getDelegate().step();
+		
 	}
 
 }
