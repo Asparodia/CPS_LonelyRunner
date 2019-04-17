@@ -1,9 +1,13 @@
 package lonelyrunner.contract;
 
+import java.util.HashMap;
+
+import lonelyrunner.contract.contracterr.InvariantError;
 import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.contract.contracterr.PreconditionError;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.utils.Cell;
+import lonelyrunner.service.utils.Couple;
 
 public class EditableScreenContract extends ScreenContract implements EditableScreenService {
 
@@ -18,8 +22,26 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 	}
 	
 	public void checkInvariant() {
-			
+		// isPlayable() =min= // \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
+									// getCellNature(x,y) != HOL and // \forall u:int with 0<=u<getWidth() getCellNature(u,0) = MTL 
+		Boolean t = true;
+		for(int x=0;x<getWidth();x++) {
+			for(int y=0;y<getHeight();y++) {
+				if(!(getCellNature(x, y) != Cell.HOL)) {
+					t = false;
+				}
+			}
 		}
+		for(int x=0;x<getWidth();x++) {
+			if(!(getCellNature(x, 0) == Cell.MTL)) {
+				t = false;
+			}
+		}
+		if(!(getDelegate().isPlayable() == t)) {
+			throw new InvariantError("isPlayable() =min=  \\forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
+					"									// getCellNature(x,y) != HOL and // \\forall u:int with 0<=u<getWidth() getCellNature(u,0) = MTL");
+		}
+	}
 	
 	@Override
 	public void init(int h,int w) {
@@ -54,13 +76,43 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 	
 	@Override
 	public boolean isPlayable() {
-		// TODO Auto-generated method stub
-		return false;
+		checkInvariant();
+		Boolean r = getDelegate().isPlayable();
+		checkInvariant();
+		return r;
 	}
 
 	@Override
 	public void setNature(int x, int y, Cell c) {
-		// TODO Auto-generated method stub
+		if(!(x>=0 && x<getWidth())) {
+			throw new PreconditionError("setNature("+x+", "+y+" c )" , "x must be between 0 and strictly inf to getWidth");
+		}
+		if(!(y>=0 && y<getHeight())) {
+			throw new PreconditionError("setNature("+x+", "+y+" c )" , "y must be between 0 and strictly inf to getHeight");
+		}
 		
+		HashMap<Couple<Integer,Integer>,Cell> getCellNature_atpre = new HashMap<Couple<Integer,Integer>,Cell>();
+		for(int a=0;a<getWidth();a++) {
+			for(int b=0;b<getHeight();b++) {
+				Couple<Integer,Integer> couple = new Couple<Integer, Integer>(a,b);
+				getCellNature_atpre.put(couple, getCellNature(a, b));
+			}
+		}
+		
+		checkInvariant();
+		getDelegate().setNature(x, y, c);
+		checkInvariant();
+		// \post : // \forall u:int and v:int with 0<=u<getWidth() and 0<=v<getHeight() 
+						// (x != u or y != v) \implies getCellNature(u,v) = getCellNature(u,v)@pre
+		for(int a=0;a<getWidth();a++) {
+			for(int b=0;b<getHeight();b++) {
+				if(a != x || b != y) {
+					Couple<Integer,Integer> couple = new Couple<Integer, Integer>(a,b);
+					if(!(getCellNature(a, b) == getCellNature_atpre.get(couple))) {
+						throw new PostconditionError("setNature("+x+", "+y+" c )" , "cellNature of "+x+" "+y+" changed, wasn't suppose to change ");
+					}
+				}
+			}
+		}
 	}
 }

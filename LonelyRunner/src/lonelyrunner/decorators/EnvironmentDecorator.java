@@ -4,6 +4,7 @@ import lonelyrunner.service.utils.Cell;
 import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.CharacterService;
+import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EnvironmentService;
 
 public class EnvironmentDecorator extends ScreenDecorator implements EnvironmentService{
@@ -52,6 +53,12 @@ public class EnvironmentDecorator extends ScreenDecorator implements Environment
 	@Override
 	public void fill(int x, int y) {
 		getDelegate().fill(x, y);
+	}
+
+	@Override
+	public void init(EditableScreenService ess) {
+		getDelegate().init(ess);
+		
 	}
 
 	
