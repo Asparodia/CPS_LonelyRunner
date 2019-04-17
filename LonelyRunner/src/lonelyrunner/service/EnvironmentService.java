@@ -1,14 +1,13 @@
 package lonelyrunner.service;
 
 
-import lonelyrunner.service.utils.Couple;
-import lonelyrunner.service.utils.Item;
+import lonelyrunner.service.utils.SetCharItem;
 
 public interface EnvironmentService extends ScreenService {
 
     //Observators
 	//\pre: getCellContent(x,y) req 0<=y<getHeight() and 0<=x<getWidth()
-	public Couple<CharacterService,Item> getCellContent(int x, int y);
+	public SetCharItem getCellContent(int x, int y);
 	
 	// Constructors
 	//\post: \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()

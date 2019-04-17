@@ -1,9 +1,7 @@
 package lonelyrunner.decorators;
 
 import lonelyrunner.service.utils.Cell;
-import lonelyrunner.service.utils.Couple;
-import lonelyrunner.service.utils.Item;
-import lonelyrunner.service.CharacterService;
+import lonelyrunner.service.utils.SetCharItem;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EnvironmentService;
 
@@ -20,7 +18,7 @@ public class EnvironmentDecorator extends ScreenDecorator implements Environment
 	}
 	
 	@Override
-	public Couple<CharacterService, Item> getCellContent(int x, int y) {
+	public SetCharItem  getCellContent(int x, int y) {
 		return getDelegate().getCellContent(x, y);
 	}
 
