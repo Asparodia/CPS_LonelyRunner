@@ -4,16 +4,15 @@ import lonelyrunner.service.utils.Cell;
 
 public interface ScreenService {
 	
-	/*Observators*/
+	// Observators
 	
 	public int getHeight();
-	
 	public int getWidth();
 	
-	//\pre : getCellNature(S,i,j) requires 0 <= j < Height(S) and 0 <= i < Width(S)
+	//\pre : getCellNature(i,j) requires 0 <= j < Height(S) and 0 <= i < Width(S)
 	public Cell getCellNature(int i, int j);
 	
-	/*Constructors*/
+	// Constructors
 	
 	//\pre: init(h,w) requires 0 < h and 0 < w
 	//\post : getHeight() == h
@@ -22,7 +21,7 @@ public interface ScreenService {
 	public void init(int h, int w);
 	
 	
-	/*Operators*/
+	// Operators
 	
 	//\pre : dig(S,u,v) requires getCellNature(S,u,v) = PLT
 	//\post :getCellNature(u,v) = HOL
@@ -35,7 +34,7 @@ public interface ScreenService {
 	public void fill(int x, int y);
 	
 	
-	//Invariants
+	// Invariants
 	//Pas d'invariant
 	
 	
