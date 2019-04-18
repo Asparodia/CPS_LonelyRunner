@@ -214,10 +214,10 @@ public class CharacterContract extends CharacterDecorator {
 			}
 			else {
 				if(cell_atpre == Cell.LAD) {
-					if(cell_up == Cell.LAD || cell_up == Cell.EMP) {
+					if(cell_up == Cell.LAD || cell_up == Cell.EMP || (getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar() != null)) {
 						if(!(getHgt_atpre+1 == getDelegate().getHgt())) {
 							throw new PostconditionError("goUp()" , "EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) = LAD\r\n" + 
-									"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {EMP, LAD}\r\n" + 
+									"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {EMP, LAD} or exists Character c in EnvironmentService::CellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1)\r\n" + 
 									"				//\\implies getHgt() = getHgt()@pre + 1");
 						}
 					}
