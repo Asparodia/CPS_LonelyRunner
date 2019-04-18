@@ -30,6 +30,13 @@ public interface EngineService {
 	public void init(EditableScreenService es,Couple<Integer,Integer> posChar, ArrayList<Couple<Integer,Integer>> posGuards, ArrayList<Couple<Integer,Integer>> posItems );
 	
 	// Operators
+	// \post: EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))
 	public void Step();
+	
+	
+	// Invariants
+	// getPlayer() \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))}
+	// \forall G:Guard \in getGuards() G \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(G),getWdt(G))}
+	// \forall T:Item \in getTreasures() T \in {EnvironmentService::getCellContent(getEnvironment(),T.getHgt(),T.getCol())}
 
 }

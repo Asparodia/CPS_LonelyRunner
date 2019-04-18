@@ -3,12 +3,9 @@ package lonelyrunner.contract;
 import lonelyrunner.contract.contracterr.InvariantError;
 import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.contract.contracterr.PreconditionError;
-import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.utils.Cell;
-import lonelyrunner.service.utils.Couple;
-import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.ItemType;
 import lonelyrunner.service.utils.SetCharItem;
 

@@ -17,49 +17,46 @@ public class CharacterDecorator implements CharacterService {
 
 	@Override
 	public EnvironmentService getEnvi() {
-		// TODO Auto-generated method stub
-		return null;
+		return delegate.getEnvi();
 	}
 
 	@Override
 	public int getHgt() {
-		// TODO Auto-generated method stub
-		return 0;
+		return delegate.getHgt();
 	}
 
 	@Override
 	public int getWdt() {
-		// TODO Auto-generated method stub
-		return 0;
+		return delegate.getWdt();
 	}
 
 	@Override
 	public void init(ScreenService s, int x, int y) {
-		// TODO Auto-generated method stub
+		delegate.init(s, x, y);
 		
 	}
 
 	@Override
 	public void goLeft() {
-		// TODO Auto-generated method stub
+		delegate.goLeft();
 		
 	}
 
 	@Override
 	public void goRight() {
-		// TODO Auto-generated method stub
+		delegate.goRight();
 		
 	}
 
 	@Override
 	public void goUp() {
-		// TODO Auto-generated method stub
+		delegate.goUp();
 		
 	}
 
 	@Override
 	public void goDown() {
-		// TODO Auto-generated method stub
+		delegate.goDown();
 		
 	}
 }

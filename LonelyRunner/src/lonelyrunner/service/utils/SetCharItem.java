@@ -3,8 +3,8 @@ package lonelyrunner.service.utils;
 import lonelyrunner.service.CharacterService;
 
 public class SetCharItem {
-	private CharacterService car;
-	private Item item;
+	private CharacterService car=null;
+	private Item item=null;
 	
 	public SetCharItem(CharacterService c, Item i) {
 		car = c;
