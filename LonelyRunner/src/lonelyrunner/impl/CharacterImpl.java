@@ -1,8 +1,10 @@
 package lonelyrunner.impl;
 
+import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.ScreenService;
+import lonelyrunner.service.utils.Cell;
 
 public class CharacterImpl implements CharacterService{
 	
@@ -38,20 +40,20 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void goLeft() {
-		//\post: getHgt() == getHgt()@pre
-		//\post: getWdt()@pre == 0 \implies getWdt() == getWdt()@pre 
-		//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \in {MTL,PLT,HDR} \implies
-			//getWdt()@pre == getWdt()
-		//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
-			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
-			//\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
-			//\implies getWdt() == getWdt()@pre
-		//\post: \exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \implies getWdt() == getWdt()@pre
-		//\post: getWdt() != 0 \and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \not in {MTL,PLT}
-			//\and ( EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \in {LAD,HDR}
-				//\or EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD}
-				//\or \exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) )
-			//\and \not (\exist Character c in EnvironmentService::getCellContent(getEnvi(@pre,getWdt()@pre-1,getHgt()@pre)) ) \implies getWdt() == getWdt()@pre - 1
+		if(width == 0 ) {
+			return;
+		}
+		Cell left = env.getCellNature(width-1, height);
+		Cell pos = env.getCellNature(width, height);
+		Cell down = env.getCellNature(width, height-1);
+		if( left != Cell.PLT &&  left != Cell.MTL ) {
+			if( (pos == Cell.LAD && pos == Cell.HDR) || (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) || (env.getCellContent(width, height-1).getCar() != null) ){
+				if( (env.getCellContent(width-1, height).getCar() == null) ) {
+					width-=1;
+					env.getCellContent(width-1, height).getCar()
+				}
+			}
+		}
 		
 	}
 

@@ -235,7 +235,6 @@ public class CharacterContract extends CharacterDecorator {
 		int getWdt_atpre = getDelegate().getWdt();
 		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
-		Cell cell_up = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()+1);
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);
 		
 		checkInvariant();
@@ -267,12 +266,6 @@ public class CharacterContract extends CharacterDecorator {
 				}
 			}
 		}
-		// \post: getHgt()@pre != 0 \and Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \in {LAD,HDR, EMP}
-		//			\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {EMP,LAD}
-					//\and \exists Character c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1)
-						// \implies getHgt()==getHgt()@pre-1
-		//			\or EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {MTL, PLT}
-		//				// \implies getHgt()==getHgt()@pre
 		if(getHgt_atpre != 0) {
 			if(cell_atpre == Cell.EMP || cell_atpre == Cell.LAD || cell_atpre == Cell.HDR ) {
 				if(cell_down == Cell.EMP || cell_down == Cell.LAD) {
