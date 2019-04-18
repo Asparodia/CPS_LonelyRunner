@@ -69,15 +69,14 @@ public interface CharacterService {
 	//		\or \exists Character c \in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre, getHdt(C)@pre-1)) => (getHgt()==getHgt()@pre)
 	// \post: ((Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \not \in {LAD,HDR}
 	// 			\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \not \in {PLT,MTL,LAD}
-	//			\and \not \exists Character c \in EnvironmentService::getCellContent(getEnvi()@, getWdt()@pre, getHgt()@pre-1))
+	//			\and \exists Character c \in EnvironmentService::getCellContent(getEnvi()@, getWdt()@pre, getHgt()@pre-1))
 	//			\implies getHgt()==getHgt()@pre-1)
 	// \post: getHgt()@pre != 0 \and Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \in {LAD,HDR, EMP}
 	//			\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {EMP,LAD}
-	//			\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {MTL, PLT}
-	//			\or \exists Character c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1)
-	//				=> getHgt()==getHgt()@pre-1
-	//			\or EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre)==LAD \and Environment::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
-	//				=> getWdt()==getWdt()@pre-1
+				//\and \exists Character c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1)
+					// \implies getHgt()==getHgt()@pre-1
+	//			\or EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {MTL, PLT}
+	//				// \implies getHgt()==getHgt()@pre
 
 	public void goDown();
 	
