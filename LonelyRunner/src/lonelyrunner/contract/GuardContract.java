@@ -1,10 +1,11 @@
 package lonelyrunner.contract;
 
+import lonelyrunner.decorators.GuardDecorator;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.GuardService;
 import lonelyrunner.service.utils.Move;
 
-public class GuardContract extends CharacterContract implements GuardService {
+public class GuardContract extends GuardDecorator {
 
 	public GuardContract(GuardService delegate) {
 		super(delegate);

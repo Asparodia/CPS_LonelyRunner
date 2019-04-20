@@ -85,7 +85,7 @@ public class CharacterContract extends CharacterDecorator {
 				throw new PostconditionError("goLeft()" , "exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) implies getWdt() == getWdt()@pre");
 		}
 		if(getDelegate().getWdt() != 0 && cell_left != Cell.MTL && cell_left != Cell.PLT) {
-			if( (cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD) || (getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar() != null) ){
+			if( (cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD || getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar() != null )){
 				if( (getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar() == null) ) {
 					if(!(getWdt_atpre-1 == getDelegate().getWdt()))
 						throw new PostconditionError("goLeft()" , "(getWdt()@pre != 0 \\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \\not in {MTL,PLT} )\n" + 
@@ -144,7 +144,7 @@ public class CharacterContract extends CharacterDecorator {
 			}
 		}
 		if(getDelegate().getWdt() != getEnvi_atpre.getWidth()-1 && cell_right != Cell.MTL && cell_right != Cell.PLT) {
-			if( (cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD) || (getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar() != null) ){
+			if( (cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD || (getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar() != null)) ){
 				if( (getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar() == null) ) {
 					if(!(getWdt_atpre+1 == getDelegate().getWdt()))
 						throw new PostconditionError("goRight()" , "getWdt()@pre != EnvironmentService::getWidth()-1 \\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \\not in {MTL,PLT}\n" + 

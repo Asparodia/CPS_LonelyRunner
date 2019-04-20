@@ -2,7 +2,7 @@ package lonelyrunner.service;
 
 import lonelyrunner.service.utils.Cell;
 
-public interface EditableScreenService extends ScreenService {
+public interface EditableScreenService extends  /*refine*/ScreenService {
 	
 	// Observators
 	

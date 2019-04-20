@@ -8,7 +8,7 @@ public interface GuardService extends CharacterService {
 	
 	public int getId();
 	public Move getBehaviour();
-	public CharacterService getTarget();
+	public CharacterService getTarget(); // a changer maybe par player
 	public int getTimeInHole();
 	
 	// Operators

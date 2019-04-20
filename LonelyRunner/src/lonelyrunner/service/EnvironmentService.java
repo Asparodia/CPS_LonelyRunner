@@ -3,7 +3,7 @@ package lonelyrunner.service;
 
 import lonelyrunner.service.utils.SetCharItem;
 
-public interface EnvironmentService extends ScreenService {
+public interface EnvironmentService extends /*refine*/ScreenService {
 
     //Observators
 	//\pre: getCellContent(x,y) req 0<=y<getHeight() and 0<=x<getWidth()

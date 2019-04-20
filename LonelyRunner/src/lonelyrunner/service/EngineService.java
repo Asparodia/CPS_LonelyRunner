@@ -11,8 +11,8 @@ import lonelyrunner.service.utils.Status;
 public interface EngineService {
 	
 	// Observators
-	public EnvironmentService getEnvironment();
-	public CharacterService getPlayer();
+	public EditableScreenService getEnvironment();
+	public PlayerService getPlayer();
 	public ArrayList<GuardService> getGuards();
 	public ArrayList<Item> getTreasures();
 	public Status getStatus();
@@ -30,7 +30,11 @@ public interface EngineService {
 	public void init(EditableScreenService es,Couple<Integer,Integer> posChar, ArrayList<Couple<Integer,Integer>> posGuards, ArrayList<Couple<Integer,Integer>> posItems );
 	
 	// Operators
-	// \post: EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))
+	
+	
+	// \post:  \forall T:Item \in getTreasures()@pre
+		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer())@pre,getHgt(getPlayer())@pre,getWdt(getPlayer())@pre)
+			//\implies T not in getTreasures() 
 	public void Step();
 	
 	
@@ -38,5 +42,6 @@ public interface EngineService {
 	// getPlayer() \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))}
 	// \forall G:Guard \in getGuards() G \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(G),getWdt(G))}
 	// \forall T:Item \in getTreasures() T \in {EnvironmentService::getCellContent(getEnvironment(),T.getHgt(),T.getCol())}
+	// getTreasures() == empty \implies getStatus() == Win
 
 }
