@@ -74,7 +74,7 @@ public class CharacterContract extends CharacterDecorator {
 					if(!(getWdt_atpre == getDelegate().getWdt()))
 						throw new PostconditionError("goLeft()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\not in {LAD,HDR} \n" + 
 								"			//\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \\not in {PLT,MTL,LAD}\n" + 
-								"			//\\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre)\n" + 
+								"			//\\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)\n" + 
 								"				//\\implies getWdt() == getWdt()@pre");
 			
 				}
@@ -205,15 +205,13 @@ public class CharacterContract extends CharacterDecorator {
 			if(cell_atpre == Cell.EMP) {
 				if(cell_up == Cell.LAD || cell_up == Cell.EMP) {
 					if((getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre+1).getCar() != null)) {
-						if(cell_down == Cell.MTL || cell_down == Cell.PLT || cell_down == Cell.LAD || cell_down == Cell.EMP || (getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar() != null) ) {
 							if(!(getHgt_atpre+1 == getDelegate().getHgt())) {
 							throw new PostconditionError("goUp()" , "(getHgt()@pre != EnvironmentService::getHeight() -  1)\n" + 
 									"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == LAD\n" + 
 									"			//\\and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD,EMP} \n" + 
 									"			//\\and not exists Character c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre +1)\n" + 
-									"			//\\and (EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1) in {MTL, PLT,LAD,EMP} \\or exists Character c in EnvironmentService::CellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1))\n" + 
 									"				//\\implies getHgt() = getHgt()@pre + 1");
-						}
+						
 						}
 						
 					}

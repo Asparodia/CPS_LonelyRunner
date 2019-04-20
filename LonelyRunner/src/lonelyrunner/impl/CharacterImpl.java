@@ -92,12 +92,9 @@ public class CharacterImpl implements CharacterService{
 			if(pos == Cell.EMP) {
 				if(up == Cell.LAD || up == Cell.EMP) {
 					if((env.getCellContent(width, height+1).getCar() != null)) {
-						if(down == Cell.MTL || down == Cell.PLT || down == Cell.LAD || down == Cell.EMP || (env.getCellContent(width, height-1).getCar() != null) ) {
 							env.getCellContent(width, height).removeCharacter();
 							height+=1;
 							env.getCellContent(width, height).setCar(this);
-						}
-						
 					}
 				}
 			}
