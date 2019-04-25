@@ -35,7 +35,7 @@ public interface EngineService {
 	// \post:  \forall T:Item \in getTreasures()@pre
 		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer())@pre,getHgt(getPlayer())@pre,getWdt(getPlayer())@pre)
 			//\implies T not in getTreasures() 
-	public void Step();
+	public void step();
 	
 	
 	// Invariants

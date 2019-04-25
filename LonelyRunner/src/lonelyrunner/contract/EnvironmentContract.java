@@ -24,8 +24,8 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 				//\forall c1:Character and c2:Character in [getCellContent(x,y),getCellContent(x,y)] c1 = c2
 		for(int x=0;x<getWidth();x++) {
 			for(int y=0;y<getHeight();y++) {
-				SetCharItem  c1 =  getCellContent(x,y);
-				SetCharItem  c2 =  getCellContent(x,y);
+				SetCharItem  c1 =  getDelegate().getCellContent(x,y);
+				SetCharItem  c2 =  getDelegate().getCellContent(x,y);
 				if(c1.getCar().equals(c2.getCar())) {
 					throw new InvariantError("\\forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
 							"				//\\forall c1:Character and c2:Character in [getCellContent(x,y),getCellContent(x,y)] c1 = c2");

@@ -8,6 +8,7 @@ import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
 import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.GuardService;
+import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
@@ -26,58 +27,49 @@ public class EngineDecorator implements EngineService{
 	}
 
 	@Override
-	public EnvironmentService getEnvironment() {
-		// TODO Auto-generated method stub
-		return null;
+	public EditableScreenService getEnvironment() {
+		return getDelegate().getEnvironment();
 	}
 
 	@Override
-	public CharacterService getPlayer() {
-		// TODO Auto-generated method stub
-		return null;
+	public PlayerService getPlayer() {
+		return getDelegate().getPlayer();
 	}
 
 	@Override
 	public ArrayList<GuardService> getGuards() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDelegate().getGuards();
 	}
 
 	@Override
 	public ArrayList<Item> getTreasures() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDelegate().getTreasures();
 	}
 
 	@Override
 	public Status getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDelegate().getStatus();
 	}
 
 	@Override
 	public Move getNextCommand() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDelegate().getNextCommand();
 	}
 
 	@Override
 	public HashMap<Couple<Integer, Integer>, Integer> getHoles() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDelegate().getHoles();
 	}
 
 	@Override
 	public void init(EditableScreenService es, Couple<Integer, Integer> posChar,
 			ArrayList<Couple<Integer, Integer>> posGuards, ArrayList<Couple<Integer, Integer>> posItems) {
-		// TODO Auto-generated method stub
-		
+		getDelegate().init(es, posChar, posGuards, posItems);
 	}
 
 	@Override
-	public void Step() {
-		// TODO Auto-generated method stub
-		
+	public void step() {
+		getDelegate().step();
 	}
 
 }

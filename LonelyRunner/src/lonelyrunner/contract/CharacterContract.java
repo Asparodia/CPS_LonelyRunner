@@ -21,12 +21,10 @@ public class CharacterContract extends CharacterDecorator {
 		if(!(c == Cell.EMP || c== Cell.HOL || c== Cell.LAD || c== Cell.HDR)) {
 			throw new InvariantError("EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\in {EMP,HOL,LAD,HDR}");	
 		}
-		
 		CharacterService chara = (getDelegate().getEnvi().getCellContent(getDelegate().getWdt(), getDelegate().getHgt())).getCar();
 		if(!(chara.equals(this))) {
 			throw new InvariantError("\\exist Character X in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\implies c = this");	
 		}
-		
 	}
 	
 	@Override
