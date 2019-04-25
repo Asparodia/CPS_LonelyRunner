@@ -22,5 +22,5 @@ public interface EnvironmentService extends /*refine*/ScreenService {
 			// getCellNature(x,y) in [MTL,PLR] \implies getCellContent(x,y) == Null
 	// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
 			// getCellContent(x,y) == Treasure \implies getCellNature(x,y) == EMP \and getCellNature(x,y-1) \in [PLT,MTL]
-
+	
 }	

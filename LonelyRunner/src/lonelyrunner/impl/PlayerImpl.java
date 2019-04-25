@@ -58,7 +58,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (getEnvi().getCellContent(getWdt(), getHgt()-1).getCar() != null)) {
 			if(cell_leftdown == Cell.PLT) {
 				if(getEnvi().getCellContent(getWdt()-1, getHgt()-1).getCar() == null) {
-					engine.getEnvironment().setNature(getWdt()-1, getHgt()-1, Cell.HOL);
+					engine.getEnvironment().dig(getWdt()-1, getHgt()-1);
 				}
 			}
 		}
@@ -72,7 +72,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (getEnvi().getCellContent(getWdt(), getHgt()-1).getCar() != null)) {
 			if(cell_rightdown == Cell.PLT) {
 				if(getEnvi().getCellContent(getWdt()+1, getHgt()-1).getCar() == null) {
-					engine.getEnvironment().setNature(getWdt()+1, getHgt()-1, Cell.HOL);
+					engine.getEnvironment().dig(getWdt()+1, getHgt()-1);
 				}
 			}
 		}

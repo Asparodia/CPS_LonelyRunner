@@ -20,8 +20,7 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 	}
 	
 	public void checkInvariant() {
-		// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
-				//\forall c1:Character and c2:Character in [getCellContent(x,y),getCellContent(x,y)] c1 = c2
+		super.checkInvariant(); // hummmmmmmmmm
 		for(int x=0;x<getWidth();x++) {
 			for(int y=0;y<getHeight();y++) {
 				SetCharItem  c1 =  getDelegate().getCellContent(x,y);
@@ -32,8 +31,6 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 				}
 			}
 		}
-		// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
-				// getCellNature(x,y) in [MTL,PLR] \implies getCellContent(x,y) == Null
 		for(int x=0;x<getWidth();x++) {
 			for(int y=0;y<getHeight();y++) {
 				if(getCellNature(x, y) == Cell.MTL && getCellNature(x, y) == Cell.PLT) {
@@ -44,8 +41,6 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 				}
 			}
 		}
-		// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
-				// getCellContent(x,y) == Treasure \implies getCellNature(x,y) == EMP \and getCellNature(x,y-1) \in [PLT,MTL]
 		for(int x=0;x<getWidth();x++) {
 			for(int y=1;y<getHeight();y++) {
 				if(getCellContent(x, y).getItem().getNature() == ItemType.Treasure) {
@@ -90,5 +85,6 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 		}
 		
 	}
+
 
 }

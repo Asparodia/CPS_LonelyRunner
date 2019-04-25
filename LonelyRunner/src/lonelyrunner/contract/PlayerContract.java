@@ -39,8 +39,9 @@ public class PlayerContract extends PlayerDecorator{
 
 	@Override
 	public void step() {
-		// TODO Auto-generated method stub
-		
+		checkInvariant();
+		getDelegate().step();
+		checkInvariant();
 	}
 
 	@Override

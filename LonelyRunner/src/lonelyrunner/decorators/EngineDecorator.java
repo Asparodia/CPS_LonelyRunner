@@ -3,7 +3,6 @@ package lonelyrunner.decorators;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
 import lonelyrunner.service.EnvironmentService;
@@ -27,7 +26,7 @@ public class EngineDecorator implements EngineService{
 	}
 
 	@Override
-	public EditableScreenService getEnvironment() {
+	public EnvironmentService getEnvironment() {
 		return getDelegate().getEnvironment();
 	}
 
