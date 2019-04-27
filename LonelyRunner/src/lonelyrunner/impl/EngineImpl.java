@@ -38,7 +38,6 @@ public class EngineImpl implements EngineService {
 		
 		PlayerImpl p = new PlayerImpl();
 		player = new PlayerContract(p);
-		
 		player.init(environment, posChar.getElem1(), posChar.getElem2(),this);
 		
 		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).addCar(player.getDelegate());
@@ -54,6 +53,7 @@ public class EngineImpl implements EngineService {
 		}
 		int id = 0;
 		for(Couple<Integer,Integer> c : posItems) {
+			System.out.println(c.getElem1()+" "+ c.getElem2());
 			Item i = new Item(id, ItemType.Treasure,c.getElem1(),c.getElem2());
 			id++;
 			environment.getCellContent(c.getElem1(), c.getElem2()).setItem(i);

@@ -15,7 +15,7 @@ import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
 
 public class lonelyRunner{
-	protected static EngineService engine;
+	protected EngineService engine;
 	
 	public lonelyRunner(EditableScreenImpl e, Couple<Integer,Integer> player, ArrayList<Couple<Integer,Integer>> guards, ArrayList<Couple<Integer,Integer>> treasures) {
 		engine = new EngineContract(new EngineImpl());
@@ -35,7 +35,7 @@ public class lonelyRunner{
             int j= Integer.parseInt(tailles[1])-1; 
             
 	        while ((line = br.readLine()) != null) {
-	        	System.out.println(line +"  j="+j);
+	        	//System.out.println(line +"  j="+j);
 	        	for(int i=0; i<line.length(); i++) {
 	        		res[i][j] = String.valueOf(line.charAt(i));
 	        	}
@@ -50,9 +50,8 @@ public class lonelyRunner{
 		return res;
 	}
 	
-	public static void afficher() {
+	public void afficher() {
 		String [][] res = new String[engine.getEnvironment().getWidth()][engine.getEnvironment().getHeight()];
-		System.out.println(engine.getEnvironment().getWidth()+"  "+engine.getEnvironment().getHeight());
 		for (int i=0; i<engine.getEnvironment().getWidth(); i++) {
 			for (int j=0; j<engine.getEnvironment().getHeight(); j++) {
 				switch(engine.getEnvironment().getCellNature(i, j)) {
@@ -74,22 +73,25 @@ public class lonelyRunner{
 					case MTL:
 						res[i][j] = "X";
 						break;
+					default:
+						res[i][j] = "E";
+						break;
+
+
 						
 				}
 			}
 		}
 		
-		for (Item i: engine.getTreasures()) 
+		for (Item i: engine.getTreasures()) {
 			res[i.getCol()][i.getHgt()] = "*";
-
+		}
 		res[engine.getPlayer().getWdt()][engine.getPlayer().getHgt()] = "O";
 		
-		for(int j=0; j<res.length; j++) {
-			for(int i=0; i<res[j].length; i++) {
-			
-				System.out.print(res[i][j]);
-			
-		}
+		for ( int ligne = res[0].length-1;ligne>=0;ligne--) {
+			for (int col=0;col<res.length;col++) {
+				System.out.print(res[col][ligne]);
+			}
 			System.out.println();
 		}
 	}

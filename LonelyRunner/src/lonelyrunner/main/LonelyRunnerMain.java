@@ -48,9 +48,7 @@ public class LonelyRunnerMain extends lonelyRunner{
 
 		
 		ArrayList<Couple<Integer,Integer>> treasures = new ArrayList<Couple<Integer,Integer>>();
-		treasures.add(new Couple<Integer,Integer>(6,5));
 		treasures.add(new Couple<Integer,Integer>(7,1));
-		treasures.add(new Couple<Integer,Integer>(0,2));
 		
 		ArrayList<Couple<Integer,Integer>> gardes = new ArrayList<Couple<Integer,Integer>>();
 		

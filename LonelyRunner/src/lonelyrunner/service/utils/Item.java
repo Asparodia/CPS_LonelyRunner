@@ -7,7 +7,7 @@ public class Item {
     private int hgt;
     private int col;
     
-	public Item(int id, ItemType nature, int hgt, int col) {
+	public Item(int id, ItemType nature, int col, int hgt) {
 		this.id = id;
 		this.nature = nature;
 		this.hgt = hgt;

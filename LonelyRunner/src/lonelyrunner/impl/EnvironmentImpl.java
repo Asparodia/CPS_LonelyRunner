@@ -17,6 +17,11 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService{
 	public void init(EditableScreenService ess) {
 		super.init(ess.getHeight(), ess.getWidth());
 		this.env = new SetCharItem[ess.getWidth()][ ess.getHeight() ];
+		for(int i =0 ; i<ess.getWidth();i++) {
+			for(int j = 0;j<ess.getHeight();j++) {
+				this.env[i][j] = new SetCharItem();
+			}
+		}
 		
 	}
 	

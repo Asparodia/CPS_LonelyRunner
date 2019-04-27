@@ -75,9 +75,7 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 	
 	@Override
 	public boolean isPlayable() {
-		checkInvariant();
 		Boolean r = getDelegate().isPlayable();
-		checkInvariant();
 		return r;
 	}
 
@@ -101,8 +99,6 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 		checkInvariant();
 		getDelegate().setNature(x, y, c);
 		checkInvariant();
-		// \post : // \forall u:int and v:int with 0<=u<getWidth() and 0<=v<getHeight() 
-						// (x != u or y != v) \implies getCellNature(u,v) = getCellNature(u,v)@pre
 		for(int a=0;a<getWidth();a++) {
 			for(int b=0;b<getHeight();b++) {
 				if(a != x || b != y) {

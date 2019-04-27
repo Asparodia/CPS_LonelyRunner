@@ -7,12 +7,13 @@ import lonelyrunner.decorators.PlayerDecorator;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EngineService;
 import lonelyrunner.service.EnvironmentService;
+import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.ScreenService;
 import lonelyrunner.service.utils.Cell;
 
 public class PlayerContract extends PlayerDecorator{
 
-	public PlayerContract(CharacterService c) {
+	public PlayerContract(PlayerService c) {
 		super(c);
 	}
 	
@@ -30,7 +31,8 @@ public class PlayerContract extends PlayerDecorator{
 
 	@Override
 	public void init(ScreenService s, int x, int y, EngineService engine) {
-		if(!(getDelegate().getEnvi().getCellNature(x, y)==Cell.EMP)) {
+//		System.out.println(getDelegate().getEnvi());
+		if(!(s.getCellNature(x, y)==Cell.EMP)) {
 			throw new PreconditionError("init( s, "+x+", "+y+" )" , "Cell is not empty");
 		}
 		getDelegate().init(s, x, y,engine);

@@ -18,6 +18,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 	@Override
 	public void init(ScreenService s, int x, int y, EngineService engine) {
 		super.init(s, x, y);
+		engine.getEnvironment().getCellContent(x, y).addCar(this);
 		this.engine = engine;
 		
 	}
