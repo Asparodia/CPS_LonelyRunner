@@ -45,8 +45,9 @@ public interface EngineService {
 	// Invariants
 
 	// getPlayer() \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))}
-	// \forall G:Guard \in getGuards() G \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(G),getWdt(G))}
-	// \forall T:Item \in getTreasures() T \in {EnvironmentService::getCellContent(getEnvironment(),T.getHgt(),T.getCol())}
-		// getTreasures() == empty \implies getStatus() == Win
+	// \forall G:Guard \in getGuards() 
+		// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer())@pre,getHgt(getPlayer())@pre,getWdt(getPlayer())@pre)
+			//\implies  getStatus() == Loss
+	// getTreasures() == empty \implies getStatus() == Win
 
 }

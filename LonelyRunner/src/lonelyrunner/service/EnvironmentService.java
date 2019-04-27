@@ -17,10 +17,12 @@ public interface EnvironmentService extends /*refine*/ScreenService {
 	
 	//Invariants
 	// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
-			//\forall c1:Character and c2:Character in [getCellContent(x,y),getCellContent(x,y)] c1 = c2
+			//\forall c1:PlayerService and c2:PlayerService in [getCellContent(x,y),getCellContent(x,y)] c1 = c2
+	// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
+			//\forall c1:GuardService and c2:GuardService in [getCellContent(x,y),getCellContent(x,y)] c1 = c2
 	// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
 			// getCellNature(x,y) in [MTL,PLR] \implies getCellContent(x,y) == Null
 	// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
-			// getCellContent(x,y) == Treasure \implies getCellNature(x,y) == EMP \and getCellNature(x,y-1) \in [PLT,MTL]
+			// t:Treasure \in getCellContent(x,y)  \implies getCellNature(x,y) == EMP \and getCellNature(x,y-1) \in [PLT,MTL]
 	
 }	

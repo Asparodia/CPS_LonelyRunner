@@ -1,9 +1,7 @@
 package lonelyrunner.impl;
 
-import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EnvironmentService;
-import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.SetCharItem;
 
 public class EnvironmentImpl extends ScreenImpl implements EnvironmentService{
@@ -22,9 +20,4 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService{
 		
 	}
 	
-//	public void setCellContent(int x, int y,CharacterService c, Item i) {
-//		env[x][y].setCar(c);
-//		env[x][y].setItem(i);
-//	}
-
 }
