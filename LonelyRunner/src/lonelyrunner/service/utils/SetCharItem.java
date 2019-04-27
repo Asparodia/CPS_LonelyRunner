@@ -4,6 +4,10 @@ import lonelyrunner.service.CharacterService;
 
 public class SetCharItem {
 	
+	private CharacterService car = null;
+	
+	
+
 	private CharacterService player=null;
 	private CharacterService guard=null;
 	private Item item=null;
@@ -49,5 +53,17 @@ public class SetCharItem {
 	public void removeGuard() {
 		guard = null;
 	}
+	
+	public CharacterService getCar() {
+		return car;
+	}
 
+	public void setCar(CharacterService car) {
+		this.car = car;
+	}
+	
+	public void removeCharacter() {
+		car = null;
+	}
+	
 }
