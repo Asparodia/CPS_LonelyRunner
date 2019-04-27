@@ -3,11 +3,12 @@ package lonelyrunner.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import lonelyrunner.contract.EnvironmentContract;
+import lonelyrunner.contract.GuardContract;
+import lonelyrunner.contract.PlayerContract;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
-import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.GuardService;
-import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.ItemType;
@@ -16,10 +17,10 @@ import lonelyrunner.service.utils.Status;
 
 public class EngineImpl implements EngineService {
 	
-	EnvironmentService environment;
-	PlayerService player;
-	ArrayList<GuardService> guards;
-	ArrayList<Item> treasures;
+	EnvironmentContract environment;
+	PlayerContract player;
+	ArrayList<GuardService> guards = new ArrayList<>();
+	ArrayList<Item> treasures = new ArrayList<>();
 	Status status;
 	Move command;
 	
@@ -28,16 +29,28 @@ public class EngineImpl implements EngineService {
 	@Override
 	public void init(EditableScreenService es, Couple<Integer, Integer> posChar,
 			ArrayList<Couple<Integer, Integer>> posGuards, ArrayList<Couple<Integer, Integer>> posItems) {
-		environment = new EnvironmentImpl();
+		
+		
+		EnvironmentImpl envi = new EnvironmentImpl();
+		environment = new EnvironmentContract(envi);
+		
 		environment.init(es);
-		player = new PlayerImpl();
+		
+		PlayerImpl p = new PlayerImpl();
+		player = new PlayerContract(p);
+		
 		player.init(environment, posChar.getElem1(), posChar.getElem2(),this);
-		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).setCar(player);
+		
+		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).addCar(player.getDelegate());
+		
 		for(Couple<Integer,Integer> c : posGuards) {
-			GuardService g = new GuardImpl();
-			g.init(environment,c.getElem1(),c.getElem2());
-			environment.getCellContent(c.getElem1(), c.getElem2()).setCar(g);
-			this.guards.add(g);
+			
+			GuardImpl g = new GuardImpl();
+			GuardContract gc = new GuardContract(g);
+			
+			gc.init(environment,c.getElem1(),c.getElem2(),player);
+			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
+			this.guards.add(gc);
 		}
 		int id = 0;
 		for(Couple<Integer,Integer> c : posItems) {
@@ -52,18 +65,18 @@ public class EngineImpl implements EngineService {
 	}
 	
 	@Override
-	public EnvironmentService getEnvironment() {
+	public EnvironmentContract getEnvironment() {
 		return environment;
 	}
 
 	@Override
-	public PlayerService getPlayer() {
+	public PlayerContract getPlayer() {
 		return player;
 	}
 
 	@Override
 	public ArrayList<GuardService> getGuards() {
-		return guards;
+		return new ArrayList<GuardService>(guards);
 	}
 
 	@Override
@@ -109,6 +122,12 @@ public class EngineImpl implements EngineService {
 			}
 		}
 		treasures.removeAll(rem);
+		for (GuardService g : guards) {
+			if(g.getWdt() == player.getWdt() && g.getHgt() == player.getHgt()) {
+				status = Status.Loss;
+				return;
+			}
+		}
 		
 		boolean end = true;
 		for (Item i : treasures) {
@@ -124,13 +143,15 @@ public class EngineImpl implements EngineService {
 		int x = player.getWdt();
 		int y = player.getHgt();
 		
-		environment.getCellContent(x, y).removeCharacter();
+		environment.getCellContent(x, y).removeCharacter(player.getDelegate());
 		
 		player.step();
+		for (GuardService g : guards) {
+			g.step();
+		}
+		environment.getCellContent(player.getWdt(), player.getHgt()).addCar(player.getDelegate());
 		
-		environment.getCellContent(player.getWdt(), player.getHgt()).setCar(player);
-		
-		// Manque cas lose et les holes
+		// Manque cas holes
 		
 	}
 

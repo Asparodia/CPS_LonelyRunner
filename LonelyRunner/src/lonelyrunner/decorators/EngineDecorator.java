@@ -71,4 +71,10 @@ public class EngineDecorator implements EngineService{
 		getDelegate().step();
 	}
 
+	@Override
+	public void setCommand(Move c) {
+		getDelegate().setCommand(c);
+		
+	}
+
 }

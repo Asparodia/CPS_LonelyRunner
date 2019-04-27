@@ -3,6 +3,7 @@ package lonelyrunner.contract;
 import lonelyrunner.decorators.GuardDecorator;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.GuardService;
+import lonelyrunner.service.ScreenService;
 import lonelyrunner.service.utils.Move;
 
 public class GuardContract extends GuardDecorator {
@@ -14,40 +15,47 @@ public class GuardContract extends GuardDecorator {
 	public void checkInvariant() {
 	
 	}
+	
+	public void init(ScreenService s, int x, int y, CharacterService t) {
+		getDelegate().init(s, x, y,t);
+		
+	}
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return getDelegate().getId();
 	}
 
 	@Override
 	public Move getBehaviour() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDelegate().getBehaviour();
 	}
 
 	@Override
 	public CharacterService getTarget() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDelegate().getTarget();
 	}
 
 	@Override
 	public int getTimeInHole() {
-		// TODO Auto-generated method stub
-		return 0;
+		return getDelegate().getTimeInHole();
 	}
 
 	@Override
 	public void climbLeft() {
-		// TODO Auto-generated method stub
+		getDelegate().climbLeft();
+		
+	}
+	
+	@Override
+	public void climbRight() {
+		getDelegate().climbRight();
 		
 	}
 
 	@Override
 	public void step() {
-		// TODO Auto-generated method stub
+		getDelegate().climbRight();
 		
 	}
 

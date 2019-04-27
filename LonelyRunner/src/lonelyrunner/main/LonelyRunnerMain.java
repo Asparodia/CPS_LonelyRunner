@@ -17,9 +17,8 @@ public class LonelyRunnerMain extends lonelyRunner{
 	public static void main(String[] args) {
 		EditableScreenImpl e = new EditableScreenImpl();
 		
-		String[][] lignes = readFile("level1.txt");
-		e.init(lignes.length, lignes[0].length);
-		
+		String[][] lignes = readFile("src/lonelyrunner/main/level1.txt");
+		e.init(lignes[0].length,lignes.length);
 		for(int i=0; i<lignes.length; i++) {
 			for(int j=0; j<lignes[i].length; j++) {
 				switch(lignes[i][j]) {

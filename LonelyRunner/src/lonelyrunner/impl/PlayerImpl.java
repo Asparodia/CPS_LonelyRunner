@@ -55,9 +55,9 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		Cell cell_down = getEnvi().getCellNature(getWdt(), getHgt()-1);
 		Cell cell_leftdown = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
 		
-		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (getEnvi().getCellContent(getWdt(), getHgt()-1).getCar() != null)) {
+		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi().getCellContent(getWdt(), getHgt()-1).getCar().isEmpty()) )) {
 			if(cell_leftdown == Cell.PLT) {
-				if(getEnvi().getCellContent(getWdt()-1, getHgt()-1).getCar() == null) {
+				if(getEnvi().getCellContent(getWdt()-1, getHgt()-1).getCar().isEmpty()){
 					engine.getEnvironment().dig(getWdt()-1, getHgt()-1);
 				}
 			}
@@ -69,9 +69,9 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		Cell cell_down = getEnvi().getCellNature(getWdt(), getHgt()-1);
 		Cell cell_rightdown = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
 		
-		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (getEnvi().getCellContent(getWdt(), getHgt()-1).getCar() != null)) {
+		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi().getCellContent(getWdt(), getHgt()-1).getCar().isEmpty()))) {
 			if(cell_rightdown == Cell.PLT) {
-				if(getEnvi().getCellContent(getWdt()+1, getHgt()-1).getCar() == null) {
+				if(getEnvi().getCellContent(getWdt()+1, getHgt()-1).getCar().isEmpty()) {
 					engine.getEnvironment().dig(getWdt()+1, getHgt()-1);
 				}
 			}

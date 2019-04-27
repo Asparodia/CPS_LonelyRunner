@@ -39,15 +39,20 @@ public interface EngineService {
 	
 	// \post:  \forall T:Item \in getTreasures()@pre
 		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer())@pre,getHgt(getPlayer())@pre,getWdt(getPlayer())@pre)
-			//\implies T not in getTreasures() 
+			//\implies T not in getTreasures()
+	// \post: \forall G:Guard \in getGuards() 
+			// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getHgt(getPlayer()),getWdt(getPlayer()))
+				//\implies  getStatus() == Loss
+	// \post: getTreasures() == empty \implies getStatus() == Win
 	public void step();
 	
 	// Invariants
 
 	// getPlayer() \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))}
-	// \forall G:Guard \in getGuards() 
-		// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer())@pre,getHgt(getPlayer())@pre,getWdt(getPlayer())@pre)
-			//\implies  getStatus() == Loss
-	// getTreasures() == empty \implies getStatus() == Win
-
+	//\forall G:Guard \in getGuards() 
+		// G \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(G),getWdt(G))}
+	//\forall T:Item \in getTreasures() 
+			// T \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(T),getWdt(T))}
+	
+	public void setCommand(Move c);
 }

@@ -2,6 +2,7 @@ package lonelyrunner.decorators;
 
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.GuardService;
+import lonelyrunner.service.ScreenService;
 import lonelyrunner.service.utils.Move;
 
 public class GuardDecorator extends CharacterDecorator implements GuardService{
@@ -45,6 +46,17 @@ public class GuardDecorator extends CharacterDecorator implements GuardService{
 	@Override
 	public void step() {
 		getDelegate().step();
+		
+	}
+
+	@Override
+	public void climbRight() {
+		getDelegate().climbRight();
+		
+	}
+	
+	public void init(ScreenService s, int x, int y, CharacterService t) {
+		getDelegate().init(s, x, y,t);
 		
 	}
 

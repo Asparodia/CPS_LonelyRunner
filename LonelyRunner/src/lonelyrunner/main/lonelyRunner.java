@@ -6,17 +6,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import lonelyrunner.contract.EngineContract;
 import lonelyrunner.impl.EditableScreenImpl;
 import lonelyrunner.impl.EngineImpl;
+import lonelyrunner.service.EngineService;
 import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
 
 public class lonelyRunner{
-	protected static EngineImpl engine;
+	protected static EngineService engine;
 	
 	public lonelyRunner(EditableScreenImpl e, Couple<Integer,Integer> player, ArrayList<Couple<Integer,Integer>> guards, ArrayList<Couple<Integer,Integer>> treasures) {
-		engine = new EngineImpl();
+		engine = new EngineContract(new EngineImpl());
 		engine.init(e, player, guards, treasures);
 	}
 	

@@ -1,38 +1,14 @@
 package lonelyrunner.service.utils;
 
+import java.util.ArrayList;
+
 import lonelyrunner.service.CharacterService;
 
 public class SetCharItem {
 	
-	private CharacterService car = null;
-	
-	
-
-	private CharacterService player=null;
-	private CharacterService guard=null;
+	private ArrayList<CharacterService> car = new ArrayList<>();
 	private Item item=null;
-	
-	public SetCharItem(CharacterService p,CharacterService g, Item i) {
-		player = p;
-		guard = g;
-		item = i;
-	}
 
-	public CharacterService getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(CharacterService car) {
-		this.player = car;
-	}
-	
-	public CharacterService getGuard() {
-		return guard;
-	}
-
-	public void setGuard(CharacterService car) {
-		this.guard = car;
-	}
 
 	public Item getItem() {
 		return item;
@@ -42,28 +18,25 @@ public class SetCharItem {
 		this.item = item;
 	}
 	
-	public void removePlayer() {
-		player = null;
+	
+	public ArrayList<CharacterService> getCar() {
+		return car;
+	}
+	
+	public boolean isInside(CharacterService c) {
+		return car.contains(c);
+	}
+
+	public void addCar(CharacterService car) {
+		this.car.add(car);
+	}
+	
+	public void removeCharacter(CharacterService s) {
+		car.remove(s);
 	}
 	
 	public void removeItem() {
 		item = null;
-	}
-	
-	public void removeGuard() {
-		guard = null;
-	}
-	
-	public CharacterService getCar() {
-		return car;
-	}
-
-	public void setCar(CharacterService car) {
-		this.car = car;
-	}
-	
-	public void removeCharacter() {
-		car = null;
 	}
 	
 }

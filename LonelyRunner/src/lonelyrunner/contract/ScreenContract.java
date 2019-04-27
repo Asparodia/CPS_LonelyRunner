@@ -25,7 +25,7 @@ public class ScreenContract extends ScreenDecorator {
 		if(!( i>= 0 && i<super.getWidth())) {
 			throw new PreconditionError("getCellNature("+i+", "+j+" )" , "i must be between 0 and strictly inf to getWidth");
 		}
-		if(!( j>= 0 && i<super.getHeight())) {
+		if(!( j>= 0 && j<super.getHeight())) {
 			throw new PreconditionError("getCellNature("+i+", "+j+" )" , "j must be between 0 and strictly inf to getHeight");
 		}
 		
