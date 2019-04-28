@@ -10,6 +10,14 @@ public class EditableScreenImpl extends ScreenImpl  implements EditableScreenSer
 	public boolean isPlayable() {
 		return playable;
 	}
+	
+	@Override
+	public void init(int h, int w) {
+		super.init(h, w);
+		for(int i = 0;i<getWidth();i++) {
+			setNature(i,0,Cell.MTL);
+		}
+	}
 
 	@Override
 	public void setNature(int x, int y, Cell c) {

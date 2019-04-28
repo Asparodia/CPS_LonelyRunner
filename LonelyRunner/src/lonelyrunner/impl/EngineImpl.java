@@ -33,7 +33,6 @@ public class EngineImpl implements EngineService {
 		
 		EnvironmentImpl envi = new EnvironmentImpl();
 		environment = new EnvironmentContract(envi);
-		
 		environment.init(es);
 		
 		PlayerImpl p = new PlayerImpl();
@@ -46,7 +45,6 @@ public class EngineImpl implements EngineService {
 			
 			GuardImpl g = new GuardImpl();
 			GuardContract gc = new GuardContract(g);
-			
 			gc.init(environment,c.getElem1(),c.getElem2(),player);
 			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
 			this.guards.add(gc);
@@ -151,8 +149,6 @@ public class EngineImpl implements EngineService {
 		}
 		environment.getCellContent(player.getWdt(), player.getHgt()).addCar(player.getDelegate());
 		
-		// Manque cas holes
-		
+		// Manque cas holes	
 	}
-
 }

@@ -9,13 +9,12 @@ import java.util.Scanner;
 import lonelyrunner.contract.EngineContract;
 import lonelyrunner.impl.EditableScreenImpl;
 import lonelyrunner.impl.EngineImpl;
-import lonelyrunner.service.EngineService;
 import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
 
 public class lonelyRunner{
-	protected EngineService engine;
+	protected EngineContract engine;
 	
 	public lonelyRunner(EditableScreenImpl e, Couple<Integer,Integer> player, ArrayList<Couple<Integer,Integer>> guards, ArrayList<Couple<Integer,Integer>> treasures) {
 		engine = new EngineContract(new EngineImpl());
@@ -35,15 +34,12 @@ public class lonelyRunner{
             int j= Integer.parseInt(tailles[1])-1; 
             
 	        while ((line = br.readLine()) != null) {
-	        	//System.out.println(line +"  j="+j);
 	        	for(int i=0; i<line.length(); i++) {
 	        		res[i][j] = String.valueOf(line.charAt(i));
 	        	}
 	        	j--;
 	        }
-	        
 	        reader.close();
-
 		 } catch (IOException e) {
 	        System.err.format("IOException: %s%n", e);
 	     }
@@ -68,7 +64,7 @@ public class lonelyRunner{
 						res[i][j] = "H";
 						break;
 					case HDR:
-						res[i][j] = "‾";
+						res[i][j] = "-";
 						break;
 					case MTL:
 						res[i][j] = "X";
@@ -76,9 +72,6 @@ public class lonelyRunner{
 					default:
 						res[i][j] = "E";
 						break;
-
-
-						
 				}
 			}
 		}
@@ -86,7 +79,7 @@ public class lonelyRunner{
 		for (Item i: engine.getTreasures()) {
 			res[i.getCol()][i.getHgt()] = "*";
 		}
-		res[engine.getPlayer().getWdt()][engine.getPlayer().getHgt()] = "O";
+		res[engine.getPlayer().getWdt()][engine.getPlayer().getHgt()] = "P";
 		
 		for ( int ligne = res[0].length-1;ligne>=0;ligne--) {
 			for (int col=0;col<res.length;col++) {
@@ -98,10 +91,15 @@ public class lonelyRunner{
 	
 	public void readCommand() {
 		Scanner scan= new Scanner(System.in);
-		
-		System.out.print("# ");
-		String ligne = scan.nextLine();
-		
+		System.out.print(">>> ");
+		String ligne = "";
+        if (scan.hasNext()) {
+
+            ligne = scan.next();
+
+            scan.nextLine();
+
+        }
 		switch(ligne) {
 			case "z":
 				engine.setCommand(Move.UP);

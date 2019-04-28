@@ -16,8 +16,9 @@ public class LonelyRunnerMain extends lonelyRunner{
 
 	public static void main(String[] args) {
 		EditableScreenImpl e = new EditableScreenImpl();
-		
+//		EditableScreenService e = new EditableScreenContract(new EditableScreenImpl());
 		String[][] lignes = readFile("src/lonelyrunner/main/level1.txt");
+		
 		e.init(lignes[0].length,lignes.length);
 		for(int i=0; i<lignes.length; i++) {
 			for(int j=0; j<lignes[i].length; j++) {
@@ -34,7 +35,7 @@ public class LonelyRunnerMain extends lonelyRunner{
 				case "H":
 					e.setNature(i, j, Cell.LAD);
 					break;
-				case "‾":
+				case "T":
 					e.setNature(i, j, Cell.HDR);
 					break;
 				case "X" :
@@ -45,11 +46,8 @@ public class LonelyRunnerMain extends lonelyRunner{
 			}
 		}
 		
-
-		
 		ArrayList<Couple<Integer,Integer>> treasures = new ArrayList<Couple<Integer,Integer>>();
 		treasures.add(new Couple<Integer,Integer>(7,1));
-		
 		ArrayList<Couple<Integer,Integer>> gardes = new ArrayList<Couple<Integer,Integer>>();
 		
 		lonelyRunner run = new lonelyRunner(e,new Couple<Integer,Integer>(1,1), gardes, treasures);

@@ -54,17 +54,13 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 		if(!(y>=0 && y<getHeight())) {
 			throw new PreconditionError("getCellContent("+x+", "+y+" )" , "y must be between 0 and strictly inf to getHeight");
 		}
-		
 		return getDelegate().getCellContent(x, y);
 		
 	}
 	@Override
 	public void init(EditableScreenService ess) {
-		
 		getDelegate().init(ess);
-		
 		checkInvariant();
-		
 		for(int x=0;x<getWidth();x++) {
 			for(int y=0;y<getHeight();y++) {
 				if(!(getCellNature(x, y) == getDelegate().getCellNature(x, y))) {

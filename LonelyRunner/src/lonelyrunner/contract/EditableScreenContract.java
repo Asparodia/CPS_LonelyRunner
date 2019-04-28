@@ -87,7 +87,6 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 		if(!(y>=0 && y<getHeight())) {
 			throw new PreconditionError("setNature("+x+", "+y+" c )" , "y must be between 0 and strictly inf to getHeight");
 		}
-		
 		HashMap<Couple<Integer,Integer>,Cell> getCellNature_atpre = new HashMap<Couple<Integer,Integer>,Cell>();
 		for(int a=0;a<getWidth();a++) {
 			for(int b=0;b<getHeight();b++) {
@@ -95,7 +94,6 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 				getCellNature_atpre.put(couple, getCellNature(a, b));
 			}
 		}
-		
 		checkInvariant();
 		getDelegate().setNature(x, y, c);
 		checkInvariant();
