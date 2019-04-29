@@ -1,5 +1,6 @@
 package lonelyrunner.contract;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import lonelyrunner.contract.contracterr.PostconditionError;
@@ -74,6 +75,9 @@ public class ScreenContract extends ScreenDecorator {
 		HashMap<Couple<Integer,Integer>,Cell> getCellNature_atpre = new HashMap<>();
 		for (int i =0;i<super.getWidth();i++){
 			for(int j =0;j<super.getHeight();j++) {
+				if(i == u && j==v) {
+					continue;
+				}
 				Couple<Integer,Integer> c = new Couple<Integer, Integer>(i,j);
 				Cell nc = super.getCellNature(i, j);
 				getCellNature_atpre.put(c, nc);
@@ -90,12 +94,19 @@ public class ScreenContract extends ScreenDecorator {
 		}
 		for (int i =0;i<super.getWidth();i++){
 			for(int j =0;j<super.getHeight();j++) {
-				Couple<Integer,Integer> c = new Couple<Integer, Integer>(i,j);
-				Cell nc = getCellNature_atpre.get(c);
-				if(!(super.getCellNature(i, j) == nc)) {
-					throw new PostconditionError("dig("+u+", "+v+" )" , "cell ("+i+", "+j+") changed ");
+				Cell nc = null;
+				for(Couple<Integer,Integer> cp : getCellNature_atpre.keySet()) {
+					if(cp.getElem1() == i && cp.getElem2() == j) {
+						nc = getCellNature_atpre.get(cp);
+					}
 				}
-					
+				
+				if(nc != null) {
+					if(!(super.getCellNature(i, j) == nc)) {
+						throw new PostconditionError("dig("+u+", "+v+" )" , "cell ("+i+", "+j+") changed ");
+					}
+				}
+			
 			}
 			
 		}
@@ -113,6 +124,9 @@ public class ScreenContract extends ScreenDecorator {
 		HashMap<Couple<Integer,Integer>,Cell> getCellNature_atpre = new HashMap<>();
 		for (int i =0;i<super.getWidth();i++){
 			for(int j =0;j<super.getHeight();j++) {
+				if(i == u && j==v) {
+					continue;
+				}
 				Couple<Integer,Integer> c = new Couple<Integer, Integer>(i,j);
 				Cell nc = super.getCellNature(i, j);
 				getCellNature_atpre.put(c, nc);
@@ -129,10 +143,17 @@ public class ScreenContract extends ScreenDecorator {
 		}
 		for (int i =0;i<super.getWidth();i++){
 			for(int j =0;j<super.getHeight();j++) {
-				Couple<Integer,Integer> c = new Couple<Integer, Integer>(i,j);
-				Cell nc = getCellNature_atpre.get(c);
-				if(!(super.getCellNature(i, j) == nc)) {
-					throw new PostconditionError("fill("+u+", "+v+" )" , "cell ("+i+", "+j+") changed ");
+				Cell nc = null;
+				for(Couple<Integer,Integer> cp : getCellNature_atpre.keySet()) {
+					if(cp.getElem1() == i && cp.getElem2() == j) {
+						nc = getCellNature_atpre.get(cp);
+						System.out.println(nc);
+					}
+				}
+				if(nc != null) {
+					if(!(super.getCellNature(i, j) == nc)) {
+						throw new PostconditionError("fill("+u+", "+v+" )" , "cell ("+i+", "+j+") changed ");
+					}
 				}
 					
 			}

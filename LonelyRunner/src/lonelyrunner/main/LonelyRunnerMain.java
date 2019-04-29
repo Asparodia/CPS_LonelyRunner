@@ -1,23 +1,22 @@
 package lonelyrunner.main;
 
-import java.util.ArrayList;
+import java.util.Scanner;
+
 import lonelyrunner.impl.EditableScreenImpl;
 import lonelyrunner.service.utils.Cell;
-import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Status;
 
 public class LonelyRunnerMain extends lonelyRunner{
 	
 	
-	public LonelyRunnerMain(EditableScreenImpl e, Couple<Integer, Integer> player,
-			ArrayList<Couple<Integer, Integer>> guards, ArrayList<Couple<Integer, Integer>> treasures) {
-		super(e, player, guards, treasures);
+	public LonelyRunnerMain(EditableScreenImpl e) {
+		super(e);
 	}
 
 	public static void main(String[] args) {
 		EditableScreenImpl e = new EditableScreenImpl();
 //		EditableScreenService e = new EditableScreenContract(new EditableScreenImpl());
-		String[][] lignes = readFile("src/lonelyrunner/main/level1.txt");
+		String[][] lignes = readFile("src/lonelyrunner/main/level2.txt");
 		
 		e.init(lignes[0].length,lignes.length);
 		
@@ -47,17 +46,25 @@ public class LonelyRunnerMain extends lonelyRunner{
 			}
 		}
 		
-		ArrayList<Couple<Integer,Integer>> treasures = new ArrayList<Couple<Integer,Integer>>();
-		treasures.add(new Couple<Integer,Integer>(7,1));
-		ArrayList<Couple<Integer,Integer>> gardes = new ArrayList<Couple<Integer,Integer>>();
-		
-		lonelyRunner run = new lonelyRunner(e,new Couple<Integer,Integer>(1,1), gardes, treasures);
+		lonelyRunner run = new lonelyRunner(e);
+		System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n WELCOME YOU LONELY RUNNER\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
 		run.afficher();
+		Scanner scan= new Scanner(System.in);
 		while(run.engine.getStatus() == Status.Playing) {
-			run.readCommand();
+			run.readCommand(scan);
 			run.engine.step();
 			run.afficher();
 		}
+		scan.close();
+		if(run.engine.getStatus()== Status.Win) {
+			System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU WIN ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
+			System.out.println("Congrats buddy you live for another round");
+		}
+		if(run.engine.getStatus()== Status.Loss) {
+			System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU DIE ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
+			System.out.println("You die alone...");
+		}
+		
 	}
 
 }

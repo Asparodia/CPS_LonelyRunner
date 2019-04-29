@@ -15,10 +15,13 @@ import lonelyrunner.service.utils.Move;
 
 public class lonelyRunner{
 	protected static EngineContract engine;
+	private static  Couple<Integer,Integer> playerInit;
+	private static ArrayList<Couple<Integer,Integer>> guardsInit;
+	private static ArrayList<Couple<Integer,Integer>> treasuresInit;
 	
-	public lonelyRunner(EditableScreenImpl e, Couple<Integer,Integer> player, ArrayList<Couple<Integer,Integer>> guards, ArrayList<Couple<Integer,Integer>> treasures) {
+	public lonelyRunner(EditableScreenImpl e) {
 		engine = new EngineContract(new EngineImpl());
-		engine.init(e, player, guards, treasures);
+		engine.init(e, playerInit, guardsInit, treasuresInit);
 	}
 	
 	public static String[][] readFile(String file) {
@@ -30,13 +33,34 @@ public class lonelyRunner{
 			String line = br.readLine();
             String[] tailles = line.split(" ");
             res = new String[Integer.parseInt(tailles[0])][Integer.parseInt(tailles[1])];
+            int j= Integer.parseInt(tailles[1])-1;
             
-            int j= Integer.parseInt(tailles[1])-1; 
+            line = br.readLine();
+            String[] posPlayer = line.split(" ");
+            playerInit = new Couple<Integer,Integer>(Integer.parseInt(posPlayer[0]),Integer.parseInt(posPlayer[1]));
             
+            line = br.readLine();
+            String[] posGuard = line.split(",");
+            
+            ArrayList<Couple<Integer,Integer>> posGuards = new ArrayList<Couple<Integer,Integer>>();
+            for(String s: posGuard) {
+            	String[] pg = s.split(" ");
+            	posGuards.add(new Couple<Integer,Integer>(Integer.parseInt(pg[0]),Integer.parseInt(pg[1])));
+            }
+            guardsInit = posGuards;
+            
+            line = br.readLine();
+            String[] posTreasure = line.split(",");
+            ArrayList<Couple<Integer,Integer>> posTreasures = new ArrayList<Couple<Integer,Integer>>();
+            for(String s: posTreasure) {
+            	
+            	String[] pt = s.split(" ");
+            	posTreasures.add(new Couple<Integer,Integer>(Integer.parseInt(pt[0]),Integer.parseInt(pt[1])));
+            }
+            treasuresInit = posTreasures;
 	        while ((line = br.readLine()) != null) {
 	        	for(int i=0; i<line.length(); i++) {
 	        		res[i][j] = String.valueOf(line.charAt(i));
-	        		
 	        	}
 	        	j--;
 	        }
@@ -91,9 +115,9 @@ public class lonelyRunner{
 		}
 	}
 	
-	public void readCommand() {
+	public void readCommand(Scanner scan) {
 		
-		Scanner scan= new Scanner(System.in);
+		
 		System.out.print(">>> ");
 		String ligne = "";
         if (scan.hasNext()) {
@@ -121,6 +145,6 @@ public class lonelyRunner{
 				break;
 		}
 		
-		scan.close();
+		
 	}
 }

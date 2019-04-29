@@ -9,6 +9,10 @@ public interface PlayerService extends/*include*/ CharacterService{
 	public void init(ScreenService s, int x,int y,EngineService engine);
 	
 	// Operators
+	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
+			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
+			//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
+				//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
 	public void step();
 	
 	//\post: getHgt() == getHgt()@pre

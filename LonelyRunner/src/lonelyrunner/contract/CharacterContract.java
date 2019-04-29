@@ -195,16 +195,23 @@ public class CharacterContract extends CharacterDecorator {
 		}
 		if(getHgt_atpre != getEnvi_atpre.getHeight()-1) {
 			if(cell_atpre == Cell.EMP) {
-				if(cell_up == Cell.LAD || cell_up == Cell.EMP) {
+				if(cell_up == Cell.LAD ) {
 							if(!(getHgt_atpre+1 == getDelegate().getHgt())) {
 							throw new PostconditionError("goUp()" , "(getHgt()@pre != EnvironmentService::getHeight() -  1)\n" + 
-									"		//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == LAD\n" + 
-									"		//\\and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD,EMP} \n" + 
+									"		//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == EMP\n" + 
+									"		//\\and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD} \n" + 
 									"			//\\implies getHgt() = getHgt()@pre + 1");
-						
-						
 					}
 				}
+				}
+			if(cell_atpre == Cell.LAD && (cell_up == Cell.LAD || cell_up == Cell.EMP)) {
+				if(!(getHgt_atpre+1 == getDelegate().getHgt())) {
+					throw new PostconditionError("goUp()" , "(getHgt()@pre != EnvironmentService::getHeight() -  1)\n" + 
+							"		//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == LAD\n" + 
+							"		//\\and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD,EMP} \n" + 
+							"			//\\implies getHgt() = getHgt()@pre + 1");
+				
+			}
 			}
 		}
 	}
@@ -253,10 +260,10 @@ public class CharacterContract extends CharacterDecorator {
 		}
 		if(getHgt_atpre != 0) {
 			if(cell_atpre == Cell.EMP || cell_atpre == Cell.LAD || cell_atpre == Cell.HDR ) {
-				if(cell_down == Cell.EMP || cell_down == Cell.LAD || cell_down == Cell.EMP) {
+				if(cell_down == Cell.EMP || cell_down == Cell.LAD || cell_down == Cell.EMP || cell_down == Cell.HOL) {
 						if(!(getHgt_atpre-1 == getDelegate().getHgt()))
 							throw new PostconditionError("goDown()" , "getHgt()@pre != 0 \\and Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \\in {LAD,HDR,EMP}\n" + 
-									"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \\in {EMP,LAD,HDR}\n" + 
+									"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \\in {EMP,LAD,HDR,HOL}\n" + 
 									"				//\\implies getHgt()==getHgt()@pre-1");
 				}
 			}

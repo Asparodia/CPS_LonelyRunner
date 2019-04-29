@@ -39,7 +39,7 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void goLeft() {
-		Cell left = env.getCellNature(width-1, height);
+
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height-1);
 
@@ -54,20 +54,23 @@ public class CharacterImpl implements CharacterService{
 				}
 			}
 		}
-
-		if( width != 0 && left != Cell.PLT &&  left != Cell.MTL ) {
+				
+		if( width != 0) {
+			Cell left = env.getCellNature(width-1, height);
+			if( left != Cell.PLT &&  left != Cell.MTL ) {
+		
 			if( (pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD) ){
 					env.getCellContent(width, height).removeCharacter(this);
 					width-=1;
 					env.getCellContent(width, height).addCar(this);
 			}
 		}
-
+		}
 	}
 
 	@Override
 	public void goRight() {
-		Cell right = env.getCellNature(width+1, height);
+		
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height-1);
 
@@ -83,20 +86,24 @@ public class CharacterImpl implements CharacterService{
 			}
 		}
 
-		if( width != 0 && right != Cell.PLT &&  right != Cell.MTL ) {
+		if( width != env.getWidth() - 1 ) {
+			Cell right = env.getCellNature(width+1, height);
+			if( right != Cell.PLT &&  right != Cell.MTL ) {
 			if( (pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD )){
 					env.getCellContent(width, height).removeCharacter(this);
 					width+=1;
 					env.getCellContent(width, height).addCar(this);
+				}
 			}
 		}
 	}
 
 	@Override
 	public void goUp() {
-		Cell up = env.getCellNature(width, height+1);
+		
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height-1);
+		
 		//chute libre
 		if( pos != Cell.LAD && pos != Cell.HDR) {
 			if(down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
@@ -109,12 +116,18 @@ public class CharacterImpl implements CharacterService{
 			}
 		}
 		if(height!= env.getHeight()-1) {
+			Cell up = env.getCellNature(width, height+1);
 			if(pos == Cell.EMP) {
-				if(up == Cell.LAD || up == Cell.EMP) {
+				if(up == Cell.LAD ) {
 						env.getCellContent(width, height).removeCharacter(this);
 						height+=1;
 						env.getCellContent(width, height).addCar(this);
 				}
+			}
+			if(pos == Cell.LAD && (up == Cell.EMP || up == Cell.LAD)) {
+				env.getCellContent(width, height).removeCharacter(this);
+				height+=1;
+				env.getCellContent(width, height).addCar(this);
 			}
 		}
 
@@ -139,7 +152,7 @@ public class CharacterImpl implements CharacterService{
 
 		if(height != 0) {
 			if(pos == Cell.EMP || pos == Cell.LAD || pos == Cell.HDR ) {
-				if(down == Cell.EMP || down == Cell.LAD || down == Cell.EMP) {
+				if(down == Cell.EMP || down == Cell.LAD || down == Cell.EMP || down == Cell.HOL) {
 						env.getCellContent(width, height).removeCharacter(this);
 						height-=1;
 						env.getCellContent(width, height).addCar(this);

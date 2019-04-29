@@ -56,11 +56,14 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 	public void digL() {
 		
 		Cell cell_down = getEnvi().getCellNature(getWdt(), getHgt()-1);
-		Cell cell_leftdown = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
-		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi().getCellContent(getWdt(), getHgt()-1).getCar().isEmpty()) )) {
-			if(cell_leftdown == Cell.PLT) {
-				if(getEnvi().getCellContent(getWdt()-1, getHgt()-1).getCar().isEmpty()){
-					engine.getEnvironment().dig(getWdt()-1, getHgt()-1);
+		if( this.getWdt() != 0) {
+			Cell cell_leftdown = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
+			if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi().getCellContent(getWdt(), getHgt()-1).getCar().isEmpty()) )) {
+				if(cell_leftdown == Cell.PLT) {
+					if(getEnvi().getCellContent(getWdt()-1, getHgt()-1).getCar().isEmpty()){
+						engine.getEnvironment().dig(getWdt()-1, getHgt()-1);
+						System.out.println(super.env.getCellNature(getWdt()-1, getHgt()-1));
+					}
 				}
 			}
 		}
@@ -69,12 +72,15 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 	@Override
 	public void digR() {
 		Cell cell_down = getEnvi().getCellNature(getWdt(), getHgt()-1);
-		Cell cell_rightdown = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
 		
-		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi().getCellContent(getWdt(), getHgt()-1).getCar().isEmpty()))) {
-			if(cell_rightdown == Cell.PLT) {
-				if(getEnvi().getCellContent(getWdt()+1, getHgt()-1).getCar().isEmpty()) {
-					engine.getEnvironment().dig(getWdt()+1, getHgt()-1);
+		
+		if( this.getWdt() != env.getWidth() - 1 ) {
+			Cell cell_rightdown = getEnvi().getCellNature(getWdt()+1, getHgt()-1);
+			if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi().getCellContent(getWdt(), getHgt()-1).getCar().isEmpty()))) {
+				if(cell_rightdown == Cell.PLT) {
+					if(getEnvi().getCellContent(getWdt()+1, getHgt()-1).getCar().isEmpty()) {
+						engine.getEnvironment().dig(getWdt()+1, getHgt()-1);
+					}
 				}
 			}
 		}

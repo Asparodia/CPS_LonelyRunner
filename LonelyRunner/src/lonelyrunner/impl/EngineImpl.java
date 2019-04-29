@@ -51,7 +51,6 @@ public class EngineImpl implements EngineService {
 		}
 		int id = 0;
 		for(Couple<Integer,Integer> c : posItems) {
-			System.out.println(c.getElem1()+" "+ c.getElem2());
 			Item i = new Item(id, ItemType.Treasure,c.getElem1(),c.getElem2());
 			id++;
 			environment.getCellContent(c.getElem1(), c.getElem2()).setItem(i);
@@ -110,6 +109,20 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public void step() {
+		
+		int x = player.getWdt();
+		int y = player.getHgt();
+		
+		environment.getCellContent(x, y).removeCharacter(player.getDelegate());
+		
+		player.step();
+		
+//		for (GuardService g : guards) {
+//			g.step();
+//		}
+		
+		environment.getCellContent(player.getWdt(), player.getHgt()).addCar(player.getDelegate());
+		
 		ArrayList<Item> rem = new ArrayList<>();
 		for (Item i : treasures) {
 			if(i.getNature() == ItemType.Treasure) {
@@ -138,18 +151,7 @@ public class EngineImpl implements EngineService {
 			return;
 		}
 		
-		int x = player.getWdt();
-		int y = player.getHgt();
-		
-		environment.getCellContent(x, y).removeCharacter(player.getDelegate());
-		
-		player.step();
-		
-//		for (GuardService g : guards) {
-//			g.step();
-//		}
-		
-		environment.getCellContent(player.getWdt(), player.getHgt()).addCar(player.getDelegate());
+
 		
 		// Manque cas holes	
 	}
