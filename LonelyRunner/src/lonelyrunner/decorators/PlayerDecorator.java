@@ -43,4 +43,10 @@ public class PlayerDecorator extends CharacterDecorator implements PlayerService
 		getDelegate().digR();
 	}
 
+	@Override
+	public void doNeutral() {
+		getDelegate().doNeutral();
+		
+	}
+
 }

@@ -8,8 +8,8 @@ import lonelyrunner.service.utils.Cell;
 public class CharacterImpl implements CharacterService{
 
 	protected EnvironmentService env;
-	private int height;
-	private int width;
+	protected int height;
+	protected int width;
 
 
 	@Override

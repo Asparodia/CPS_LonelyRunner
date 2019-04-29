@@ -29,23 +29,31 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		switch (next) {
 		case RIGHT:
 			super.goRight();
+			engine.setCommand(Move.NEUTRAL);
 			break;
 		case LEFT:
 			super.goLeft();
+			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DOWN:
 			super.goDown();
+			engine.setCommand(Move.NEUTRAL);
 			break;
 		case UP:
 			super.goUp();
+			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DigL:
 			digL();
+			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DigR:
 			digR();
+			engine.setCommand(Move.NEUTRAL);
 			break;
 		case NEUTRAL:
+			doNeutral();
+			engine.setCommand(Move.NEUTRAL);
 			break;
 		default:
 			break;
@@ -84,6 +92,25 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void doNeutral() {
+		Cell pos = env.getCellNature(width, height);
+		Cell down = env.getCellNature(width, height-1);
+
+		//chute libre
+		if( pos != Cell.LAD && pos != Cell.HDR) {
+			if(down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
+				if(env.getCellContent(width, height-1).getCar().isEmpty()) {
+					env.getCellContent(width, height).removeCharacter(this);
+					height-=1;
+					env.getCellContent(width, height).addCar(this);
+					return;
+				}
+			}
+		}
+		
 	}
 
 }

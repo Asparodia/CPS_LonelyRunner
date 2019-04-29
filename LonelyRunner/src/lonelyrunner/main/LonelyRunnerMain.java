@@ -50,17 +50,18 @@ public class LonelyRunnerMain extends lonelyRunner{
 		System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n WELCOME YOU LONELY RUNNER\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
 		run.afficher();
 		Scanner scan= new Scanner(System.in);
-		while(run.engine.getStatus() == Status.Playing) {
+		
+		while(lonelyRunner.engine.getStatus() == Status.Playing) {
 			run.readCommand(scan);
-			run.engine.step();
+			lonelyRunner.engine.step();
 			run.afficher();
 		}
 		scan.close();
-		if(run.engine.getStatus()== Status.Win) {
+		if(lonelyRunner.engine.getStatus()== Status.Win) {
 			System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU WIN ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
 			System.out.println("Congrats buddy you live for another round");
 		}
-		if(run.engine.getStatus()== Status.Loss) {
+		if(lonelyRunner.engine.getStatus()== Status.Loss) {
 			System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU DIE ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
 			System.out.println("You die alone...");
 		}

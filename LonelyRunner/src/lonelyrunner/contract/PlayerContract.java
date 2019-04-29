@@ -4,7 +4,6 @@ import lonelyrunner.contract.contracterr.InvariantError;
 import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.contract.contracterr.PreconditionError;
 import lonelyrunner.decorators.PlayerDecorator;
-import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EngineService;
 import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.PlayerService;
@@ -44,6 +43,7 @@ public class PlayerContract extends PlayerDecorator{
 		checkInvariant();
 		getDelegate().step();
 		checkInvariant();
+		
 	}
 
 	@Override
@@ -114,6 +114,32 @@ public class PlayerContract extends PlayerDecorator{
 	@Override
 	public EngineService getEngine() {
 		return getDelegate().getEngine(); // bizarre
+	}
+	
+	@Override
+	public void doNeutral() {
+		int getHgt_atpre = getDelegate().getHgt();
+		int getWdt_atpre = getDelegate().getWdt();
+		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
+		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
+		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);
+		
+		checkInvariant();
+		getDelegate().doNeutral();
+		checkInvariant();
+		
+		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
+			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
+				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty() /*|| getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getPlayer() == null */) {
+					if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre-1 == getDelegate().getHgt()))
+						throw new PostconditionError("doNeutral()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\not in {LAD,HDR} \n" + 
+								"			//\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \\not in {PLT,MTL,LAD}\n" + 
+								"			//\\and not exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)\n" + 
+								"				//\\implies getWdt() == getWdt()@pre \\and getHgt() == getHgt()@pre - 1");
+			
+				}
+			}
+		}
 	}
 
 }
