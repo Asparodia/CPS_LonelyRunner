@@ -24,16 +24,16 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 		for(int x=0;x<getWidth();x++) {
 			for(int y=0;y<getHeight();y++) {
 				if(getCellNature(x, y) == Cell.MTL || getCellNature(x, y) == Cell.PLT) {
-					if(!(getCellContent(x, y) == null )) {
+					if(!(getCellContent(x, y).getCar().isEmpty() && getCellContent(x, y).getItem() == null)) {
 						throw new InvariantError("\\forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
-								"				// getCellNature(x,y) in [MTL,PLR] \\implies getCellContent(x,y) == Null");
+								"				// getCellNature(x,y) in [MTL,PLT] \\implies getCellContent(x,y) == Null");
 					}
 				}
 			}
 		}
 		for(int x=0;x<getWidth();x++) {
 			for(int y=1;y<getHeight();y++) {
-				if(getCellContent(x, y).getItem() == null)
+				if(getCellContent(x, y).getCar().isEmpty() && getCellContent(x, y).getItem() == null)
 					continue;
 				if(getCellContent(x, y).getItem().getNature() == ItemType.Treasure) {
 					if(!(getCellNature(x, y) == Cell.EMP && (getCellNature(x,y-1) == Cell.PLT || getCellNature(x,y-1) == Cell.MTL))) {

@@ -20,8 +20,9 @@ public class LonelyRunnerMain extends lonelyRunner{
 		String[][] lignes = readFile("src/lonelyrunner/main/level1.txt");
 		
 		e.init(lignes[0].length,lignes.length);
-		for(int i=0; i<lignes.length; i++) {
-			for(int j=0; j<lignes[i].length; j++) {
+		
+		for(int i=0; i<e.getWidth(); i++) {
+			for(int j=0; j<e.getHeight(); j++) {
 				switch(lignes[i][j]) {
 				case "-":
 					e.setNature(i, j, Cell.EMP);
@@ -38,7 +39,7 @@ public class LonelyRunnerMain extends lonelyRunner{
 				case "T":
 					e.setNature(i, j, Cell.HDR);
 					break;
-				case "X" :
+				case "A" :
 					e.setNature(i, j, Cell.MTL);
 					break;
 					

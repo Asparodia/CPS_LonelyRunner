@@ -22,7 +22,7 @@ public class EngineImpl implements EngineService {
 	ArrayList<GuardService> guards = new ArrayList<>();
 	ArrayList<Item> treasures = new ArrayList<>();
 	Status status;
-	Move command;
+	Move command = Move.NEUTRAL ;
 	
 	HashMap<Couple<Integer,Integer>,Integer> holes;
 
@@ -104,7 +104,7 @@ public class EngineImpl implements EngineService {
 	}
 
 	public void setCommand(Move c) {
-		command = c;
+		this.command = c;
 	}
 	
 
@@ -144,9 +144,11 @@ public class EngineImpl implements EngineService {
 		environment.getCellContent(x, y).removeCharacter(player.getDelegate());
 		
 		player.step();
-		for (GuardService g : guards) {
-			g.step();
-		}
+		
+//		for (GuardService g : guards) {
+//			g.step();
+//		}
+		
 		environment.getCellContent(player.getWdt(), player.getHgt()).addCar(player.getDelegate());
 		
 		// Manque cas holes	

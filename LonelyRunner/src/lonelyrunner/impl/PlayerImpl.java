@@ -45,6 +45,8 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		case DigR:
 			digR();
 			break;
+		case NEUTRAL:
+			break;
 		default:
 			break;
 		}
@@ -55,7 +57,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		
 		Cell cell_down = getEnvi().getCellNature(getWdt(), getHgt()-1);
 		Cell cell_leftdown = getEnvi().getCellNature(getWdt()-1, getHgt()-1);
-		
 		if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi().getCellContent(getWdt(), getHgt()-1).getCar().isEmpty()) )) {
 			if(cell_leftdown == Cell.PLT) {
 				if(getEnvi().getCellContent(getWdt()-1, getHgt()-1).getCar().isEmpty()){

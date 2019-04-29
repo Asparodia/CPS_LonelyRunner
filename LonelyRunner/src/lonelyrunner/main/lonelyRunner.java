@@ -14,7 +14,7 @@ import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
 
 public class lonelyRunner{
-	protected EngineContract engine;
+	protected static EngineContract engine;
 	
 	public lonelyRunner(EditableScreenImpl e, Couple<Integer,Integer> player, ArrayList<Couple<Integer,Integer>> guards, ArrayList<Couple<Integer,Integer>> treasures) {
 		engine = new EngineContract(new EngineImpl());
@@ -36,6 +36,7 @@ public class lonelyRunner{
 	        while ((line = br.readLine()) != null) {
 	        	for(int i=0; i<line.length(); i++) {
 	        		res[i][j] = String.valueOf(line.charAt(i));
+	        		
 	        	}
 	        	j--;
 	        }
@@ -50,6 +51,7 @@ public class lonelyRunner{
 		String [][] res = new String[engine.getEnvironment().getWidth()][engine.getEnvironment().getHeight()];
 		for (int i=0; i<engine.getEnvironment().getWidth(); i++) {
 			for (int j=0; j<engine.getEnvironment().getHeight(); j++) {
+				
 				switch(engine.getEnvironment().getCellNature(i, j)) {
 					case EMP:
 						res[i][j] = " ";
@@ -90,15 +92,13 @@ public class lonelyRunner{
 	}
 	
 	public void readCommand() {
+		
 		Scanner scan= new Scanner(System.in);
 		System.out.print(">>> ");
 		String ligne = "";
         if (scan.hasNext()) {
-
             ligne = scan.next();
-
             scan.nextLine();
-
         }
 		switch(ligne) {
 			case "z":
