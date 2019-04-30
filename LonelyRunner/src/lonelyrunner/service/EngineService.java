@@ -1,16 +1,21 @@
 package lonelyrunner.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import lonelyrunner.service.utils.Couple;
+import lonelyrunner.service.utils.Hole;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
 import lonelyrunner.service.utils.Status;
 
 public interface EngineService {
 	
+	// rajouter le nombre de vie et le score en observateur et un operateur reset qui relance le niveau
+	
 	// Observators
+	
+	public int getNbLives();
+	
+	public int getScore();
 	
 	public EnvironmentService getEnvironment();
 	
@@ -24,7 +29,7 @@ public interface EngineService {
 	
 	public Move getNextCommand();
 	
-	public HashMap<Couple<Integer,Integer>,Integer> getHoles();
+	public ArrayList<Hole> getHoles();
 	
 	// Constructor
 	
@@ -37,22 +42,27 @@ public interface EngineService {
 	
 	// Operators
 	
-	// \post:  \forall T:Item \in getTreasures()@pre
-		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer())@pre,getHgt(getPlayer())@pre,getWdt(getPlayer())@pre)
+	//\post:  \forall T:Item \in getTreasures()
+		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getHgt(getPlayer()),getWdt(getPlayer()))
 			//\implies T not in getTreasures()
-	// \post: \forall G:Guard \in getGuards() 
+	//\post: \forall G:Guard \in getGuards() 
 			// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getHgt(getPlayer()),getWdt(getPlayer()))
 				//\implies  getStatus() == Loss
-	// \post: getTreasures() == empty \implies getStatus() == Win
+	//\post: getTreasures() == empty \implies getStatus() == Win
 	public void step();
 	
+	public void setCommand(Move c);
+	
+	public void setNbLives(int l);
+	
 	// Invariants
-
-	// getPlayer() \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))}
+	//getPlayer() \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(getPlayer()),getWdt(getPlayer()))}
 	//\forall G:Guard \in getGuards() 
 		// G \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(G),getWdt(G))}
 	//\forall T:Item \in getTreasures() 
-			// T \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(T),getWdt(T))}
+		// T \in {EnvironmentService::getCellContent(getEnvironment(),getHgt(T),getWdt(T))}
+	//\forall H:Hole \in getHoles()
+		// EnvironmentService::getCellNature(getEnvironment(),H.x,H.y) == HOL
+
 	
-	public void setCommand(Move c);
 }

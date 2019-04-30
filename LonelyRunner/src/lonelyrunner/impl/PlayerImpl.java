@@ -4,6 +4,7 @@ import lonelyrunner.service.EngineService;
 import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.ScreenService;
 import lonelyrunner.service.utils.Cell;
+import lonelyrunner.service.utils.Hole;
 import lonelyrunner.service.utils.Move;
 
 public class PlayerImpl extends CharacterImpl implements PlayerService {
@@ -20,7 +21,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		super.init(s, x, y);
 		engine.getEnvironment().getCellContent(x, y).addCar(this);
 		this.engine = engine;
-		
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 				if(cell_leftdown == Cell.PLT) {
 					if(getEnvi().getCellContent(getWdt()-1, getHgt()-1).getCar().isEmpty()){
 						engine.getEnvironment().dig(getWdt()-1, getHgt()-1);
-						System.out.println(super.env.getCellNature(getWdt()-1, getHgt()-1));
+						engine.getHoles().add(new Hole(getWdt()-1, getHgt()-1,0));
 					}
 				}
 			}
@@ -88,6 +88,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 				if(cell_rightdown == Cell.PLT) {
 					if(getEnvi().getCellContent(getWdt()+1, getHgt()-1).getCar().isEmpty()) {
 						engine.getEnvironment().dig(getWdt()+1, getHgt()-1);
+						engine.getHoles().add(new Hole(getWdt()+1, getHgt()-1,0));
 					}
 				}
 			}

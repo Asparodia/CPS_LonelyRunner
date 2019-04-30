@@ -37,6 +37,4 @@ public interface ScreenService {
 	// Invariants
 	//Pas d'invariant
 	
-	
-	
 }

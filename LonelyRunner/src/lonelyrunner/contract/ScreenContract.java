@@ -1,6 +1,5 @@
 package lonelyrunner.contract;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import lonelyrunner.contract.contracterr.PostconditionError;
@@ -42,10 +41,10 @@ public class ScreenContract extends ScreenDecorator {
 		if(!(w>0)) {
 			throw new PreconditionError("init("+h+", "+w+" )" , "width must be strictly positive");
 		}
-		// run
+
 		super.init(h,w);
-		// inv post
 		checkInvariant();
+
 		// post
 		if(!(h==super.getHeight())) {
 			throw new PostconditionError("init("+h+", "+w+" )" , "h is not equal to getHeight after init");

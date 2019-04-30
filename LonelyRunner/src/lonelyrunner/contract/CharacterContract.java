@@ -15,16 +15,14 @@ public class CharacterContract extends CharacterDecorator {
 		super(c);
 	}
 	
-	
 	public void checkInvariant() {		
 		Cell c = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		if(!(c == Cell.EMP || c== Cell.HOL || c== Cell.LAD || c== Cell.HDR)) {
-			throw new InvariantError("EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\in {EMP,HOL,LAD,HDR}");	
+			throw new InvariantError("EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) not in {EMP,HOL,LAD,HDR}");	
 		}
-		
 		boolean chara = (getDelegate().getEnvi().getCellContent(getDelegate().getWdt(), getDelegate().getHgt())).isInside(getDelegate());
 		if(!(chara)) {
-			throw new InvariantError("\\exist Character X in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\implies c = this");	
+			throw new InvariantError("exist Character X in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre) should implie c = this");	
 		}
 	}
 	
@@ -35,7 +33,6 @@ public class CharacterContract extends CharacterDecorator {
 		}
 		getDelegate().init(s, x, y);
 		checkInvariant();
-		
 	}
 
 	@Override
@@ -52,12 +49,10 @@ public class CharacterContract extends CharacterDecorator {
 		getDelegate().goLeft();
 		checkInvariant();
 		
-		//Operators
-		
 		
 		// Post
 		if(!(getHgt_atpre == getDelegate().getHgt())) {
-			throw new PostconditionError("goLeft()" , "getHgt() == getHgt()@pre");
+			throw new PostconditionError("goLeft()" , "getHgt() should be equals to getHgt()@pre");
 		}
 		if(getWdt_atpre ==0) {
 			if(!(getWdt_atpre == getDelegate().getWdt()))
@@ -79,10 +74,6 @@ public class CharacterContract extends CharacterDecorator {
 				}
 			}
 		}
-//		if(getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar() != null /*|| getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getPlayer() != null*/)  {
-//			if(!(getWdt_atpre == getDelegate().getWdt()))
-//				throw new PostconditionError("goLeft()" , "exist GuardService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) implies getWdt() == getWdt()@pre");
-//		}
 		if(getDelegate().getWdt() != 0 && cell_left != Cell.MTL && cell_left != Cell.PLT) {
 			if( (cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD || !(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()) )){
 					if(!(getWdt_atpre-1 == getDelegate().getWdt()))
@@ -111,7 +102,7 @@ public class CharacterContract extends CharacterDecorator {
 		// Post
 
 		if(!(getHgt_atpre == getDelegate().getHgt())) {
-			throw new PostconditionError("goRight()" , "getHgt() == getHgt()@pre");
+			throw new PostconditionError("goRight()" , "getHgt() should be equals to getHgt()@pre");
 		}
 		if(getWdt_atpre ==getEnvi_atpre.getWidth()-1) {
 			if(!(getWdt_atpre == getDelegate().getWdt()))
@@ -166,7 +157,7 @@ public class CharacterContract extends CharacterDecorator {
 		
 		// Post
 		if(!(getWdt_atpre == getDelegate().getWdt())) {
-			throw new PostconditionError("goUp()" , "getWdt() == getWdt()@pre");
+			throw new PostconditionError("goUp()" , "getWdt() should be equals to getWdt()@pre");
 		}
 		if(getHgt_atpre ==getEnvi_atpre.getHeight()-1) {
 			if(!(getHgt_atpre == getDelegate().getHgt()))

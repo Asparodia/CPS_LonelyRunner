@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import lonelyrunner.contract.EditableScreenContract;
 import lonelyrunner.contract.EngineContract;
 import lonelyrunner.impl.EditableScreenImpl;
 import lonelyrunner.impl.EngineImpl;
+import lonelyrunner.service.EditableScreenService;
+import lonelyrunner.service.GuardService;
+import lonelyrunner.service.utils.Cell;
 import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
@@ -19,13 +23,17 @@ public class lonelyRunner{
 	private static ArrayList<Couple<Integer,Integer>> guardsInit;
 	private static ArrayList<Couple<Integer,Integer>> treasuresInit;
 	
-	public lonelyRunner(EditableScreenImpl e) {
+	public lonelyRunner(EditableScreenService e) {
 		engine = new EngineContract(new EngineImpl());
 		engine.init(e, playerInit, guardsInit, treasuresInit);
 	}
 	
 	public static String[][] readFile(String file) {
 		String[][] res = null;
+		engine = null;
+		playerInit = null;
+		guardsInit = null;
+		treasuresInit = null;
 		
 		try (FileReader reader = new FileReader(file);
 				 BufferedReader br = new BufferedReader(reader)) {
@@ -75,7 +83,6 @@ public class lonelyRunner{
 		String [][] res = new String[engine.getEnvironment().getWidth()][engine.getEnvironment().getHeight()];
 		for (int i=0; i<engine.getEnvironment().getWidth(); i++) {
 			for (int j=0; j<engine.getEnvironment().getHeight(); j++) {
-				
 				switch(engine.getEnvironment().getCellNature(i, j)) {
 					case EMP:
 						res[i][j] = " ";
@@ -105,14 +112,57 @@ public class lonelyRunner{
 		for (Item i: engine.getTreasures()) {
 			res[i.getCol()][i.getHgt()] = "*";
 		}
+		for (GuardService i: engine.getGuards()) {
+			res[i.getWdt()][i.getHgt()] = "G";
+		}
 		res[engine.getPlayer().getWdt()][engine.getPlayer().getHgt()] = "P";
-		
+		System.out.println("Lives : "+engine.getNbLives()+" Score : "+engine.getScore());
 		for ( int ligne = res[0].length-1;ligne>=0;ligne--) {
 			for (int col=0;col<res.length;col++) {
 				System.out.print(res[col][ligne]);
 			}
 			System.out.println();
 		}
+	}
+	
+	public void nextLevel(String s) {
+		String[][] lignes = readFile(s);
+		engine = new EngineContract(new EngineImpl());
+		EditableScreenContract e = new EditableScreenContract(new EditableScreenImpl());
+		e.init(lignes[0].length,lignes.length);
+		for(int i = 0;i<e.getWidth();i++) {
+			e.setNature(i,0,Cell.MTL);
+		}
+		if(!e.isPlayable()) {
+			System.out.println("this level isnt playable !! : "+s);
+			return;
+		}
+		for(int i=0; i<e.getWidth(); i++) {
+			for(int j=0; j<e.getHeight(); j++) {
+				switch(lignes[i][j]) {
+				case "-":
+					e.setNature(i, j, Cell.EMP);
+					break;
+				case "=":
+					e.setNature(i, j, Cell.PLT);
+					break;
+				case "_":
+					e.setNature(i, j, Cell.HOL);
+					break;
+				case "H":
+					e.setNature(i, j, Cell.LAD);
+					break;
+				case "T":
+					e.setNature(i, j, Cell.HDR);
+					break;
+				case "A" :
+					e.setNature(i, j, Cell.MTL);
+					break;
+					
+				}
+			}
+		}
+		engine.init(e, playerInit, guardsInit, treasuresInit);
 	}
 	
 	public void readCommand(Scanner scan) {

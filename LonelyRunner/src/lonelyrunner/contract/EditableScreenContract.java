@@ -22,7 +22,7 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 	}
 	
 	public void checkInvariant() {
-		super.checkInvariant(); // hummmmmmmmmm
+		super.checkInvariant(); 
 		Boolean t = true;
 		for(int x=0;x<getWidth();x++) {
 			for(int y=0;y<getHeight();y++) {
@@ -37,8 +37,9 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 			}
 		}
 		if(!(getDelegate().isPlayable() == t)) {
-			throw new InvariantError("isPlayable() =min=  \\forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
-					"									// getCellNature(x,y) != HOL and // \\forall u:int with 0<=u<getWidth() getCellNature(u,0) = MTL");
+			throw new InvariantError("isPlayable() =min= forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
+					"									getCellNature(x,y) != HOL \n"+
+					"									and forall u:int with 0<=u<getWidth() getCellNature(u,0) = MTL");
 		}
 	}
 	
@@ -55,6 +56,7 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 		getDelegate().init(h,w);   // do not inherit from init, so do not call super !
 		// inv post
 		checkInvariant();
+		
 		// post
 		// post
 		if(!(h==super.getHeight())) {
@@ -100,9 +102,16 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 		for(int a=0;a<getWidth();a++) {
 			for(int b=0;b<getHeight();b++) {
 				if(a != x || b != y) {
-					Couple<Integer,Integer> couple = new Couple<Integer, Integer>(a,b);
-					if(!(getCellNature(a, b) == getCellNature_atpre.get(couple))) {
+					Cell nc = null;
+					for(Couple<Integer,Integer> cp : getCellNature_atpre.keySet()) {
+						if(cp.getElem1() == a && cp.getElem2() == b) {
+							nc = getCellNature_atpre.get(cp);
+						}
+					}
+					if(nc!=null) {
+					if(!(getCellNature(a, b) == nc)) {
 						throw new PostconditionError("setNature("+x+", "+y+" c )" , "cellNature of "+x+" "+y+" changed, wasn't suppose to change ");
+					}
 					}
 				}
 			}

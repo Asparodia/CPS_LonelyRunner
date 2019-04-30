@@ -15,7 +15,8 @@ public interface EditableScreenService extends  /*refine*/ScreenService {
 					// (x != u or y != v) \implies getCellNature(u,v) = getCellNature(u,v)@pre
 	public void setNature(int x, int y, Cell c);
 	
-	// invariants 
+	// Invariants 
+	
 	// isPlayable() =min= // \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
 								// getCellNature(x,y) != HOL and // \forall u:int with 0<=x<getWidth() getCellNature(x,0) = MTL 
 	

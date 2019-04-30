@@ -1,8 +1,8 @@
 package lonelyrunner.contract;
 
 import lonelyrunner.decorators.GuardDecorator;
-import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.GuardService;
+import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.ScreenService;
 import lonelyrunner.service.utils.Move;
 
@@ -16,7 +16,7 @@ public class GuardContract extends GuardDecorator {
 	
 	}
 	
-	public void init(ScreenService s, int x, int y, CharacterService t) {
+	public void init(ScreenService s, int x, int y, PlayerService t) {
 		getDelegate().init(s, x, y,t);
 		
 	}
@@ -32,7 +32,7 @@ public class GuardContract extends GuardDecorator {
 	}
 
 	@Override
-	public CharacterService getTarget() {
+	public PlayerService getTarget() {
 		return getDelegate().getTarget();
 	}
 
@@ -55,8 +55,12 @@ public class GuardContract extends GuardDecorator {
 
 	@Override
 	public void step() {
-		getDelegate().climbRight();
-		
+		getDelegate().step();
+	}
+	
+	@Override
+	public void doNeutral() {
+		getDelegate().doNeutral();
 	}
 
 }

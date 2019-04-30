@@ -16,8 +16,7 @@ public class CharacterImpl implements CharacterService{
 	public void init(ScreenService s, int x, int y) {
 		width = x;
 		height = y;
-		env = (EnvironmentService) s;
-
+		env = (EnvironmentService) s; // hum
 	}
 
 	@Override

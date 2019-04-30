@@ -25,8 +25,8 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 			for(int y=0;y<getHeight();y++) {
 				if(getCellNature(x, y) == Cell.MTL || getCellNature(x, y) == Cell.PLT) {
 					if(!(getCellContent(x, y).getCar().isEmpty() && getCellContent(x, y).getItem() == null)) {
-						throw new InvariantError("\\forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
-								"				// getCellNature(x,y) in [MTL,PLT] \\implies getCellContent(x,y) == Null");
+						throw new InvariantError("forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
+								"				if getCellNature(x,y) in [MTL,PLT] then we should normally have getCellContent(x,y) == Null");
 					}
 				}
 			}
@@ -38,8 +38,8 @@ public class EnvironmentContract extends ScreenContract implements EnvironmentSe
 				if(getCellContent(x, y).getItem() != null) {
 					if(getCellContent(x, y).getItem().getNature() == ItemType.Treasure) {
 					if(!(getCellNature(x, y) == Cell.EMP && (getCellNature(x,y-1) == Cell.PLT || getCellNature(x,y-1) == Cell.MTL))) {
-						throw new InvariantError("\\forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
-								"				//t:Treasure \\in getCellContent(x,y) \\implies getCellNature(x,y) == EMP \\and getCellNature(x,y-1) \\in [PLT,MTL]");
+						throw new InvariantError("forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() \n" + 
+								"				if t:Treasure in getCellContent(x,y) then we should normally have getCellNature(x,y) == EMP and getCellNature(x,y-1) in [PLT,MTL]");
 					}
 					}
 				}

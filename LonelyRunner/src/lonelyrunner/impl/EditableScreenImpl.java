@@ -4,7 +4,7 @@ import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.utils.Cell;
 
 public class EditableScreenImpl extends ScreenImpl  implements EditableScreenService{
-	private boolean playable;
+	private boolean playable=false;
 	
 	@Override
 	public boolean isPlayable() {
@@ -14,9 +14,6 @@ public class EditableScreenImpl extends ScreenImpl  implements EditableScreenSer
 	@Override
 	public void init(int h, int w) {
 		super.init(h, w);
-		for(int i = 0;i<getWidth();i++) {
-			setNature(i,0,Cell.MTL);
-		}
 	}
 
 	@Override

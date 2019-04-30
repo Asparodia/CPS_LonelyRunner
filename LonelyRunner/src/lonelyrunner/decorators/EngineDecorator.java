@@ -9,6 +9,7 @@ import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.GuardService;
 import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Couple;
+import lonelyrunner.service.utils.Hole;
 import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
 import lonelyrunner.service.utils.Status;
@@ -56,7 +57,7 @@ public class EngineDecorator implements EngineService{
 	}
 
 	@Override
-	public HashMap<Couple<Integer, Integer>, Integer> getHoles() {
+	public ArrayList<Hole> getHoles() {
 		return getDelegate().getHoles();
 	}
 
@@ -75,6 +76,21 @@ public class EngineDecorator implements EngineService{
 	public void setCommand(Move c) {
 		getDelegate().setCommand(c);
 		
+	}
+
+	@Override
+	public int getNbLives() {
+		return getDelegate().getNbLives();
+	}
+
+	@Override
+	public int getScore() {
+		return getDelegate().getScore();
+	}
+
+	@Override
+	public void setNbLives(int l) {
+		getDelegate().setNbLives(l);
 	}
 
 }
