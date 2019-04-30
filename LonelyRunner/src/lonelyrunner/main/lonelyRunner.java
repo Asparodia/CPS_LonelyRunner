@@ -124,7 +124,7 @@ public class lonelyRunner{
 			System.out.println();
 		}
 	}
-	
+		
 	public void nextLevel(String s) {
 		String[][] lignes = readFile(s);
 		engine = new EngineContract(new EngineImpl());

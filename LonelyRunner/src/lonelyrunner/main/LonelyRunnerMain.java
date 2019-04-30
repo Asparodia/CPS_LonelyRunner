@@ -14,9 +14,9 @@ public class LonelyRunnerMain extends lonelyRunner{
 	}
 
 	public static void main(String[] args) {
-		String[] levels = new String[1];
-		//levels[0] = "src/lonelyrunner/main/level2.txt";
-		levels[0] = "src/lonelyrunner/main/level3.txt";
+		String[] levels = new String[2];
+		levels[0] = "src/lonelyrunner/main/level2.txt";
+		levels[1] = "src/lonelyrunner/main/level3.txt";
 
 		EditableScreenContract e = new EditableScreenContract(new EditableScreenImpl());
 		String[][] lignes = readFile(levels[0]);
@@ -52,12 +52,17 @@ public class LonelyRunnerMain extends lonelyRunner{
 				}
 			}
 		}
-
-		System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n WELCOME YOU LONELY RUNNER\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
+		
+		welcomeScreen();
+		
 		int v = 0;
 		lonelyRunner run = new lonelyRunner(e.getDelegate());
 		Scanner scan= new Scanner(System.in);
 		while (true) {
+			if(v == levels.length-1)
+				System.out.println("XXXXXXXXXXXXXXXXX LAST LEVEL ! XXXXXXXXXXXXXXXXXX\n");
+			else
+				System.out.println("XXXXXXXXXXXXXXXXX Level "+(v+1)+" XXXXXXXXXXXXXXXXXX\n");
 			run.afficher();
 
 			while(lonelyRunner.engine.getStatus() == Status.Playing) {
@@ -66,15 +71,15 @@ public class LonelyRunnerMain extends lonelyRunner{
 				run.afficher();
 			}
 			if(lonelyRunner.engine.getStatus()== Status.Win) {
-				System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU WIN ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
+				System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU WON ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
 				if(v+1 < levels.length) {
-					System.out.println(">>> Congrats buddy you live for another round");
+					System.out.println(">>> Congrats buddy you live for another round\n");
 				}
 
 			}
 			if(lonelyRunner.engine.getStatus() == Status.Loss) {
 				System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU DIE ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
-				System.out.println(">>> You die... alone...");
+				System.out.println(">>> You die... alone :(...\n");
 				if(lonelyRunner.engine.getNbLives()>0) {
 					int l = lonelyRunner.engine.getNbLives();
 					System.out.println(">>> "+l+" chance left");
@@ -92,7 +97,20 @@ public class LonelyRunnerMain extends lonelyRunner{
 			}
 		}
 		scan.close();
-		System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n THANK YOU FOR PLAYING\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");		
+		System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXX THANK YOU FOR PLAYING XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");		
 	}
-
+	
+	public static void welcomeScreen() {
+		System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXX WELCOME YOU LONELY RUNNER XXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXX WANNA KNOW HOW TO PLAY ? IT'S SIMPLE XXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXX Q to move left");
+		System.out.println("XXXXXXXXXXXXX S to move down");
+		System.out.println("XXXXXXXXXXXXX D to move right");
+		System.out.println("XXXXXXXXXXXXX Z to move up");
+		System.out.println("XXXXXXXXXXXXX 4 to dig left");
+		System.out.println("XXXXXXXXXXXXX 6 to dig right");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX HAVE FUN OR DIE TRYING :) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+	}
 }
