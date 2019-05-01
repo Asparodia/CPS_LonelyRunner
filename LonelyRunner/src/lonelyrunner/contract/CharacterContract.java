@@ -45,6 +45,7 @@ public class CharacterContract extends CharacterDecorator {
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);
 		Cell cell_left = getDelegate().getEnvi().getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt());
 		
+		
 		checkInvariant();
 		getDelegate().goLeft();
 		checkInvariant();
