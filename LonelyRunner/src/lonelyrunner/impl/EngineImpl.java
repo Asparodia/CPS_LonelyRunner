@@ -1,7 +1,7 @@
 package lonelyrunner.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Vector;
 
 import lonelyrunner.contract.EnvironmentContract;
 import lonelyrunner.contract.GuardContract;
@@ -19,7 +19,9 @@ import lonelyrunner.service.utils.Status;
 
 public class EngineImpl implements EngineService {
 	
-	HashMap<Integer,Couple<Integer,Integer>> guardInit = new HashMap<Integer,Couple<Integer,Integer>>();
+	
+	ArrayList<Vector<Integer>> guardInit = new ArrayList<Vector<Integer>>();
+	
 	
 	EnvironmentContract environment;
 	PlayerContract player;
@@ -47,15 +49,18 @@ public class EngineImpl implements EngineService {
 		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).addCar(player.getDelegate());
 		
 		for(Couple<Integer,Integer> c : posGuards) {
-			
 			GuardImpl g = new GuardImpl();
-			
 			GuardContract gc = new GuardContract(g);
 			gc.init(environment,c.getElem1(),c.getElem2(),player);
 			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
 			this.guards.add(gc);
 			
-			guardInit.put(gc.getId(), c);
+			Vector <Integer> vec = new Vector<>();
+			vec.add(gc.getId());
+			vec.add(c.getElem1());
+			vec.add(c.getElem2());
+			guardInit.add(vec);
+			
 		}
 		int id = 0;
 		for(Couple<Integer,Integer> c : posItems) {
@@ -191,23 +196,36 @@ public class EngineImpl implements EngineService {
 					int nbEntity = environment.getCellContent(g.getX(), g.getY()).getCar().size();
 					if(nbEntity == 1 ) {
 							GuardService id = ((GuardService)environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
-							Couple<Integer,Integer> initPos = guardInit.get(id.getId());
 							
+							int oldId = id.getId();
+							int initX = 0;
+							int initY = 0;
+							
+							for(Vector<Integer> v : guardInit) {
+								if(oldId == v.get(0)) {
+									initX = v.get(1);
+									initY = v.get(2);
+								}
+							}
 							environment.getCellContent(g.getX(), g.getY()).removeCharacter(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
 							environment.fill(g.getX(), g.getY());
 							
 							GuardImpl newg = new GuardImpl();
 							GuardContract gc = new GuardContract(newg);
 							
-							guardInit.put(gc.getId(), new Couple<Integer,Integer>(initPos.getElem1(),initPos.getElem2()));
 							
-							gc.init(environment,guardInit.get(id.getId()).getElem1(),guardInit.get(id.getId()).getElem2(),player);
-							
+							gc.init(environment,initX,initY ,player);
 							guards.add(gc);	
 							
-//							guardInit.remove(id.getId());
+							for(Vector<Integer> v : guardInit) {
+								if(oldId == v.get(0)) {
+									v.set(0,gc.getId());
+									v.set(1,initX);
+									v.set(2,initY);
+								}
+							}
 							for(GuardService gg : guards) {
-								if(gg.getId()==id.getId()) {
+								if(gg.getId()==oldId) {
 									guards.remove(gg);
 									break;
 								}
