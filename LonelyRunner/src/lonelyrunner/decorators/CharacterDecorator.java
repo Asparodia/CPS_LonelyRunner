@@ -4,59 +4,58 @@ import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.ScreenService;
 
-public class CharacterDecorator implements CharacterService {
-	private final CharacterService delegate;
+public class CharacterDecorator extends Decorator implements CharacterService {
 	
 	public CharacterDecorator(CharacterService c) {
-		this.delegate = c;
+		super(c);
 	}
 	
 	public CharacterService getDelegate() {
-		return this.delegate;
+		return (CharacterService)super.getDelegate();
 	}
 
 	@Override
 	public EnvironmentService getEnvi() {
-		return delegate.getEnvi();
+		return getDelegate().getEnvi();
 	}
 
 	@Override
 	public int getHgt() {
-		return delegate.getHgt();
+		return getDelegate().getHgt();
 	}
 
 	@Override
 	public int getWdt() {
-		return delegate.getWdt();
+		return getDelegate().getWdt();
 	}
 
 	@Override
 	public void init(ScreenService s, int x, int y) {
-		delegate.init(s, x, y);
+		getDelegate().init(s, x, y);
 		
 	}
 
 	@Override
 	public void goLeft() {
-		delegate.goLeft();
+		getDelegate().goLeft();
 		
 	}
 
 	@Override
 	public void goRight() {
-		delegate.goRight();
+		getDelegate().goRight();
 		
 	}
 
 	@Override
 	public void goUp() {
-		delegate.goUp();
+		getDelegate().goUp();
 		
 	}
 
 	@Override
 	public void goDown() {
-		delegate.goDown();
+		getDelegate().goDown();
 		
 	}
 }

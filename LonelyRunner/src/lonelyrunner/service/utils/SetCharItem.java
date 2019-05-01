@@ -2,6 +2,7 @@ package lonelyrunner.service.utils;
 
 import java.util.ArrayList;
 
+import lonelyrunner.decorators.Decorator;
 import lonelyrunner.service.CharacterService;
 
 public class SetCharItem {
@@ -14,6 +15,13 @@ public class SetCharItem {
 		return item;
 	}
 
+	private Object getDelegate(Object c) {
+		if (c instanceof Decorator) {
+			return  ((Decorator)c).getDelegate();
+		}
+		return c;
+	}
+	
 	public void setItem(Item item) {
 		this.item = item;
 	}
@@ -24,15 +32,15 @@ public class SetCharItem {
 	}
 	
 	public boolean isInside(CharacterService c) {
-		return car.contains(c);
+		return car.contains(getDelegate(c));
 	}
 
 	public void addCar(CharacterService car) {
-		this.car.add(car);
+		this.car.add((CharacterService)getDelegate(car));
 	}
 	
 	public void removeCharacter(CharacterService s) {
-		car.remove(s);
+		car.remove(getDelegate(s));
 	}
 	
 	public void removeItem() {

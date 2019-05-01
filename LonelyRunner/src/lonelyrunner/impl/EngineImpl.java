@@ -3,6 +3,8 @@ package lonelyrunner.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sun.corba.se.spi.orbutil.fsm.Guard;
+
 import lonelyrunner.contract.EnvironmentContract;
 import lonelyrunner.contract.GuardContract;
 import lonelyrunner.contract.PlayerContract;
@@ -115,7 +117,6 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public void step() {
-		
 		int x = player.getWdt();
 		int y = player.getHgt();
 		
@@ -125,7 +126,10 @@ public class EngineImpl implements EngineService {
 		
 		environment.getCellContent(player.getWdt(), player.getHgt()).addCar(player.getDelegate());
 		
+
 		for (GuardService g : guards) {
+//			System.out.println(g.getClass());
+			System.out.println(environment.getCellContent(g.getWdt(), g.getHgt()).getCar().size());
 			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
 				environment.getCellContent(g.getWdt(), g.getHgt()).removeCharacter(g);
 				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
@@ -187,38 +191,37 @@ public class EngineImpl implements EngineService {
 			if(g.getTime() == 10) {
 				holeToRem.add(g);
 				if(g.getX() == player.getWdt() && g.getY() == player.getHgt()) {
-					System.out.println("wtffff");
+					System.err.println("wtffff");
 					lives--;
 					status = Status.Loss;
 					return;
 				}
 				
 				// getCar la est chelou
-//				if(!environment.getCellContent(g.getX(), g.getY()).getCar().isEmpty()) {
-//					System.out.println("wtffff 2222");
-//					int nbEntity = environment.getCellContent(g.getX(), g.getY()).getCar().size();
-//					if(nbEntity == 1 ) {
-//						if(environment.getCellContent(g.getX(), g.getY()).getCar().getClass().isInstance(GuardService.class)) {
-//							GuardService id = ((GuardService)environment.getCellContent(g.getX(), g.getY()).getCar());
-//							Couple<Integer,Integer> initPos = guardInit.get(id.getId());
-//							environment.getCellContent(g.getX(), g.getY()).removeCharacter(id);
-//							environment.getCellContent(initPos.getElem1(), initPos.getElem2()).addCar(id);
-//						}
-//							
-//					}
-//					if(nbEntity == 2) {
-//						System.out.println(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
-//						System.out.println(environment.getCellContent(g.getX(), g.getY()).getCar().get(1));
-//						if(environment.getCellContent(g.getX(), g.getY()).getCar().get(0).getClass() != environment.getCellContent(g.getX(), g.getY()).getCar().get(1).getClass()) {
-//							lives--;
-//							status = Status.Loss;
-//							return;
-//						}
-//					}
-//					else {
-//						System.out.println("ici t'es dans l'implem de engine ya un pb 3 perso dans le meme hol");
-//					}
-//				}
+				if(!environment.getCellContent(g.getX(), g.getY()).getCar().isEmpty()) {
+					System.out.println("wtffff 2222");
+					int nbEntity = environment.getCellContent(g.getX(), g.getY()).getCar().size();
+					if(nbEntity == 1 ) {
+						if(environment.getCellContent(g.getX(), g.getY()).getCar().get(0).getClass().isInstance(GuardService.class)) {
+							GuardService id = ((GuardService)environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
+							Couple<Integer,Integer> initPos = guardInit.get(id.getId());
+							environment.getCellContent(g.getX(), g.getY()).removeCharacter(id);
+							environment.getCellContent(initPos.getElem1(), initPos.getElem2()).addCar(id);
+						}
+					}
+					if(nbEntity == 2) {
+						System.out.println(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
+						System.out.println(environment.getCellContent(g.getX(), g.getY()).getCar().get(1));
+						if(environment.getCellContent(g.getX(), g.getY()).getCar().get(0).getClass() != environment.getCellContent(g.getX(), g.getY()).getCar().get(1).getClass()) {
+							lives--;
+							status = Status.Loss;
+							return;
+						}
+					}
+					else {
+						System.err.println("ici t'es dans l'implem de engine ya un pb 3 perso dans le meme hol");
+					}
+				}
 				environment.fill(g.getX(), g.getY());
 				
 			}
