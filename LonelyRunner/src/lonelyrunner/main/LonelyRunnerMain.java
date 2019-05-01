@@ -87,6 +87,9 @@ public class LonelyRunnerMain extends lonelyRunner{
 					lonelyRunner.engine.setNbLives(l);
 					continue;
 				}
+				else {
+					break;
+				}
 			}
 			if(v == levels.length-1) {
 				break;

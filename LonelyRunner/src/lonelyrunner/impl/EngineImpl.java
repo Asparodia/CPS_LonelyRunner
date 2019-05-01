@@ -47,12 +47,15 @@ public class EngineImpl implements EngineService {
 		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).addCar(player.getDelegate());
 		
 		for(Couple<Integer,Integer> c : posGuards) {
+			
 			GuardImpl g = new GuardImpl();
-			guardInit.put(g.getId(), c);
+			
 			GuardContract gc = new GuardContract(g);
 			gc.init(environment,c.getElem1(),c.getElem2(),player);
 			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
 			this.guards.add(gc);
+			
+			guardInit.put(gc.getId(), c);
 		}
 		int id = 0;
 		for(Couple<Integer,Integer> c : posItems) {
@@ -120,7 +123,6 @@ public class EngineImpl implements EngineService {
 		
 		
 		player.step();
-		
 
 		for (GuardService g : guards) {
 			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
@@ -190,21 +192,26 @@ public class EngineImpl implements EngineService {
 					if(nbEntity == 1 ) {
 							GuardService id = ((GuardService)environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
 							Couple<Integer,Integer> initPos = guardInit.get(id.getId());
-							guardInit.remove(id.getId());
+							
 							environment.getCellContent(g.getX(), g.getY()).removeCharacter(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
 							environment.fill(g.getX(), g.getY());
 							
-							for(GuardService gc : guards) {
-								if(gc.getId()==id.getId()) {
-									guards.remove(gc);
+							GuardImpl newg = new GuardImpl();
+							GuardContract gc = new GuardContract(newg);
+							
+							guardInit.put(gc.getId(), new Couple<Integer,Integer>(initPos.getElem1(),initPos.getElem2()));
+							
+							gc.init(environment,guardInit.get(id.getId()).getElem1(),guardInit.get(id.getId()).getElem2(),player);
+							
+							guards.add(gc);	
+							
+//							guardInit.remove(id.getId());
+							for(GuardService gg : guards) {
+								if(gg.getId()==id.getId()) {
+									guards.remove(gg);
 									break;
 								}
 							}
-							GuardImpl newg = new GuardImpl();
-							GuardContract gc = new GuardContract(newg);
-							gc.init(environment,initPos.getElem1(),initPos.getElem2(),player);
-							guards.add(gc);		
-							guardInit.put(gc.getId(), new Couple<Integer,Integer>(gc.getWdt(),gc.getHgt()));
 							continue;
 						}
 					if(nbEntity == 2) {

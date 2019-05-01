@@ -10,6 +10,7 @@ public class GuardImpl extends CharacterImpl implements GuardService{
 	
 	private static int cpt = 0;
 	private int id;
+	
 	private Move behaviour = Move.NEUTRAL;
 	private PlayerService target;
 	private int timeInHole;
