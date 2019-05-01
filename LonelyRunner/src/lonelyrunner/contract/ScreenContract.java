@@ -146,7 +146,6 @@ public class ScreenContract extends ScreenDecorator {
 				for(Couple<Integer,Integer> cp : getCellNature_atpre.keySet()) {
 					if(cp.getElem1() == i && cp.getElem2() == j) {
 						nc = getCellNature_atpre.get(cp);
-						System.out.println(nc);
 					}
 				}
 				if(nc != null) {

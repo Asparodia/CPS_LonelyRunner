@@ -58,7 +58,7 @@ public class CharacterImpl implements CharacterService{
 			Cell left = env.getCellNature(width-1, height);
 			if( left != Cell.PLT &&  left != Cell.MTL ) {
 		
-			if( (pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD) ){
+			if( (pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD || !(env.getCellContent(width, height-1).getCar().isEmpty()) ) ){
 					env.getCellContent(width, height).removeCharacter(this);
 					width-=1;
 					env.getCellContent(width, height).addCar(this);
@@ -88,7 +88,7 @@ public class CharacterImpl implements CharacterService{
 		if( width != env.getWidth() - 1 ) {
 			Cell right = env.getCellNature(width+1, height);
 			if( right != Cell.PLT &&  right != Cell.MTL ) {
-			if( (pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD )){
+			if( (pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD || !(env.getCellContent(width, height-1).getCar().isEmpty()) )){
 					env.getCellContent(width, height).removeCharacter(this);
 					width+=1;
 					env.getCellContent(width, height).addCar(this);

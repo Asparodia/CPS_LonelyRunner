@@ -3,8 +3,6 @@ package lonelyrunner.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.corba.se.spi.orbutil.fsm.Guard;
-
 import lonelyrunner.contract.EnvironmentContract;
 import lonelyrunner.contract.GuardContract;
 import lonelyrunner.contract.PlayerContract;
@@ -117,25 +115,18 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public void step() {
-		int x = player.getWdt();
-		int y = player.getHgt();
+		player.getWdt();
+		player.getHgt();
 		
-		environment.getCellContent(x, y).removeCharacter(player.getDelegate());
 		
 		player.step();
 		
-		environment.getCellContent(player.getWdt(), player.getHgt()).addCar(player.getDelegate());
-		
 
 		for (GuardService g : guards) {
-//			System.out.println(g.getClass());
-			System.out.println(environment.getCellContent(g.getWdt(), g.getHgt()).getCar().size());
 			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
-				environment.getCellContent(g.getWdt(), g.getHgt()).removeCharacter(g);
 				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
 				environment.getCellContent(g.getWdt(), g.getHgt()).removeItem();
 				g.step();
-				environment.getCellContent(g.getWdt(), g.getHgt()).addCar(g);
 				environment.getCellContent(g.getWdt(), g.getHgt()).setItem(i);
 				for(Item it : treasures) {
 					if(it.getId() == i.getId() ) {
@@ -157,9 +148,7 @@ public class EngineImpl implements EngineService {
 				
 			}
 			else {
-				environment.getCellContent(g.getWdt(), g.getHgt()).removeCharacter(g);
-				g.step();
-				environment.getCellContent(g.getWdt(), g.getHgt()).addCar(g);
+				g.step();	
 			}
 			
 		}
@@ -191,32 +180,38 @@ public class EngineImpl implements EngineService {
 			if(g.getTime() == 10) {
 				holeToRem.add(g);
 				if(g.getX() == player.getWdt() && g.getY() == player.getHgt()) {
-					System.err.println("wtffff");
 					lives--;
 					status = Status.Loss;
 					return;
 				}
-				
 				// getCar la est chelou
 				if(!environment.getCellContent(g.getX(), g.getY()).getCar().isEmpty()) {
-					System.out.println("wtffff 2222");
 					int nbEntity = environment.getCellContent(g.getX(), g.getY()).getCar().size();
 					if(nbEntity == 1 ) {
-						if(environment.getCellContent(g.getX(), g.getY()).getCar().get(0).getClass().isInstance(GuardService.class)) {
 							GuardService id = ((GuardService)environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
 							Couple<Integer,Integer> initPos = guardInit.get(id.getId());
-							environment.getCellContent(g.getX(), g.getY()).removeCharacter(id);
-							environment.getCellContent(initPos.getElem1(), initPos.getElem2()).addCar(id);
+							guardInit.remove(id.getId());
+							environment.getCellContent(g.getX(), g.getY()).removeCharacter(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
+							environment.fill(g.getX(), g.getY());
+							
+							for(GuardService gc : guards) {
+								if(gc.getId()==id.getId()) {
+									guards.remove(gc);
+									break;
+								}
+							}
+							GuardImpl newg = new GuardImpl();
+							GuardContract gc = new GuardContract(newg);
+							gc.init(environment,initPos.getElem1(),initPos.getElem2(),player);
+							guards.add(gc);		
+							guardInit.put(gc.getId(), new Couple<Integer,Integer>(gc.getWdt(),gc.getHgt()));
+							continue;
 						}
-					}
 					if(nbEntity == 2) {
-						System.out.println(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
-						System.out.println(environment.getCellContent(g.getX(), g.getY()).getCar().get(1));
-						if(environment.getCellContent(g.getX(), g.getY()).getCar().get(0).getClass() != environment.getCellContent(g.getX(), g.getY()).getCar().get(1).getClass()) {
-							lives--;
-							status = Status.Loss;
-							return;
-						}
+						//ptete faire plus de test ici
+						lives--;
+						status = Status.Loss;
+						return;
 					}
 					else {
 						System.err.println("ici t'es dans l'implem de engine ya un pb 3 perso dans le meme hol");
@@ -238,8 +233,6 @@ public class EngineImpl implements EngineService {
 			status = Status.Win;
 			return;
 		}
-		
-		// Manque cas holes	
 	}
 
 	@Override

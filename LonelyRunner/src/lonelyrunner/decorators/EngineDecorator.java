@@ -1,8 +1,6 @@
 package lonelyrunner.decorators;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
 import lonelyrunner.service.EnvironmentService;

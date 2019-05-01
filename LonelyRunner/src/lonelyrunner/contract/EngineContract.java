@@ -1,8 +1,6 @@
 package lonelyrunner.contract;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import lonelyrunner.decorators.EngineDecorator;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
