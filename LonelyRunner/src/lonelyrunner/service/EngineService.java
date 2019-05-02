@@ -57,7 +57,7 @@ public interface EngineService {
 			//\implies getHoles() == getHoles()@pre \minus H \and g.getHdt() == g.initPos.x \and  g.getWdt() == g.initPos.y
 		//H.time == 15 \implies getHoles() == getHoles()@pre \minus H
 	//\post: getTreasures() == empty \implies getStatus() == Win
-	//\post: getNbLives() == 0 \implies getStatus() == Loss
+	//\post: getNbLives() <= 0 \implies getStatus() == Loss
 	public void step();
 	
 	public void setCommand(Move c);

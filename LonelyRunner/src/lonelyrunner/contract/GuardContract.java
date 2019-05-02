@@ -1,6 +1,5 @@
 package lonelyrunner.contract;
 
-import lonelyrunner.contract.contracterr.InvariantError;
 import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.contract.contracterr.PreconditionError;
 import lonelyrunner.decorators.GuardDecorator;

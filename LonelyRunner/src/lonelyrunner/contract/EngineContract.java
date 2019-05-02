@@ -100,12 +100,24 @@ public class EngineContract extends EngineDecorator{
 	}
 
 	//\post:  \forall T:Item \in getTreasures()
-		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getHgt(getPlayer()),getWdt(getPlayer()))
-			//\implies T not in getTreasures()
+		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
+			//\implies T not in getTreasures() \and getScore() == getScore()@pre + 1
 	//\post: \forall G:Guard \in getGuards() 
-			// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getHgt(getPlayer()),getWdt(getPlayer()))
-				//\implies  getStatus() == Loss
+		// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
+			//\implies  getNbLives() == getNbLives()@pre - 1
+	//\post: \forall G:Guard \in getGuards()@pre
+		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) == HOL
+			//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
+		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) != HOL
+				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
+	//\forall H:Hole \in getHoles()
+		//H.time == 15 \and PlayerService p in EnvironmentService::getCellContent(H.x,H.y)
+			//\implies getNbLives() == getNbLives()@pre - 1
+		//H.time == 15 \and GuardService g in EnvironmentService::getCellContent(H.x,H.y)
+			//\implies getHoles() == getHoles()@pre \minus H \and g.getHdt() == g.initPos.x \and  g.getWdt() == g.initPos.y
+		//H.time == 15 \implies getHoles() == getHoles()@pre \minus H
 	//\post: getTreasures() == empty \implies getStatus() == Win
+	//\post: getNbLives() <= 0 \implies getStatus() == Loss
 	@Override
 	public void step() {
 		getDelegate().step();
