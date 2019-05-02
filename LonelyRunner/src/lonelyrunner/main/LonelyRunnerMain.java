@@ -107,12 +107,13 @@ public class LonelyRunnerMain extends lonelyRunner{
 		System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXX WELCOME YOU LONELY RUNNER XXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXX WANNA KNOW HOW TO PLAY ? IT'S SIMPLE XXXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println("XXXXXXXXXXXXX Q to move left");
-		System.out.println("XXXXXXXXXXXXX S to move down");
-		System.out.println("XXXXXXXXXXXXX D to move right");
-		System.out.println("XXXXXXXXXXXXX Z to move up");
+		System.out.println("XXXXXXXXXXXXX q to move left");
+		System.out.println("XXXXXXXXXXXXX s to move down");
+		System.out.println("XXXXXXXXXXXXX d to move right");
+		System.out.println("XXXXXXXXXXXXX z to move up");
 		System.out.println("XXXXXXXXXXXXX 4 to dig left");
 		System.out.println("XXXXXXXXXXXXX 6 to dig right");
+		System.out.println("XXXXXXXXXXXXX all other input will just make the game advence be carefull :)");
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX HAVE FUN OR DIE TRYING :) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 	}

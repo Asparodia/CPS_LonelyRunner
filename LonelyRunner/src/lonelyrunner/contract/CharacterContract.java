@@ -105,7 +105,7 @@ public class CharacterContract extends CharacterDecorator {
 		if(!(getHgt_atpre == getDelegate().getHgt())) {
 			throw new PostconditionError("goRight()" , "getHgt() should be equals to getHgt()@pre");
 		}
-		if(getWdt_atpre ==getEnvi_atpre.getWidth()-1) {
+		if(getWdt_atpre == getEnvi_atpre.getWidth()-1) {
 			if(!(getWdt_atpre == getDelegate().getWdt()))
 				throw new PostconditionError("goRight()" , "getWdt()@pre == EnvironmentService::getWidth()-1 implies getWdt() == getWdt()@pre");
 		}
@@ -166,7 +166,7 @@ public class CharacterContract extends CharacterDecorator {
 		}
 		if( (cell_up == Cell.MTL || cell_up ==Cell.PLT || cell_up ==Cell.HDR) ) {
 			if(!(getHgt_atpre == getDelegate().getHgt()))
-				throw new PostconditionError("goUp()" , "EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL, PLT} \\implies getHgt() = getHgt()@pre");
+				throw new PostconditionError("goUp()" , "EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL, PLT, HDR} \\implies getHgt() = getHgt()@pre");
 		}
 //		if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre+1).getCar() != null) {
 //			if(!(getHgt_atpre == getDelegate().getHgt()))
@@ -186,16 +186,6 @@ public class CharacterContract extends CharacterDecorator {
 			}
 		}
 		if(getHgt_atpre != getEnvi_atpre.getHeight()-1) {
-			if(cell_atpre == Cell.EMP) {
-				if(cell_up == Cell.LAD ) {
-							if(!(getHgt_atpre+1 == getDelegate().getHgt())) {
-							throw new PostconditionError("goUp()" , "(getHgt()@pre != EnvironmentService::getHeight() -  1)\n" + 
-									"		//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == EMP\n" + 
-									"		//\\and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD} \n" + 
-									"			//\\implies getHgt() = getHgt()@pre + 1");
-					}
-				}
-				}
 			if(cell_atpre == Cell.LAD && (cell_up == Cell.LAD || cell_up == Cell.EMP)) {
 				if(!(getHgt_atpre+1 == getDelegate().getHgt())) {
 					throw new PostconditionError("goUp()" , "(getHgt()@pre != EnvironmentService::getHeight() -  1)\n" + 
@@ -229,7 +219,7 @@ public class CharacterContract extends CharacterDecorator {
 			if(!(getHgt_atpre == getDelegate().getHgt()))
 				throw new PostconditionError("goDown()" , "getHgt()@pre == 0 \\implies getHgt()==getHgt()@pre ");
 		}
-		if( (cell_down == Cell.MTL || cell_down ==Cell.PLT || cell_down ==Cell.HDR)) {
+		if( (cell_down == Cell.MTL || cell_down ==Cell.PLT)) {
 			if(!(getHgt_atpre == getDelegate().getHgt()))
 				throw new PostconditionError("goDown()" , "(EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \\in {MTL, PLT} \\implies getHgt()==getHgt()@pre");
 		}

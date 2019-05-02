@@ -157,8 +157,7 @@ public class lonelyRunner{
 					break;
 				case "A" :
 					e.setNature(i, j, Cell.MTL);
-					break;
-					
+					break;					
 				}
 			}
 		}
@@ -192,6 +191,9 @@ public class lonelyRunner{
 				break;
 			case "6":
 				engine.setCommand(Move.DigR);
+				break;
+			default:
+				engine.setCommand(Move.NEUTRAL);
 				break;
 		}
 		

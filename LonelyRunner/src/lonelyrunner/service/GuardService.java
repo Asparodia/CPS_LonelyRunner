@@ -59,7 +59,7 @@ public interface GuardService extends CharacterService {
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR,HOL} 
 		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) \not in {PLT,MTL,LAD}
 		//\and not exist GuardService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
-			//\implies getWdt() == getWdt()@pre
+			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
 	//\post: \exist GuardService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \implies getWdt() == getWdt()@pre
 	//\post: getWdt()@pre != EnvironmentService::getWidth()-1 \and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \not in {MTL,PLT}
 		//\and ( EnvironmentService::getCellNature(getEnvi()@pre,getWdt(),getHgt()@pre) \in {LAD,HDR}
@@ -75,7 +75,7 @@ public interface GuardService extends CharacterService {
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) not in {LAD,HDR,HOL}
 		//\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1) not in {MTL, PLT, LAD} 
 		//\and not exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1)
-			//\implies getHgt() = getHgt(C)@pre-1
+			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
 	//\post: exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) \implies getHgt() = getHgt()@pre
 	//\post: (getHgt()@pre != EnvironmentService::getHeight() -  1)
 		//\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == LAD
@@ -91,7 +91,7 @@ public interface GuardService extends CharacterService {
 	//\post: (Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \not \in {LAD,HDR,HOL}
 		//\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \not \in {PLT,MTL,LAD}
 		//\and not exists GuardService c \in EnvironmentService::getCellContent(getEnvi()@, getWdt()@pre, getHgt()@pre-1))
-			//\implies getHgt()==getHgt()@pre-1)
+			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1)
 	//\post: exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHdt()@pre - 1) \implies getHgt() = getHgt()@pre 
 	//\post: getHgt()@pre != 0 \and Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \in {LAD,HDR,EMP}
 		//\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {EMP,LAD,HDR}
@@ -101,7 +101,7 @@ public interface GuardService extends CharacterService {
 	
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
 		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD,HOL}
-		//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
+		//\and not exists Guard c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
 			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
 	public void doNeutral();
 	
@@ -135,6 +135,25 @@ public interface GuardService extends CharacterService {
 	
 	// Invariants
 	
+	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD
+		//\and getHgt(getTarget()) > getHgt() 
+		//\implies getBehaviour() == UP
+	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD
+		//\and getHgt(getTarget()) < getHgt()
+		//\implies getBehaviour() == DOWN	
+	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD
+		//\and getHgt(getTarget()) == getHgt()
+		//\implies getBehaviour() == NEUTRAL
+	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) in {HOL,HDR} \or( EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()-1) in {MTL,PLT} \or  exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHdt()@pre - 1) )
+		//\and getWdt() > getWdt(getTarget())
+		//\implies getBehaviour() == LEFT
+	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) in {HOL,HDR} \or( EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()-1) in {MTL,PLT} \or  exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHdt()@pre - 1) )
+		//\and getWdt() < getWdt(getTarget())
+		//\implies getBehaviour() == RIGHT
+	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) in {HOL,HDR} \or( EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()-1) in {MTL,PLT} \or  exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHdt()@pre - 1) )
+		//\and getWdt() == getWdt(getTarget())
+		//\implies getBehaviour() == NEUTRAL
+	
 	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD \and ( EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()-1) in {MTL,PLT} \or  exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHdt()@pre - 1) )
 		//\and |getWdt()-getWdt(getTarget())| > |getHgt(getTarget())-getHgt()|
 		//\and getHgt(getTarget()) > getHgt() 
@@ -147,21 +166,11 @@ public interface GuardService extends CharacterService {
 		//\and |getWdt()-getWdt(getTarget())| < |getHgt(getTarget())-getHgt()|
 		//\and getHgt(getTarget()) < getHgt() 
 		//\implies getBehaviour() == LEFT
-	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) in {HOL,HDR} \or( EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()-1) in {MTL,PLT} \or  exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHdt()@pre - 1) )
-		//\and getWdt() > getWdt(getTarget())
-		//\implies getBehaviour() == LEFT
-	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) in {HOL,HDR} \or( EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()-1) in {MTL,PLT} \or  exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHdt()@pre - 1) )
-		//\and getWdt() < getWdt(getTarget())
-		//\implies getBehaviour() == RIGHT
-	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD
-		//\and getHgt(getTarget()) > getHgt() 
-		//\implies getBehaviour() == UP
-	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD
-		//\and getHgt(getTarget()) < getHgt()
-		//\implies getBehaviour() == DOWN	
-	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD
-		//\and getHgt(getTarget()) == getHgt()
-		//\implies getBehaviour() == NEUTRAL
 	
+	
+	
+	
+	
+
 	
 }
