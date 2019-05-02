@@ -79,26 +79,33 @@ public class EngineContract extends EngineDecorator{
 			throw new PreconditionError("init()" , "getCellNature(ES,posChar.x,posChar.y) == EMP");
 		}
 		
-//		for (Couple<Integer,Integer> c : posGuards) {
-//			if(!(es.getCellNature(c.getElem1(), c.getElem2()) == Cell.EMP && c.getElem1() != posChar.getElem1() && c.getElem2() != posChar.getElem2())){
-//				throw new PreconditionError("init()" , "\\forall pos:Couple<Int,Int> in posGuards ((ScreenService::getCellNature(ES,pos.x,pos.y) = EMP) \\and (pos.x != posChar.x \\and pos.y != posChar.y))");
-//			}
-//		}
-//		for (Couple<Integer,Integer> c : posItems) {
-//			for (Couple<Integer,Integer> cc : posGuards) {
-//				if(!(c.getElem1() != cc.getElem1() && c.getElem2() != cc.getElem2())){
-//					throw new PreconditionError("init()" , "\\forall pos:Couple<Int,Int> in posGuards posI.x!= pos.x \\and  posI.y!=pos.y ");
-//				}
-//			}
-//			if(!(es.getCellNature(c.getElem1(), c.getElem2()-1) == Cell.EMP && es.getCellNature(c.getElem1(), c.getElem2()) == Cell.EMP && c.getElem1() != posChar.getElem1() && c.getElem2() != posChar.getElem2())){
-//				throw new PreconditionError("init()" , "\\\forall posI:Couple<Int,Int> in posItems ((ScreenService::getCellNature(ES,posI.x,posI.y) = EMP) \\and ((posI.x != posChar.x \\and posI.y != posChar.y \\and ( \\forall pos:Couple<Int,Int> in posGuards posI.x!= pos.x \\and  posI.y!=pos.y ))) )\n" + 
-//						"					//\\and getCellNature(ES,posI.x,posI.y-1) == {PLT,MTL}}");
-//			}
-//		}
+		for (Couple<Integer,Integer> c : posGuards) {
+			if(!((es.getCellNature(c.getElem1(), c.getElem2()) == Cell.EMP) && c.getElem1() != posChar.getElem1() || c.getElem2() != posChar.getElem2())){
+				throw new PreconditionError("init()" , "\\forall pos:Couple<Int,Int> in posGuards ((ScreenService::getCellNature(ES,pos.x,pos.y) = EMP) \\and (pos.x != posChar.x \\or pos.y != posChar.y))");
+			}
+		}
+		for (Couple<Integer,Integer> c : posItems) {
+			for (Couple<Integer,Integer> cc : posGuards) {
+				if(!(c.getElem1() != cc.getElem1() || c.getElem2() != cc.getElem2())){
+					throw new PreconditionError("init()" , "\\forall pos:Couple<Int,Int> in posGuards posI.x!= pos.x \\and  posI.y!=pos.y ");
+				}
+			}
+			if(!( (es.getCellNature(c.getElem1(), c.getElem2()-1) == Cell.MTL || es.getCellNature(c.getElem1(), c.getElem2()-1) == Cell.PLT )  && es.getCellNature(c.getElem1(), c.getElem2()) == Cell.EMP && c.getElem1() != posChar.getElem1() || c.getElem2() != posChar.getElem2())){
+				throw new PreconditionError("init()" , "\\\forall posI:Couple<Int,Int> in posItems ((ScreenService::getCellNature(ES,posI.x,posI.y) = EMP) \\and ((posI.x != posChar.x \\and posI.y != posChar.y \\and ( \\forall pos:Couple<Int,Int> in posGuards posI.x!= pos.x \\and  posI.y!=pos.y ))) )\n" + 
+						"					//\\and getCellNature(ES,posI.x,posI.y-1) == {PLT,MTL}}");
+			}
+		}
 		
 		getDelegate().init(es, posChar, posGuards, posItems);
 	}
 
+	//\post:  \forall T:Item \in getTreasures()
+		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getHgt(getPlayer()),getWdt(getPlayer()))
+			//\implies T not in getTreasures()
+	//\post: \forall G:Guard \in getGuards() 
+			// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getHgt(getPlayer()),getWdt(getPlayer()))
+				//\implies  getStatus() == Loss
+	//\post: getTreasures() == empty \implies getStatus() == Win
 	@Override
 	public void step() {
 		getDelegate().step();

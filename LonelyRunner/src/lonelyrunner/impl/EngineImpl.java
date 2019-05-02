@@ -29,7 +29,7 @@ public class EngineImpl implements EngineService {
 	ArrayList<Item> treasures = new ArrayList<>();
 	Status status;
 	Move command = Move.NEUTRAL ;
-	int lives = 3; // 3 vies ptete a modifier pour rendre ca plus modulable
+	int lives = 2; // 3 vies ptete a modifier pour rendre ca plus modulable
 	int score = 0;
 	ArrayList<Hole> holes = new ArrayList<>();
 
@@ -174,8 +174,10 @@ public class EngineImpl implements EngineService {
 		
 		for (GuardService g : guards) {
 			if(g.getWdt() == player.getWdt() && g.getHgt() == player.getHgt()) {
+				if(lives == 0 ) {
+					status = Status.Loss;
+				}
 				lives--;
-				status = Status.Loss;
 				return;
 			}
 		}
@@ -187,8 +189,11 @@ public class EngineImpl implements EngineService {
 			if(g.getTime() == 10) {
 				holeToRem.add(g);
 				if(g.getX() == player.getWdt() && g.getY() == player.getHgt()) {
+					if(lives == 0 ) {
+						status = Status.Loss;
+					}
 					lives--;
-					status = Status.Loss;
+					
 					return;
 				}
 				// getCar la est chelou
@@ -234,8 +239,10 @@ public class EngineImpl implements EngineService {
 						}
 					if(nbEntity == 2) {
 						//ptete faire plus de test ici
+						if(lives == 0 ) {
+							status = Status.Loss;
+						}
 						lives--;
-						status = Status.Loss;
 						return;
 					}
 					else {
@@ -258,6 +265,8 @@ public class EngineImpl implements EngineService {
 			status = Status.Win;
 			return;
 		}
+		System.out.println(status);
+		
 	}
 
 	@Override

@@ -64,32 +64,41 @@ public class LonelyRunnerMain extends lonelyRunner{
 			else
 				System.out.println("XXXXXXXXXXXXXXXXX Level "+(v+1)+" XXXXXXXXXXXXXXXXXX\n");
 			run.afficher();
-
-			while(lonelyRunner.engine.getStatus() == Status.Playing) {
+			int vie = lonelyRunner.engine.getNbLives();
+			boolean retry = false;
+			while(lonelyRunner.engine.getStatus() == Status.Playing && vie == lonelyRunner.engine.getNbLives()) {
 				run.readCommand(scan);
 				lonelyRunner.engine.step();
 				run.afficher();
+				if(vie != lonelyRunner.engine.getNbLives()) {
+					if(vie>0) {
+						retry = true;
+					}
+					else {
+						retry = false;
+					}
+					break;
+				}
 			}
 			if(lonelyRunner.engine.getStatus()== Status.Win) {
 				System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU WON ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
 				if(v+1 < levels.length) {
 					System.out.println(">>> Congrats buddy you live for another round\n");
 				}
-
-			}
-			if(lonelyRunner.engine.getStatus() == Status.Loss) {
-				System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU DIE ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
-				System.out.println(">>> You die... alone :(...\n");
-				if(lonelyRunner.engine.getNbLives()>0) {
+			}else {
+				if(retry) {
 					int l = lonelyRunner.engine.getNbLives();
-					System.out.println(">>> "+l+" chance left");
-					run.nextLevel(levels[v]); //tester pour voir si le retry il marche
+					System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU DIE ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
+					System.out.println(">>> "+(l+1)+" chance left");
+					run.nextLevel(levels[v]);
 					lonelyRunner.engine.setNbLives(l);
 					continue;
 				}
-				else {
-					break;
-				}
+			}
+			if(lonelyRunner.engine.getNbLives() <= 0 && lonelyRunner.engine.getStatus() == Status.Loss) {
+				System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX YOU DIE ! XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n");
+				System.out.println(">>> You die... alone :(...\n");
+				break;
 			}
 			if(v == levels.length-1) {
 				break;
