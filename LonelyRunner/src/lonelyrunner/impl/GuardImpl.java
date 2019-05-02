@@ -128,11 +128,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void step() {
-		System.out.println(width+" "+height+behaviour);
 		
 		Cell pos = env.getCellNature(width, height);
-		System.out.println(pos+" "+behaviour);
-		System.out.println(env.getCellNature(width, height-1));
+		
 
 		if (pos == Cell.HOL) {
 			if (timeInHole < 5) {
@@ -273,6 +271,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 							width--;
 							height++;
 							env.getCellContent(width, height).addCar(this);
+							timeInHole = 0;
 						}
 					}
 				}
@@ -288,6 +287,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		if (pos == Cell.HOL) {
 			if (width != 0) {
 				Cell upright = env.getCellNature(width + 1, height + 1);
+				System.out.println(upright);
 				Cell right = env.getCellNature(width + 1, height);
 				if (right == Cell.MTL || right == Cell.PLT) {
 					if (upright == Cell.EMP || upright == Cell.HOL || upright == Cell.LAD || upright == Cell.HDR) {
@@ -304,6 +304,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 							width++;
 							height++;
 							env.getCellContent(width, height).addCar(this);
+							timeInHole = 0;
 						}
 					}
 				}

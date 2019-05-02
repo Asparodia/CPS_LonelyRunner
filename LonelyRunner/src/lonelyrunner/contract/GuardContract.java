@@ -617,6 +617,14 @@ public class GuardContract extends GuardDecorator {
 		cloneN.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
 		cloneN.doNeutral();
 		getDelegate().getEnvi().getCellContent(cloneN.getWdt(), cloneN.getHgt()).removeCharacter(cloneN);
+		GuardImpl cloneCL = new GuardImpl();
+		cloneCL.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
+		cloneCL.climbLeft();
+		getDelegate().getEnvi().getCellContent(cloneN.getWdt(), cloneCL.getHgt()).removeCharacter(cloneCL);
+		GuardImpl cloneCR = new GuardImpl();
+		cloneCR.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
+		cloneCR.climbRight();
+		getDelegate().getEnvi().getCellContent(cloneCR.getWdt(), cloneCR.getHgt()).removeCharacter(cloneCR);
 		
 		checkInvariant();
 		getDelegate().step();
@@ -635,7 +643,7 @@ public class GuardContract extends GuardDecorator {
 		}
 		if(cell_atpre == Cell.HOL) {
 			if(getTimeInHole_atpre==5 && getBehaviour_atpre == Move.LEFT) {
-				if(!(cloneL.getWdt() == getDelegate().getWdt() && cloneL.getHgt() == getDelegate().getHgt())) {
+				if(!(cloneCL.getWdt() == getDelegate().getWdt() && cloneCL.getHgt() == getDelegate().getHgt())) {
 					throw new PostconditionError("step()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\n" + 
 							"			//\\and getTimeInHole()@pre==5 \n" + 
 							"			//\\and getBehaviour()@pre == LEFT \n" + 
@@ -645,7 +653,7 @@ public class GuardContract extends GuardDecorator {
 		}
 		if(cell_atpre == Cell.HOL) {
 			if(getTimeInHole_atpre==5 && getBehaviour_atpre == Move.RIGHT) {
-				if(!(cloneR.getWdt() == getDelegate().getWdt() && cloneR.getHgt() == getDelegate().getHgt())) {
+				if(!(cloneCR.getWdt() == getDelegate().getWdt() && cloneCR.getHgt() == getDelegate().getHgt())) {
 					throw new PostconditionError("step()" , "//EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\n" + 
 							"		//\\and getTimeInHole()@pre==5 \n" + 
 							"		//\\and getBehaviour()@pre == RIGHT \n" + 
