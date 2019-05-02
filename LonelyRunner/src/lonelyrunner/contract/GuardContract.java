@@ -600,18 +600,23 @@ public class GuardContract extends GuardDecorator {
 		GuardImpl cloneR = new GuardImpl();
 		cloneR.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
 		cloneR.goRight();
+		getDelegate().getEnvi().getCellContent(cloneR.getWdt(), cloneR.getHgt()).removeCharacter(cloneR);
 		GuardImpl cloneL = new GuardImpl();
 		cloneL.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
 		cloneL.goLeft();
+		getDelegate().getEnvi().getCellContent(cloneL.getWdt(), cloneL.getHgt()).removeCharacter(cloneL);
 		GuardImpl cloneU = new GuardImpl();
 		cloneU.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
 		cloneU.goUp();
+		getDelegate().getEnvi().getCellContent(cloneU.getWdt(), cloneU.getHgt()).removeCharacter(cloneU);
 		GuardImpl cloneD = new GuardImpl();
 		cloneD.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
 		cloneD.goDown();
+		getDelegate().getEnvi().getCellContent(cloneD.getWdt(), cloneD.getHgt()).removeCharacter(cloneD);
 		GuardImpl cloneN = new GuardImpl();
 		cloneN.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
 		cloneN.doNeutral();
+		getDelegate().getEnvi().getCellContent(cloneN.getWdt(), cloneN.getHgt()).removeCharacter(cloneN);
 		
 		checkInvariant();
 		getDelegate().step();
