@@ -50,7 +50,7 @@ public interface EngineService {
 			//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
 		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) != HOL
 				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
-	//\forall H:Hole \in getHoles()
+	//\post: \forall H:Hole \in getHoles()
 		//H.time == 15 \and PlayerService p in EnvironmentService::getCellContent(H.x,H.y)
 			//\implies getNbLives() == getNbLives()@pre - 1
 		//H.time == 15 \and GuardService g in EnvironmentService::getCellContent(H.x,H.y)
