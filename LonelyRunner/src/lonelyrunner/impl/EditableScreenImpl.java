@@ -23,7 +23,7 @@ public class EditableScreenImpl extends ScreenImpl  implements EditableScreenSer
 		playable = true;
 		for(int i=0;i<getWidth();i++) {
 			for(int j=0;j<getHeight();j++) {
-				if(!(cells[x][y] != Cell.HOL)) {
+				if(!(cells[i][j] != Cell.HOL)) {
 					playable = false;
 					break;
 				}

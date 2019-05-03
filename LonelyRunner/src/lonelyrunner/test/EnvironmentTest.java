@@ -37,6 +37,7 @@ public class EnvironmentTest {
 
 	public void initialisation() {
 		editscreen.init(10, 15);
+	
 		env.init(editscreen);
 	}
 	

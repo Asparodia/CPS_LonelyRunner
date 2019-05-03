@@ -20,6 +20,7 @@ public class SetCharItem {
 			return  ((Decorator)c).getDelegate();
 		}
 		return c;
+		
 	}
 	
 	public void setItem(Item item) {

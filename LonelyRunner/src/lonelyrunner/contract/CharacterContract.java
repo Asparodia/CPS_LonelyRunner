@@ -28,7 +28,7 @@ public class CharacterContract extends CharacterDecorator {
 	
 	@Override
 	public void init(ScreenService s, int x, int y) {
-		if(!(getDelegate().getEnvi().getCellNature(x, y)==Cell.EMP)) {
+		if(!(s.getCellNature(x, y)==Cell.EMP)) {
 			throw new PreconditionError("init( s, "+x+", "+y+" )" , "Cell is not empty");
 		}
 		getDelegate().init(s, x, y);

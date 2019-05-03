@@ -15,7 +15,8 @@ public class CharacterImpl implements CharacterService {
 	public void init(ScreenService s, int x, int y) {
 		width = x;
 		height = y;
-		env = (EnvironmentService) s; // hum
+		env = (EnvironmentService) s;
+		env.getCellContent(x, y).addCar(this);
 	}
 
 	@Override
