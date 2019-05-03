@@ -29,14 +29,13 @@ public class EngineImpl implements EngineService {
 	ArrayList<Item> treasures = new ArrayList<>();
 	Status status;
 	Move command = Move.NEUTRAL ;
-	int lives = 2; // 3 vies ptete a modifier pour rendre ca plus modulable
+	int lives = 2; 
 	int score = 0;
 	ArrayList<Hole> holes = new ArrayList<>();
 
 	@Override
 	public void init(EditableScreenService es, Couple<Integer, Integer> posChar,
 			ArrayList<Couple<Integer, Integer>> posGuards, ArrayList<Couple<Integer, Integer>> posItems) {
-		
 		
 		EnvironmentImpl envi = new EnvironmentImpl();
 		environment = new EnvironmentContract(envi);
@@ -54,7 +53,6 @@ public class EngineImpl implements EngineService {
 			gc.init(environment,c.getElem1(),c.getElem2(),player);
 			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
 			this.guards.add(gc);
-			
 			Vector <Integer> vec = new Vector<>();
 			vec.add(gc.getId());
 			vec.add(c.getElem1());

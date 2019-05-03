@@ -75,12 +75,31 @@ public class CharacterTest {
 		character.init(env, 3, 1);
 	}
 
+	@Test(expected = ContractError.class)
+	public void testInitialisationNegatif3() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		env.init(editscreen);
+		character.init(env, -1, 1);
+	}
+
+	@Test(expected = ContractError.class)
+	public void testInitialisationNegatif4() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		env.init(editscreen);
+		character.init(env, 1, 1000);
+	}
+
 	@Test
 	public void testInitialisationNegatif2() {
-		Cell mtl, hdr, emp, lad, hol, plt;
+		Cell mtl, hdr, lad, hol, plt;
 		mtl = Cell.MTL;
 		hdr = Cell.HDR;
-		emp = Cell.EMP;
 		lad = Cell.LAD;
 		hol = Cell.HOL;
 		plt = Cell.PLT;
@@ -88,36 +107,46 @@ public class CharacterTest {
 		editscreen.init(10, 15);
 		editscreen.setNature(1, 1, mtl);
 		editscreen.setNature(2, 1, hdr);
-		editscreen.setNature(3, 1, emp);
 		editscreen.setNature(4, 1, lad);
 		editscreen.setNature(5, 1, hol);
 		editscreen.setNature(6, 1, plt);
 		env.init(editscreen);
 		testInvariant();
+		boolean error = false;
 		try {
 			character.init(env, 1, 1);
 		} catch (ContractError e) {
+			error = true;
 		}
+		assertTrue(error);
+		error = false;
 		try {
 			character.init(env, 2, 1);
 		} catch (ContractError e) {
+			error = true;
 		}
-		try {
-			character.init(env, 3, 1);
-		} catch (ContractError e) {
-		}
+		assertTrue(error);
+		error = false;
 		try {
 			character.init(env, 4, 1);
 		} catch (ContractError e) {
+			error = true;
 		}
+		assertTrue(error);
+		error = false;
 		try {
 			character.init(env, 5, 1);
 		} catch (ContractError e) {
+			error = true;
 		}
+		assertTrue(error);
+		error = false;
 		try {
 			character.init(env, 6, 1);
 		} catch (ContractError e) {
+			error = true;
 		}
+		assertTrue(error);
 	}
 
 	@Test
@@ -448,7 +477,7 @@ public class CharacterTest {
 		editscreen.setNature(3, 2, Cell.LAD);
 		env.init(editscreen);
 		character.init(env, 2, 3);
-		
+
 		character.goRight();
 		int xbefore = character.getWdt();
 		int ybefore = character.getHgt();
@@ -456,7 +485,7 @@ public class CharacterTest {
 		character.goDown();
 		testInvariant();
 		assertTrue(xbefore == character.getWdt());
-		assertTrue(ybefore-1 == character.getHgt());
+		assertTrue(ybefore - 1 == character.getHgt());
 
 		editscreen.setNature(2, 2, Cell.PLT);
 		editscreen.setNature(3, 2, Cell.HOL);
@@ -469,8 +498,8 @@ public class CharacterTest {
 		character.goDown();
 		testInvariant();
 		assertTrue(xbefore == character.getWdt());
-		assertTrue(ybefore-1 == character.getHgt());
-		
+		assertTrue(ybefore - 1 == character.getHgt());
+
 		editscreen.setNature(2, 2, Cell.PLT);
 		editscreen.setNature(3, 2, Cell.HDR);
 		env.init(editscreen);
@@ -482,8 +511,8 @@ public class CharacterTest {
 		character.goDown();
 		testInvariant();
 		assertTrue(xbefore == character.getWdt());
-		assertTrue(ybefore-1 == character.getHgt());
-		
+		assertTrue(ybefore - 1 == character.getHgt());
+
 		editscreen.setNature(2, 2, Cell.PLT);
 		editscreen.setNature(3, 2, Cell.EMP);
 		env.init(editscreen);
@@ -495,7 +524,7 @@ public class CharacterTest {
 		character.goDown();
 		testInvariant();
 		assertTrue(xbefore == character.getWdt());
-		assertTrue(ybefore-1 == character.getHgt());
+		assertTrue(ybefore - 1 == character.getHgt());
 	}
 
 }
