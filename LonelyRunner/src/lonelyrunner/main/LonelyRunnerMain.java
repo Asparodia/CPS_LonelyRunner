@@ -14,9 +14,10 @@ public class LonelyRunnerMain extends lonelyRunner{
 	}
 
 	public static void main(String[] args) {
-		String[] levels = new String[2];
-		levels[0] = "src/lonelyrunner/main/level2.txt";
-		levels[1] = "src/lonelyrunner/main/level3.txt";
+		String[] levels = new String[3];
+		levels[0] = "src/lonelyrunner/main/level1.txt";
+		levels[1] = "src/lonelyrunner/main/level2.txt";
+		levels[2] = "src/lonelyrunner/main/level3.txt";
 
 		EditableScreenContract e = new EditableScreenContract(new EditableScreenImpl());
 		String[][] lignes = readFile(levels[0]);

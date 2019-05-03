@@ -13,7 +13,7 @@ public interface EnvironmentService extends /*refine*/ScreenService {
 	// Constructors
 	
 	//\post: \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()
-				// getCellNature(x,y) == EditableScreenService::getCellNature(x,y)
+			// getCellNature(x,y) == EditableScreenService::getCellNature(x,y)
 	public void init(EditableScreenService ess);
 	
 	//Invariants
@@ -21,6 +21,6 @@ public interface EnvironmentService extends /*refine*/ScreenService {
 	// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
 			// getCellNature(x,y) in [MTL,PLR] \implies getCellContent(x,y) == Null
 	// \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight() 
-			// t:Treasure \in getCellContent(x,y)  \implies getCellNature(x,y) == EMP \and getCellNature(x,y-1) \in [PLT,MTL]
+			// t:Treasure \in getCellContent(x,y)  \implies getCellNature(x,y) == EMP \and (getCellNature(x,y-1) \in [PLT,MTL] \or  \exist CharacterService c in getCellContent(x,y-1)) 
 	
 }
