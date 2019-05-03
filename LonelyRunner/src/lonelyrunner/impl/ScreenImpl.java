@@ -5,8 +5,8 @@ import lonelyrunner.service.utils.Cell;
 
 public class ScreenImpl implements ScreenService {
 	
-	private int height;
-	private int width;
+	protected int height;
+	protected int width;
 	protected Cell[][] cells;
 	
 	@Override

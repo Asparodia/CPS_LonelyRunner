@@ -36,7 +36,6 @@ public class CharacterImpl implements CharacterService {
 
 	@Override
 	public void goLeft() {
-
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
 		// chute libre
