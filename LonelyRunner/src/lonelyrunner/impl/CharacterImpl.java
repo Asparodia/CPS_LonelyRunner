@@ -66,7 +66,7 @@ public class CharacterImpl implements CharacterService {
 
 	@Override
 	public void goRight() {
-
+		
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
 
@@ -97,7 +97,7 @@ public class CharacterImpl implements CharacterService {
 
 	@Override
 	public void goUp() {
-
+		
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
 
@@ -114,13 +114,6 @@ public class CharacterImpl implements CharacterService {
 		}
 		if (height != env.getHeight() - 1) {
 			Cell up = env.getCellNature(width, height + 1);
-			if (pos == Cell.EMP) {
-				if (up == Cell.LAD) {
-					env.getCellContent(width, height).removeCharacter(this);
-					height += 1;
-					env.getCellContent(width, height).addCar(this);
-				}
-			}
 			if (pos == Cell.LAD && (up == Cell.EMP || up == Cell.LAD)) {
 				env.getCellContent(width, height).removeCharacter(this);
 				height += 1;
@@ -138,6 +131,7 @@ public class CharacterImpl implements CharacterService {
 		if (pos != Cell.LAD && pos != Cell.HDR) {
 			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
 				if (env.getCellContent(width, height - 1).getCar().isEmpty()) {
+					
 					env.getCellContent(width, height).removeCharacter(this);
 					height -= 1;
 					env.getCellContent(width, height).addCar(this);
@@ -146,8 +140,9 @@ public class CharacterImpl implements CharacterService {
 			}
 		}
 
-		if (height != 0) {
-			if (pos == Cell.EMP || pos == Cell.LAD || pos == Cell.HDR) {
+		if (height > 0) {
+			
+			if (pos == Cell.EMP || pos == Cell.LAD || pos == Cell.HDR || pos == Cell.HOL) {
 				if (down == Cell.EMP || down == Cell.LAD || down == Cell.EMP || down == Cell.HOL) {
 					env.getCellContent(width, height).removeCharacter(this);
 					height -= 1;

@@ -6,7 +6,6 @@ import lonelyrunner.contract.contracterr.PreconditionError;
 import lonelyrunner.decorators.CharacterDecorator;
 import lonelyrunner.impl.EnvironmentImpl;
 import lonelyrunner.service.CharacterService;
-import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.ScreenService;
 import lonelyrunner.service.utils.Cell;
 
@@ -54,38 +53,32 @@ public class CharacterContract extends CharacterDecorator {
 		
 		
 		// Post
-		if(!(getHgt_atpre == getDelegate().getHgt())) {
-			throw new PostconditionError("goLeft()" , "getHgt() should be equals to getHgt()@pre");
-		}
-		if(getWdt_atpre > 0) {
-			if(!(getWdt_atpre == getDelegate().getWdt()))
-				throw new PostconditionError("goLeft()" , "getWdt()@pre == 0 implies getWdt() == getWdt()@pre");
+		if(getWdt_atpre == 0) {
+			if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
+				throw new PostconditionError("goLeft()" , "getWdt()@pre == 0 implies getWdt() == getWdt()@pre and getHgt()@pre == getHgt()");
 		}
 		if(getWdt_atpre > 0) {
 			if( getEnvi_atpre.getCellNature(getWdt_atpre-1, getHgt_atpre) == Cell.MTL || getEnvi_atpre.getCellNature(getWdt_atpre-1, getHgt_atpre) == Cell.PLT) {
-				if(!(getWdt_atpre == getDelegate().getWdt()))
-					throw new PostconditionError("goLeft()" , "getWdt()@pre > 0 and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) in {MTL,PLT} implies getWdt()@pre == getWdt()");
+				if(!(getWdt_atpre == getDelegate().getWdt()  && getHgt_atpre == getDelegate().getHgt()))
+					throw new PostconditionError("goLeft()" , "getWdt()@pre > 0 and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) in {MTL,PLT} implies getWdt()@pre == getWdt() and getHgt()@pre == getHgt()");
 				}
 			}
 		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
 				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()) {
 					if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre-1 == getDelegate().getHgt()))
-						throw new PostconditionError("goLeft()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\not in {LAD,HDR} \n" + 
-								"			//\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \\not in {PLT,MTL,LAD}\n" + 
-								"			//\\and not exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)\n" + 
-								"				//\\implies getWdt() == getWdt()@pre \\and getHgt() == getHgt()@pre - 1");
+						throw new PostconditionError("goLeft()" , "goLeft() is impossible while falling");
 				}
 			}
 		}
 		if(getWdt_atpre != 0 && getEnvi_atpre.getCellNature(getWdt_atpre-1, getHgt_atpre) != Cell.MTL && getEnvi_atpre.getCellNature(getWdt_atpre-1, getHgt_atpre) != Cell.PLT) {
 			if( (cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD || !(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()) )){
-					if(!(getWdt_atpre-1 == getDelegate().getWdt()))
-						throw new PostconditionError("goLeft()" , "( getWdt()@pre != 0 \\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \\not in {MTL,PLT} )\n" + 
-								"		//\\and ( EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\in {LAD,HDR}\n" + 
-								"			//\\or EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD}\n" + 
-								"			//\\or \\exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) )\n" + 
-								"		//\\implies getWdt() == getWdt()@pre - 1");
+					if(!(getWdt_atpre-1 == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
+						throw new PostconditionError("goLeft()" , "(getWdt()@pre != 0 and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) not in {MTL,PLT} )\n" + 
+								"		and ( EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) in {LAD,HDR}\n" + 
+								"			or EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD}\n" + 
+								"			or exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) )\n" + 
+								"		should implie getWdt() == getWdt()@pre - 1 and getHgt()@pre == getHgt()");
 			}
 		}
 	}
@@ -95,8 +88,10 @@ public class CharacterContract extends CharacterDecorator {
 		
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
+		
 		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
 		getEnvi_atpre.clone(getDelegate().getEnvi());
+		
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);
 		
@@ -105,39 +100,33 @@ public class CharacterContract extends CharacterDecorator {
 		checkInvariant();
 		
 		// Post
-
-		if(!(getHgt_atpre == getDelegate().getHgt())) {
-			throw new PostconditionError("goRight()" , "getHgt() should be equals to getHgt()@pre");
-		}
+ 
 		if(getWdt_atpre == getEnvi_atpre.getWidth()-1) {
-			if(!(getWdt_atpre == getDelegate().getWdt()))
-				throw new PostconditionError("goRight()" , "getWdt()@pre == EnvironmentService::getWidth()-1 implies getWdt() == getWdt()@pre");
+			if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
+				throw new PostconditionError("goRight()" , "getWdt()@pre == EnvironmentService::getWidth()-1 implies getWdt() == getWdt()@pre and getHgt()@pre == getHgt()");
 		}
-		if( getWdt_atpre != getDelegate().getWdt() - 1) {
-			if( (getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt()) == Cell.MTL || getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt()) ==Cell.PLT)) {
-				if(!(getWdt_atpre == getDelegate().getWdt()))
-					throw new PostconditionError("goRight()" , "getWdt()@pre == EnvironmentService::getWidth()-1 and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \\in {MTL,PLT} \\implies\n" + 
-							"			// getWdt()@pre == getWdt()");
+		if( getWdt_atpre < getDelegate().getWdt() - 1) {
+			if( (getEnvi_atpre.getCellNature(getWdt_atpre+1, getHgt_atpre) == Cell.MTL || getEnvi_atpre.getCellNature(getWdt_atpre+1, getHgt_atpre) ==Cell.PLT)) {
+				if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
+					throw new PostconditionError("goRight()" , "getWdt()@pre < EnvironmentService::getWidth()-1 and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) in {MTL,PLT} should implie" + 
+							"getWdt()@pre == getWdt() and getHgt()@pre == getHgt()");
 			}
 		}
 		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
 				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty() ) {
 					if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre-1 == getDelegate().getHgt()))
-						throw new PostconditionError("goRight()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \\not in {LAD,HDR} \n" + 
-								"			//\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) \\not in {PLT,MTL,LAD}\n" + 
-								"			//\\and not exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)\n" + 
-								"			//\\implies getWdt() == getWdt()@pre \\\\and getHgt() == getHgt()@pre - 1");
+						throw new PostconditionError("goRight()" , "goRight() is impossible while falling");
 				}
 			}
 		}
-		if(getDelegate().getWdt() != getEnvi_atpre.getWidth()-1 && getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt()) != Cell.MTL && getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt()) != Cell.PLT) {
+		if(getWdt_atpre != getEnvi_atpre.getWidth()-1 && getEnvi_atpre.getCellNature(getWdt_atpre+1, getHgt_atpre) != Cell.MTL && getEnvi_atpre.getCellNature(getWdt_atpre+1,getHgt_atpre) != Cell.PLT) {
 			if( (cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD || !(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()) ) ){
-					if(!(getWdt_atpre+1 == getDelegate().getWdt()))
-						throw new PostconditionError("goRight()" , "( EnvironmentService::getCellNature(getEnvi()@pre,getWdt(),getHgt()@pre) \\in {LAD,HDR}\n" + 
-								"			//\\or EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD}\n" + 
-								"			//\\or \\exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) )\n" + 
-								"		//\\implies getWdt() == getWdt()@pre +1");
+					if(!(getWdt_atpre+1 == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
+						throw new PostconditionError("goRight()" , "( EnvironmentService::getCellNature(getEnvi()@pre,getWdt(),getHgt()@pre) in {LAD,HDR}\n" + 
+								"			or EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD}\n" + 
+								"			or exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) )\n" + 
+								"		should implie getWdt() == getWdt()@pre +1 and getHgt()@pre == getHgt()");
 			}
 		}
 	}
@@ -147,9 +136,11 @@ public class CharacterContract extends CharacterDecorator {
 		
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
-		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
+		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
+		getEnvi_atpre.clone(getDelegate().getEnvi());
+		
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
-		Cell cell_up = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()+1);
+		
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);
 		
 		checkInvariant();
@@ -157,42 +148,35 @@ public class CharacterContract extends CharacterDecorator {
 		checkInvariant();
 		
 		// Post
-		if(!(getWdt_atpre == getDelegate().getWdt())) {
-			throw new PostconditionError("goUp()" , "getWdt() should be equals to getWdt()@pre");
-		}
 		if(getHgt_atpre ==getEnvi_atpre.getHeight()-1) {
-			if(!(getHgt_atpre == getDelegate().getHgt()))
-				throw new PostconditionError("goUp()" , "getHgt()@pre == EnvironmentService::getHeight()-1 \\implies getHgt() == getHgt()@pre ");
+			if(!(getHgt_atpre == getDelegate().getHgt() && getWdt_atpre == getDelegate().getWdt()))
+				throw new PostconditionError("goUp()" , "getHgt()@pre == EnvironmentService::getHeight()-1 should implies getHgt() == getHgt()@pre and getWdt() == getWdt()@pre ");
 		}
-		if( (cell_up == Cell.MTL || cell_up ==Cell.PLT || cell_up ==Cell.HDR) ) {
-			if(!(getHgt_atpre == getDelegate().getHgt()))
-				throw new PostconditionError("goUp()" , "EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL, PLT, HDR} \\implies getHgt() = getHgt()@pre");
+		if( getHgt_atpre <getEnvi_atpre.getHeight()-1) {
+			Cell cell_up = getEnvi_atpre.getCellNature(getWdt_atpre, getHgt_atpre+1);
+			if(cell_up == Cell.MTL || cell_up ==Cell.PLT || cell_up ==Cell.HDR ) {
+				if(!(getHgt_atpre == getDelegate().getHgt()  && getWdt_atpre == getDelegate().getWdt()))
+					throw new PostconditionError("goUp()" , "EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL, PLT, HDR} should implies getHgt() = getHgt()@pre and getWdt() == getWdt()@pre");
+			}
 		}
-//		if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre+1).getCar() != null) {
-//			if(!(getHgt_atpre == getDelegate().getHgt()))
-//				throw new PostconditionError("goUp()" , "exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) \\implies getHgt() = getHgt()@pre");
-//			
-//		}
+				
 		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
-				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty() /*|| getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getPlayer() == null*/) {
+				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()) {
 					if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre-1 == getDelegate().getHgt()))
-						throw new PostconditionError("goUp()" , "EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) not in {LAD,HDR}\n" + 
-								"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1) not in {MTL, PLT, LAD} \n" + 
-								"			//\\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1)\n" + 
-								"				//\\implies getWdt() == getWdt()@pre \\\\and getHgt() == getHgt()@pre - 1");
+						throw new PostconditionError("goUp()" , "goUp() is impossible while falling");
 			
 				}
 			}
 		}
-		if(getHgt_atpre != getEnvi_atpre.getHeight()-1) {
+		if(getHgt_atpre < getEnvi_atpre.getHeight()-1) {
+			Cell cell_up = getEnvi_atpre.getCellNature(getWdt_atpre, getHgt_atpre+1);
 			if(cell_atpre == Cell.LAD && (cell_up == Cell.LAD || cell_up == Cell.EMP)) {
-				if(!(getHgt_atpre+1 == getDelegate().getHgt())) {
+				if(!(getHgt_atpre+1 == getDelegate().getHgt()  && getWdt_atpre == getDelegate().getWdt())) {
 					throw new PostconditionError("goUp()" , "(getHgt()@pre != EnvironmentService::getHeight() -  1)\n" + 
-							"		//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == LAD\n" + 
-							"		//\\and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD,EMP} \n" + 
-							"			//\\implies getHgt() = getHgt()@pre + 1");
-				
+							"		and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == LAD\n" + 
+							"		and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD,EMP} \n" + 
+							"		should implie getHgt() = getHgt()@pre + 1 and getWdt() == getWdt()@pre");
 			}
 			}
 		}
@@ -202,55 +186,47 @@ public class CharacterContract extends CharacterDecorator {
 	public void goDown() {		
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
-		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
+		
+		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
+		getEnvi_atpre.clone(getDelegate().getEnvi());
+		
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);
 		
 		checkInvariant();
-		getDelegate().goUp();
+		getDelegate().goDown();
 		checkInvariant();
 		
 		// Post
 		
-		if(!(getWdt_atpre == getDelegate().getWdt())) {
-			throw new PostconditionError("goDown()" , "getWdt() == getWdt()@pre");
-		}
 		if(getHgt_atpre ==0) {
-			if(!(getHgt_atpre == getDelegate().getHgt()))
-				throw new PostconditionError("goDown()" , "getHgt()@pre == 0 \\implies getHgt()==getHgt()@pre ");
+			if(!(getHgt_atpre == getDelegate().getHgt()  && getWdt_atpre == getDelegate().getWdt()))
+				throw new PostconditionError("goDown()" , "getHgt()@pre == 0 should implies getHgt()==getHgt()@pre and getWdt() == getWdt()@pre");
 		}
-		if( (cell_down == Cell.MTL || cell_down ==Cell.PLT)) {
-			if(!(getHgt_atpre == getDelegate().getHgt()))
-				throw new PostconditionError("goDown()" , "(EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \\in {MTL, PLT} \\implies getHgt()==getHgt()@pre");
+		if(getHgt_atpre != 0 && (cell_down == Cell.MTL || cell_down ==Cell.PLT)) {
+			if(!(getHgt_atpre == getDelegate().getHgt()  && getWdt_atpre == getDelegate().getWdt()))
+				throw new PostconditionError("goDown()" , "(EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) in {MTL, PLT} should implie getHgt()==getHgt()@pre and getWdt() == getWdt()@pre");
 		}
-//		if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar() != null /*|| getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getPlayer() != null*/) {
-//			if(!(getHgt_atpre == getDelegate().getHgt()))
-//				throw new PostconditionError("goDown()" , "exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre -1) \\implies getHgt() = getHgt()@pre");
-//			
-//		}
 		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
-				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty() /*|| getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getPlayer() != null*/) {
+				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty() ) {
 					if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre-1 == getDelegate().getHgt()))
-						throw new PostconditionError("goDown()" , "(Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \\not \\in {LAD,HDR}\n" + 
-								"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \\not \\in {PLT,MTL,LAD}\n" + 
-								"			//\\and not exists CharacterService c \\in EnvironmentService::getCellContent(getEnvi()@, getWdt()@pre, getHgt()@pre-1))\n" + 
-								"				//\\implies getWdt() == getWdt()@pre \\\\and getHgt() == getHgt()@pre - 1)");
-			
+						throw new PostconditionError("goDown()" , "goDown() impossible while falling");
 				}
 			}
 		}
-		if(getHgt_atpre != 0) {
-			if(cell_atpre == Cell.EMP || cell_atpre == Cell.LAD || cell_atpre == Cell.HDR ) {
-				if(cell_down == Cell.EMP || cell_down == Cell.LAD || cell_down == Cell.EMP || cell_down == Cell.HOL) {
-						if(!(getHgt_atpre-1 == getDelegate().getHgt()))
-							throw new PostconditionError("goDown()" , "getHgt()@pre != 0 \\and Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \\in {LAD,HDR,EMP}\n" + 
-									"			//\\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \\in {EMP,LAD,HDR,HOL}\n" + 
-									"				//\\implies getHgt()==getHgt()@pre-1");
+		if(getHgt_atpre > 0) {
+			if(cell_atpre == Cell.EMP || cell_atpre == Cell.LAD || cell_atpre == Cell.HDR || cell_atpre == Cell.HOL ) {
+				if(cell_down == Cell.EMP || cell_down == Cell.LAD  || cell_down == Cell.HOL || cell_down == Cell.HDR) {
+						if(! ( getHgt_atpre-1 == getDelegate().getHgt() && getWdt_atpre == getDelegate().getWdt()) ) {
+							throw new PostconditionError("goDown()" , " getHgt()@pre > 0 and Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) in {LAD,HDR,EMP,HOL}\r\n" + 
+									"		and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) in {EMP,LAD,HDR,HOL}\r\n" + 
+									"			should implie getHgt()==getHgt()@pre-1 and getWdt() == getWdt()@pre");
+						}
+							
 				}
 			}
 		}
-		
 	}
 
 }
