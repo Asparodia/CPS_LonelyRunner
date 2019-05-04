@@ -38,13 +38,13 @@ public interface GuardService extends /*include*/ CharacterService {
 			//implies getWdt() == getWdt()@pre+1 \and getHgt() = getHgt(C)@pre+1
 	public void climbRight();
 	
-	//\post: getHgt() == getHgt()@pre
 	//\post: getWdt()@pre == 0 \implies getWdt() == getWdt()@pre
-	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \in {MTL,PLT} \implies getWdt()@pre == getWdt()
-	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR,HOL} 
-		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
-		//\and not exists GuardService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
-			//\implies getWdt() == getWdt()@pre \and getHgt() = getHgt(C)@pre-1
+	//\post: getWdt()@pre > 0 \and  (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \in {MTL,PLT} \or GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre)) 
+		//\implies getWdt()@pre == getWdt() \and getHgt()@pre == getHgt()
+	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
+			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
+			//\and not exists GuardService g in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
+				//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
 	//\post: \exist GuardService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \implies getWdt() == getWdt()@pre
 	//\post: (getWdt()@pre != 0 \and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \not in {MTL,PLT} )
 		//\and ( EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \in {LAD,HDR}
@@ -54,7 +54,6 @@ public interface GuardService extends /*include*/ CharacterService {
 			//\implies getWdt() == getWdt()@pre - 1
 	public void goLeft();
 	
-	//\post: getHgt() == getHgt()@pre
 	//\post: getWdt()@pre == EnvironmentService::getWidth()-1 \implies getWdt() == getWdt()@pre 
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \in {MTL,PLT} \implies getWdt()@pre == getWdt()
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR,HOL} 
@@ -70,7 +69,6 @@ public interface GuardService extends /*include*/ CharacterService {
 			//\implies getWdt() == getWdt()@pre +1
 	public void goRight();
 	
-	//\post: getWdt() == getWdt()@pre
 	//\post: getHgt()@pre == EnvironmentService::getHeight()-1 \implies getHgt() == getHgt()@pre
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL, PLT} \implies getHgt() = getHgt()@pre
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) not in {LAD,HDR,HOL}
@@ -86,7 +84,6 @@ public interface GuardService extends /*include*/ CharacterService {
 	public void goUp();
 	
 
-	//\post: getWdt()==getWdt()@pre
 	//\post: getHgt()@pre == 0 \implies getHgt()==getHgt()@pre
 	//\post: (EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {MTL, PLT} \implies getHgt()==getHgt()@pre
 	//\post: (Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \not \in {LAD,HDR,HOL}

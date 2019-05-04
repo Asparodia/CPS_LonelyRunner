@@ -275,10 +275,13 @@ public class GuardContract extends GuardDecorator {
 		//Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
-		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
+		
+		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
+		getEnvi_atpre.clone(getDelegate().getEnvi());
+		
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
-		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);
-		Cell cell_left = getDelegate().getEnvi().getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt());
+		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt()-1);	
+		
 		boolean containGuardleft = false;
 		
 		if(!getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar().isEmpty()) {
@@ -304,16 +307,16 @@ public class GuardContract extends GuardDecorator {
 		checkInvariant();
 		
 		// Post
-		if(!(getHgt_atpre == getDelegate().getHgt())) {
-			throw new PostconditionError("goLeft()" , "getHgt() should be equals to getHgt()@pre");
-		}
 		if(getWdt_atpre ==0) {
 			if(!(getWdt_atpre == getDelegate().getWdt()))
 				throw new PostconditionError("goLeft()" , "getWdt()@pre == 0 implies getWdt() == getWdt()@pre");
 		}
-		if( cell_left == Cell.MTL || cell_left == Cell.PLT) {
-			if(!(getWdt_atpre == getDelegate().getWdt()))
-				throw new PostconditionError("goLeft()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) in {MTL,PLT} implies getWdt()@pre == getWdt()");
+		if(getWdt_atpre>0) {
+			Cell cell_left = getEnvi_atpre.getCellNature(getWdt_atpre-1, getHgt_atpre);
+			if( cell_left == Cell.MTL || cell_left == Cell.PLT) {
+				if(!(getWdt_atpre == getDelegate().getWdt()))
+					throw new PostconditionError("goLeft()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) in {MTL,PLT} implies getWdt()@pre == getWdt()");
+			}
 		}
 		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR && cell_atpre != Cell.HOL) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
