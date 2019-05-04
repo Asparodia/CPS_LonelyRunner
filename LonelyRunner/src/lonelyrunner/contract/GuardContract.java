@@ -3,6 +3,7 @@ package lonelyrunner.contract;
 import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.contract.contracterr.PreconditionError;
 import lonelyrunner.decorators.GuardDecorator;
+import lonelyrunner.impl.EnvironmentImpl;
 import lonelyrunner.impl.GuardImpl;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EnvironmentService;
@@ -165,85 +166,105 @@ public class GuardContract extends GuardDecorator {
 		
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
-		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
+		
+		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
+		getEnvi_atpre.clone(getDelegate().getEnvi());
+		
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
+		
+		boolean containGuardleft = false;
+		
+		if(!(cell_atpre == Cell.HOL)) {
+			throw new PreconditionError("climbLeft()","guard pos must be a HOL to call climb left");
+		}
 		
 		checkInvariant();
 		getDelegate().climbLeft();
 		checkInvariant();
 		
-		if(cell_atpre == Cell.HOL) {
-			if(getWdt_atpre != 0 ) {
-				Cell cell_leftup = getEnvi_atpre.getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt()+1);
-				Cell cell_left = getEnvi_atpre.getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt());
-				if(cell_left == Cell.MTL || cell_left == Cell.PLT ) {
-					
-					if( cell_leftup == Cell.EMP || cell_leftup == Cell.HOL || cell_leftup == Cell.LAD || cell_leftup == Cell.HDR ) {
-						boolean containGuardleftUp = false;
-						if(!getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar().isEmpty()) {
-							for(CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre+1).getCar() ) {
-								if(cs.getClass().isInstance(GuardService.class)) {
-									containGuardleftUp = true;
-								}
+
+		if(getWdt_atpre > 0 && getHgt_atpre < getEnvi_atpre.getHeight()-1) {
+			Cell cell_leftup = getEnvi_atpre.getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt()+1);
+			Cell cell_left = getEnvi_atpre.getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt());
+			if(!getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar().isEmpty()) {
+				for(CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar() ) {
+					if(cs.getClass().isInstance(GuardService.class)) {
+						containGuardleft = true;
+					}
+				}
+			}
+			if(cell_left == Cell.MTL || cell_left == Cell.PLT  || containGuardleft) {
+				
+				if( cell_leftup == Cell.EMP || cell_leftup == Cell.HOL || cell_leftup == Cell.LAD || cell_leftup == Cell.HDR ) {
+					boolean containGuardleftUp = false;
+					if(!getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre+1).getCar().isEmpty()) {
+						for(CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre+1).getCar() ) {
+							if(cs.getClass().isInstance(GuardService.class)) {
+								containGuardleftUp = true;
 							}
 						}
-						if(!containGuardleftUp) {
-							if( !(getWdt() == getWdt_atpre-1 && getHgt()== getHgt_atpre+1) ) {
-								throw new PostconditionError("climbLeft()" , "EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL \\n\" + \n" + 
-										"//\\\\and  getWdt()@pre != 0 \\n\" + \n" + 
-										"//\\\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) in {MTL,PLT}\\n\" + \n" + 
-										"//\\\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre+1) \\\\in {EMP,HOL,LAD,HDR}\\n\" + \n" + 
-										"//\\\\and not exist GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre+1)\\n\" + \n" + 
-										"//implies getWdt() == getWdt()@pre-1 \\\\and getHgt() = getHgt(C)@pre+1");
-							}
+					}
+					if(!containGuardleftUp) {
+						if( !(getWdt() == getWdt_atpre-1 && getHgt()== getHgt_atpre+1) ) {
+							throw new PostconditionError("climbLeft()" , "The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
 						}
 					}
 				}
 			}
-			
 		}
-		
+			
+	
 	}
 	
 	@Override
 	public void climbRight() {
+		
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
-		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
+		
+		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
+		getEnvi_atpre.clone(getDelegate().getEnvi());
+		
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
+		
+		if(!(cell_atpre == Cell.HOL)) {
+			throw new PreconditionError("climbRight()","guard pos must be a HOL to call climb right");
+		}
+		
+		boolean containGuardright = false;
+		
 		
 		checkInvariant();
 		getDelegate().climbRight();
 		checkInvariant();
 		
-		if(cell_atpre == Cell.HOL) {
-			if(getWdt_atpre != 0 ) {
-				Cell cell_rightup = getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt()+1);
-				Cell cell_right = getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt());
-				if(cell_right == Cell.MTL || cell_right == Cell.PLT ) {
-					if( cell_rightup == Cell.EMP || cell_rightup == Cell.HOL || cell_rightup == Cell.LAD || cell_rightup == Cell.HDR ) {
-						boolean containGuardrightUp = false;
-						if(!getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar().isEmpty()) {
-							for(CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre+1).getCar() ) {
-								if(cs.getClass().isInstance(GuardService.class)) {
-									containGuardrightUp = true;
-								}
+		if(getWdt_atpre < getEnvi_atpre.getWidth()-1 && getHgt_atpre < getEnvi_atpre.getHeight()-1 ) {
+			Cell cell_rightup = getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt()+1);
+			if(!getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar().isEmpty()) {
+				for(CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre+1, getHgt_atpre).getCar() ) {
+					if(cs.getClass().isInstance(GuardService.class)) {
+						containGuardright = true;
+					}
+				}
+			}
+			Cell cell_right = getEnvi_atpre.getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt());
+			if(cell_right == Cell.MTL || cell_right == Cell.PLT || containGuardright ) {
+				if( cell_rightup == Cell.EMP || cell_rightup == Cell.HOL || cell_rightup == Cell.LAD || cell_rightup == Cell.HDR ) {
+					boolean containGuardrightUp = false;
+					if(!getEnvi_atpre.getCellContent(getWdt_atpre+1, getHgt_atpre+1).getCar().isEmpty()) {
+						for(CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre+1, getHgt_atpre+1).getCar() ) {
+							if(cs.getClass().isInstance(GuardService.class)) {
+								containGuardrightUp = true;
 							}
 						}
-						if(!containGuardrightUp) {
-							if( !(getWdt() == getWdt_atpre+1 && getHgt()== getHgt_atpre+1) ) {
-								throw new PostconditionError("climbRight()","EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL \n" + 
-										"			//\\and  getWdt()@pre != EnvironmentService::getWidth()-1\n" + 
-										"			//\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) in {MTL,LAD,PLT,HDR}\n" + 
-										"			//\\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre+1) \\in {EMP,HOL,LAD,HDR}\n" + 
-										"			//\\and not exist GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre+1)\n" + 
-										"				//implies getWdt() == getWdt()@pre+1 \\and getHgt() = getHgt(C)@pre+1");	
-							}
+					}
+					if(!containGuardrightUp) {
+						if( !(getWdt() == getWdt_atpre+1 && getHgt()== getHgt_atpre+1) ) {
+							throw new PostconditionError("climbRight()","The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");	
 						}
 					}
 				}
 			}
-			
 		}
 		
 	}
