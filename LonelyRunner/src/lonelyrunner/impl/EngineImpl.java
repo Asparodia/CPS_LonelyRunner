@@ -169,7 +169,7 @@ public class EngineImpl implements EngineService {
 //				
 //			}
 //			else {
-				g.step();	
+				g.step();
 //			}
 			
 		}

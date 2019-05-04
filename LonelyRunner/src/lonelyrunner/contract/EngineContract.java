@@ -98,6 +98,7 @@ public class EngineContract extends EngineDecorator {
 		for (Couple<Integer, Integer> c : posGuards) {
 			if (!((es.getCellNature(c.getElem1(), c.getElem2()) == Cell.EMP)
 					&& (c.getElem1() != posChar.getElem1() || c.getElem2() != posChar.getElem2()))) {
+				System.out.println(c.getElem1()+" "+c.getElem2());
 				throw new PreconditionError("init()",
 						"guard must be init on a emp case and not on the same case as the player");
 			}

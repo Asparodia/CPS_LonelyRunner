@@ -2,6 +2,7 @@ package lonelyrunner.impl;
 
 import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.service.CharacterService;
+import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.GuardService;
 import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.ScreenService;
@@ -18,95 +19,14 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	private int timeInHole;
 
 	public void init(ScreenService s, int x, int y, PlayerService t) {
-		super.init(s, x, y);
+		width = x;
+		height = y;
 		id = cpt;
 		cpt++;
+		env = (EnvironmentService) s;
+		env.getCellContent(x, y).addCar(this);
 		target = t;
 		timeInHole = 0;
-
-		int hgtTarger = target.getHgt();
-		int wdtTarger = target.getWdt();
-
-		Cell pos = env.getCellNature(width, height);
-		Cell down = env.getCellNature(width, height - 1);
-		boolean set = false;
-
-		boolean containGuarddown = false;
-		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
-			for (CharacterService cs : env.getCellContent(width, height).getCar()) {
-				if (cs.getClass().isInstance(GuardService.class)) {
-					containGuarddown = true;
-				}
-			}
-		}
-
-		// if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) ||
-		// containGuarddown)) {
-		// if (Math.abs(width - wdtTarger) > Math.abs(height - hgtTarger)) {
-		// if (hgtTarger > height) {
-		// behaviour = Move.UP;
-		// set = true;
-		// }
-		//
-		// }
-		// }
-		// if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) ||
-		// containGuarddown) && !set) {
-		// if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
-		// if (wdtTarger > width) {
-		// behaviour = Move.RIGHT;
-		// set = true;
-		// }
-		//
-		// }
-		// }
-		// if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) ||
-		// containGuarddown) && !set) {
-		// if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
-		// if (wdtTarger < width) {
-		// behaviour = Move.LEFT;
-		// set = true;
-		// }
-		//
-		// }
-		// }
-		if (pos == Cell.LAD && (hgtTarger > height) && !set) {
-			behaviour = Move.UP;
-			set = true;
-		}
-		if (pos == Cell.LAD && (hgtTarger < height) && !set) {
-			behaviour = Move.DOWN;
-			set = true;
-		}
-
-		if ((pos == Cell.HOL || pos == Cell.HDR)
-				|| ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
-			if (width > wdtTarger) {
-				behaviour = Move.LEFT;
-				set = true;
-			}
-		}
-		if ((pos == Cell.HOL || pos == Cell.HDR)
-				|| ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
-			if (width < wdtTarger) {
-				behaviour = Move.RIGHT;
-				set = true;
-
-			}
-		}
-		// if ((pos == Cell.HOL || pos == Cell.HDR)
-		// || ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
-		// if (width == wdtTarger) {
-		// behaviour = Move.NEUTRAL;
-		// set = true;
-		//
-		// }
-		// }
-		// if (pos == Cell.LAD && (hgtTarger == height) && !set) {
-		// behaviour = Move.NEUTRAL;
-		// set = true;
-		// }
-
 	}
 
 	@Override
@@ -131,9 +51,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void step() {
-
 		Cell pos = env.getCellNature(width, height);
-
 		if (pos == Cell.HOL) {
 			if (timeInHole < 5) {
 				timeInHole++;
@@ -148,9 +66,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				}
 			}
 		} else {
-			if (behaviour == Move.LEFT) {
-				goLeft();
-			}
+//			if (behaviour == Move.LEFT) {
+//				goLeft();
+//			}
 			if (behaviour == Move.RIGHT) {
 				goRight();
 			}
@@ -174,41 +92,39 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height).getCar()) {
-				if (cs.getClass().isInstance(GuardService.class)) {
+				if (cs.getClass()==(GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
 		}
-		// if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) ||
-		// containGuarddown)) {
-		// if (Math.abs(width - wdtTarger) > Math.abs(height - hgtTarger)) {
-		// if (hgtTarger > height) {
-		// behaviour = Move.UP;
-		// set = true;
-		// }
-		//
-		// }
-		// }
-		// if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) ||
-		// containGuarddown) && !set) {
-		// if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
-		// if (wdtTarger > width) {
-		// behaviour = Move.RIGHT;
-		// set = true;
-		// }
-		//
-		// }
-		// }
-		// if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) ||
-		// containGuarddown) && !set) {
-		// if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
-		// if (wdtTarger < width) {
-		// behaviour = Move.LEFT;
-		// set = true;
-		// }
-		//
-		// }
-		// }
+
+		if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) || containGuarddown)) {
+			if (Math.abs(width - wdtTarger) > Math.abs(height - hgtTarger)) {
+				if (hgtTarger > height) {
+					behaviour = Move.UP;
+					set = true;
+				}
+
+			}
+		}
+		if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
+			if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
+				if (wdtTarger > width) {
+					behaviour = Move.RIGHT;
+					set = true;
+				}
+				if (wdtTarger < width) {
+					behaviour = Move.LEFT;
+					set = true;
+				}
+				if (wdtTarger == width) {
+					behaviour = Move.NEUTRAL;
+					set = true;
+				}
+
+			}
+		}
+
 		if (pos == Cell.LAD && (hgtTarger > height) && !set) {
 			behaviour = Move.UP;
 			set = true;
@@ -217,10 +133,11 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			behaviour = Move.DOWN;
 			set = true;
 		}
-		// if (pos == Cell.LAD && (hgtTarger == height) && !set) {
-		// behaviour = Move.NEUTRAL;
-		// set = true;
-		// }
+		if (pos == Cell.LAD && (hgtTarger == height) && !set) {
+			behaviour = Move.NEUTRAL;
+			set = true;
+		}
+
 		if ((pos == Cell.HOL || pos == Cell.HDR)
 				|| ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
 			if (width > wdtTarger) {
@@ -236,14 +153,14 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 			}
 		}
-		// if ((pos == Cell.HOL || pos == Cell.HDR)
-		// || ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
-		// if (width == wdtTarger) {
-		// behaviour = Move.NEUTRAL;
-		// set = true;
-		//
-		// }
-		// }
+		if ((pos == Cell.HOL || pos == Cell.HDR)
+				|| ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
+			if (width == wdtTarger) {
+				behaviour = Move.NEUTRAL;
+				set = true;
+
+			}
+		}
 
 		set = false;
 
@@ -256,7 +173,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			boolean containGuardleft = false;
 			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
-					if (cs.getClass().isInstance(GuardService.class)) {
+					if (cs.getClass()==(GuardImpl.class)) {
 						containGuardleft = true;
 					}
 				}
@@ -269,7 +186,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					boolean containGuardupleft = false;
 					if (!env.getCellContent(width - 1, height + 1).getCar().isEmpty()) {
 						for (CharacterService cs : env.getCellContent(width - 1, height + 1).getCar()) {
-							if (cs.getClass().isInstance(GuardService.class)) {
+							if (cs.getClass()==(GuardImpl.class)) {
 								containGuardupleft = true;
 							}
 						}
@@ -293,9 +210,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			Cell upright = env.getCellNature(width + 1, height + 1);
 			Cell right = env.getCellNature(width + 1, height);
 			boolean containGuardright = false;
-			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
+			if (!env.getCellContent(width + 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width + 1, height).getCar()) {
-					if (cs.getClass().isInstance(GuardService.class)) {
+					if (cs.getClass()==(GuardImpl.class)) {
 						containGuardright = true;
 					}
 				}
@@ -305,7 +222,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					boolean containGuardupright = false;
 					if (!env.getCellContent(width + 1, height + 1).getCar().isEmpty()) {
 						for (CharacterService cs : env.getCellContent(width + 1, height + 1).getCar()) {
-							if (cs.getClass().isInstance(GuardService.class)) {
+							if (cs.getClass()==(GuardImpl.class)) {
 								containGuardupright = true;
 							}
 						}
@@ -330,7 +247,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass().isInstance(GuardService.class)) {
+				if (cs.getClass()==(GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -356,7 +273,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass().isInstance(GuardService.class)) {
+				
+				if (cs.getClass()==(GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -376,17 +294,17 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		if (width > 0) {
 			Cell left = env.getCellNature(width - 1, height);
 			boolean containGuardleft = false;
-			if (!env.getCellContent(width-1, height).getCar().isEmpty()) {
-				for (CharacterService cs : env.getCellContent(width-1, height).getCar()) {
-					if (cs.getClass().isInstance(GuardService.class)) {
+			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
+				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
+					if (cs.getClass()==(GuardImpl.class)) {
 						containGuardleft = true;
 					}
 				}
 			}
 			if (left != Cell.PLT && left != Cell.MTL) {
-				if ((pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD
-						|| containGuarddown )) {
-					if(!containGuardleft) {
+				if ((pos == Cell.LAD || pos == Cell.HDR)
+						|| (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD || containGuarddown)) {
+					if (!containGuardleft) {
 						env.getCellContent(width, height).removeCharacter(this);
 						width -= 1;
 						env.getCellContent(width, height).addCar(this);
@@ -395,7 +313,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}
 		}
 	}
-	
+
 	@Override
 	public void goRight() {
 		Cell pos = env.getCellNature(width, height);
@@ -403,7 +321,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass().isInstance(GuardService.class)) {
+				if (cs.getClass()==(GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -423,17 +341,17 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		if (width < env.getWidth() - 1) {
 			Cell right = env.getCellNature(width + 1, height);
 			boolean containGuardright = false;
-			if (!env.getCellContent(width+1, height).getCar().isEmpty()) {
-				for (CharacterService cs : env.getCellContent(width-1, height).getCar()) {
-					if (cs.getClass().isInstance(GuardService.class)) {
+			if (!env.getCellContent(width + 1, height).getCar().isEmpty()) {
+				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
+					if (cs.getClass()==(GuardImpl.class)) {
 						containGuardright = true;
 					}
 				}
 			}
 			if (right != Cell.PLT && right != Cell.MTL) {
-				if ((pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD
-						|| containGuarddown )) {
-					if(!containGuardright) {
+				if ((pos == Cell.LAD || pos == Cell.HDR)
+						|| (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD || containGuarddown)) {
+					if (!containGuardright) {
 						env.getCellContent(width, height).removeCharacter(this);
 						width += 1;
 						env.getCellContent(width, height).addCar(this);
@@ -442,15 +360,16 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}
 		}
 	}
+
 	@Override
 	public void goUp() {
-		
+
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass().isInstance(GuardService.class)) {
+				if (cs.getClass()==(GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -470,15 +389,15 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		if (height < env.getHeight() - 1) {
 			Cell cell_up = env.getCellNature(width, height + 1);
 			boolean containGuardup = false;
-			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
+			if (!env.getCellContent(width, height+1).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width + 1, height).getCar()) {
-					if (cs.getClass().isInstance(GuardService.class)) {
+					if (cs.getClass()==(GuardImpl.class)) {
 						containGuardup = true;
 					}
 				}
 			}
 			if (pos == Cell.LAD && (cell_up == Cell.LAD || cell_up == Cell.EMP)) {
-				if(!containGuardup) {
+				if (!containGuardup) {
 					env.getCellContent(width, height).removeCharacter(this);
 					height += 1;
 					env.getCellContent(width, height).addCar(this);
@@ -486,7 +405,43 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}
 		}
 	}
-	
+
+	@Override
+	public void goDown() {
+		Cell pos = env.getCellNature(width, height);
+		Cell down = env.getCellNature(width, height - 1);
+		boolean containGuarddown = false;
+		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
+			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
+				if (cs.getClass()==(GuardImpl.class)) {
+					containGuarddown = true;
+				}
+			}
+		}
+		// chute libre
+		if (pos != Cell.LAD && pos != Cell.HDR && pos != Cell.HOL) {
+			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
+				if (!containGuarddown) {
+					env.getCellContent(width, height).removeCharacter(this);
+					height -= 1;
+					env.getCellContent(width, height).addCar(this);
+					return;
+				}
+
+			}
+		}
+		if (height > 0) {
+			if ((pos == Cell.LAD || pos == Cell.EMP || pos == Cell.HDR)
+					&& (down == Cell.LAD || down == Cell.EMP || down == Cell.HOL || down == Cell.HDR)) {
+				if (!containGuarddown) {
+					env.getCellContent(width, height).removeCharacter(this);
+					height -= 1;
+					env.getCellContent(width, height).addCar(this);
+				}
+			}
+		}
+	}
+
 	public void clone(GuardService ps) {
 		EnvironmentImpl envi = new EnvironmentImpl();
 		envi.clone(ps.getEnvi());
@@ -495,7 +450,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		this.width = ps.getWdt();
 		this.target = ps.getTarget();
 		this.timeInHole = ps.getTimeInHole();
-		
+
 	}
 
 }

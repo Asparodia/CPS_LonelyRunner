@@ -3,6 +3,8 @@ package lonelyrunner.impl;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EnvironmentService;
+import lonelyrunner.service.GuardService;
+import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Cell;
 import lonelyrunner.service.utils.SetCharItem;
 
@@ -53,7 +55,18 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService {
 				this.env[i][j] = new SetCharItem();
 				this.env[i][j].setItem(base.getCellContent(i, j).getItem());
 				for(CharacterService c : base.getCellContent(i, j).getCar()) {
-					this.env[i][j].addCar(c);
+					if(c.getClass()==(GuardImpl.class)) {
+						this.env[i][j].addCar((GuardService)c);
+					}
+					else {
+						if(c.getClass()== (PlayerImpl.class)) {
+							this.env[i][j].addCar((PlayerService)c);
+						}
+						else {
+							System.out.println(c.getClass()== (PlayerImpl.class));
+						}
+					}
+					
 				}
 			}
 		}
