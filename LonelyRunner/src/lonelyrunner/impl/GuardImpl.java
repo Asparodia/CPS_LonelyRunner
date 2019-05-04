@@ -371,5 +371,16 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}
 		}
 	}
+	
+	public void clone(GuardService ps) {
+		EnvironmentImpl envi = new EnvironmentImpl();
+		envi.clone(ps.getEnvi());
+		this.env = envi;
+		this.height = ps.getHgt();
+		this.width = ps.getWdt();
+		this.target = ps.getTarget();
+		this.timeInHole = ps.getTimeInHole();
+		
+	}
 
 }
