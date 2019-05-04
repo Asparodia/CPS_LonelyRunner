@@ -345,7 +345,7 @@ public class GuardContract extends GuardDecorator {
 				if ((cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT
 						|| cell_down == Cell.MTL || cell_down == Cell.LAD || containGuarddown)) {
 					if (!containGuardleft) {
-						if (!(getWdt_atpre - 1 == getDelegate().getWdt()))
+						if (!(getWdt_atpre - 1 == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
 							throw new PostconditionError("goLeft()",
 									"(getWdt()@pre > 0 \\and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) \\not in {MTL,PLT} )\r\n"
 											+ "		//\\and \\not \\exist GuardService c in EnvironmentService::getCellContent(getEnvi(@pre,getWdt()@pre-1,getHgt()@pre))\r\n"
@@ -432,7 +432,7 @@ public class GuardContract extends GuardDecorator {
 				if ((cell_atpre == Cell.LAD || cell_atpre == Cell.HDR) || (cell_down == Cell.PLT
 						|| cell_down == Cell.MTL || cell_down == Cell.LAD || containGuarddown)) {
 					if (!containGuardright) {
-						if (!(getWdt_atpre - 1 == getDelegate().getWdt()))
+						if (!(getWdt_atpre - 1 == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
 							throw new PostconditionError("goRight()",
 									"(getWdt()@pre != EnvironmentService::getWidth()-1 \\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \\not in {MTL,PLT} )\r\n"
 											+ "		//\\and \\not \\exist GuardService c in EnvironmentService::getCellContent(getEnvi(@pre,getWdt()@pre+1,getHgt()@pre)) )\r\n"
@@ -680,31 +680,45 @@ public class GuardContract extends GuardDecorator {
 				if (!(getDelegate().getTimeInHole() == getTimeInHole_atpre + 1 && getWdt_atpre == getDelegate().getWdt()
 						&& getHgt_atpre == getDelegate().getHgt())) {
 					throw new PostconditionError("step()",
-							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\n"
-									+ "		//\\and getTimeInHole()@pre<5 \n"
-									+ "		//\\implies getTimeInHole() == getTimeInHole()@pre + 1 \\and getWdt()@pre == getWdt() \\and getHgt()@pre = getHgt()");
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
+							"		//\\and getTimeInHole()@pre<5 \r\n" + 
+							"		//\\implies getTimeInHole() == getTimeInHole()@pre + 1 \\and getWdt()@pre == getWdt() \\and getHgt()@pre = getHgt()");
 				}
 			}
 		}
 		if (cell_atpre == Cell.HOL) {
-			if (getTimeInHole_atpre == 5 && getBehaviour_atpre == Move.LEFT) {
+			if (getTimeInHole_atpre >= 5 && getBehaviour_atpre == Move.LEFT) {
 				if (!(cloneCL.getWdt() == getDelegate().getWdt() && cloneCL.getHgt() == getDelegate().getHgt())) {
 					throw new PostconditionError("step()",
-							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\n"
-									+ "			//\\and getTimeInHole()@pre==5 \n"
-									+ "			//\\and getBehaviour()@pre == LEFT \n"
-									+ "			//\\implies getWdt() == getWdt(climbLeft())@pre \\and getHgt() = getHgt(climbeLeft())@pre");
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
+							"		//\\and getTimeInHole()@pre>=5 \r\n" + 
+							"		//\\and getBehaviour()@pre == LEFT\r\n" + 
+							"		//\\and clone@pre:GuardService \r\n" + 
+							"			//\\implies getWdt() == clone@pre.climbLeft().getWdt() \\and getHgt() = clone@pre.climbLeft().getHgt()");
 				}
 			}
 		}
 		if (cell_atpre == Cell.HOL) {
-			if (getTimeInHole_atpre == 5 && getBehaviour_atpre == Move.RIGHT) {
+			if (getTimeInHole_atpre >= 5 && getBehaviour_atpre == Move.RIGHT) {
 				if (!(cloneCR.getWdt() == getDelegate().getWdt() && cloneCR.getHgt() == getDelegate().getHgt())) {
 					throw new PostconditionError("step()",
-							"//EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\n"
-									+ "		//\\and getTimeInHole()@pre==5 \n"
-									+ "		//\\and getBehaviour()@pre == RIGHT \n"
-									+ "		//\\implies getWdt() == getWdt(climbRight())@pre \\and getHgt() = getHgt(climbeRight())@pre");
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
+							"		//\\and getTimeInHole()@pre>=5 \r\n" + 
+							"		//\\and getBehaviour()@pre == RIGHT \r\n" + 
+							"		//\\and clone@pre:GuardService \r\n" + 
+							"	//\\implies getWdt() == clone@pre.climbRight().getWdt() \\and getHgt() = clone@pre.climbRight().getHgt()");
+				}
+			}
+		}
+		if (cell_atpre == Cell.HOL) {
+			if (getTimeInHole_atpre >= 5 && getBehaviour_atpre == Move.NEUTRAL) {
+				if (!(cloneN.getWdt() == getDelegate().getWdt() && cloneN.getHgt() == getDelegate().getHgt())) {
+					throw new PostconditionError("step()",
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
+							"		//\\and getTimeInHole()@pre>=5 \r\n" + 
+							"		//\\and getBehaviour()@pre == NEUTRAL \r\n" + 
+							"		//\\and clone@pre:GuardService \r\n" + 
+							"			//\\implies getWdt() == clone@pre.doNeutral().getWdt() \\and getHgt() = clone@pre.doNeutral().getHgt()");
 				}
 			}
 		}
@@ -712,41 +726,46 @@ public class GuardContract extends GuardDecorator {
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.LEFT) {
 			if (!(cloneL.getWdt() == getDelegate().getWdt() && cloneL.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\n"
-								+ "			//\\and getBehaviour()@pre == LEFT\n"
-								+ "			//\\implies getWdt() == getWdt(goLeft())@pre \\and getHgt() = getHgt(goLeft())@pre");
+						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
+						"		//\\and getBehaviour()@pre == LEFT\r\n" + 
+						"		//\\and clone@pre:GuardService \r\n" + 
+						"			//\\implies getWdt() == clone@pre.goLeft().getWdt() \\and getHgt() = clone@pre.goLeft().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.RIGHT) {
 			if (!(cloneR.getWdt() == getDelegate().getWdt() && cloneR.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\n"
-								+ "			//\\and getBehaviour()@pre == RIGHT\n"
-								+ "			//\\implies getWdt() == getWdt(goRight())@pre \\and getHgt() = getHgt(goRight())@pre");
+						":EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
+						"		//\\and getBehaviour()@pre == RIGHT\r\n" + 
+						"		//\\and clone@pre:GuardService \r\n" + 
+						"			//\\implies getWdt() == clone@pre.goRight().getWdt() = clone@pre.goRight().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.UP) {
 			if (!(cloneU.getWdt() == getDelegate().getWdt() && cloneU.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\n"
-								+ "			//\\and getBehaviour()@pre == UP\n"
-								+ "			//\\implies getWdt() == getWdt(goUp())@pre \\and getHgt() = getHgt(goUp())@pre");
+						":EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
+						"		//\\and getBehaviour()@pre == UP\r\n" + 
+						"		//\\and clone@pre:GuardService \r\n" + 
+						"			//\\implies getWdt() == clone@pre.goUp().getWdt() = clone@pre.goUp().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.DOWN) {
 			if (!(cloneD.getWdt() == getDelegate().getWdt() && cloneD.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\n"
-								+ "			//\\and getBehaviour()@pre == DOWN\n"
-								+ "			//\\implies getWdt() == getWdt(goDown())@pre \\and getHgt() = getHgt(goDown())@pre");
+						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
+						"		//\\and getBehaviour()@pre == DOWN\r\n" + 
+						"		//\\and clone@pre:GuardService \r\n" + 
+						"			//\\implies getWdt() == clone@pre.goDown().getWdt() = clone@pre.goDown().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.NEUTRAL) {
 			if (!(cloneN.getWdt() == getDelegate().getWdt() && cloneN.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\n"
-								+ "				//\\and getBehaviour()@pre == NEUTRAL\n"
-								+ "				//\\implies getWdt() == getWdt(doNeutral())@pre \\and getHgt() = getHgt(doNeutral())@pre");
+						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
+						"		//\\and getBehaviour()@pre == NEUTRAL\r\n" + 
+						"		//\\and clone@pre:GuardService \r\n" + 
+						"			//\\implies getWdt() == clone@pre.doNeutral().getWdt() = clone@pre.doNeutral().getHgt()");
 			}
 		}
 	}

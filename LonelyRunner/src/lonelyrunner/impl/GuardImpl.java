@@ -1,5 +1,6 @@
 package lonelyrunner.impl;
 
+import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.GuardService;
 import lonelyrunner.service.PlayerService;
@@ -138,7 +139,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				timeInHole++;
 				return;
 			}
-			if (timeInHole == 5) {
+			if (timeInHole >= 5) {
 				if (behaviour == Move.LEFT) {
 					climbLeft();
 				}
@@ -326,11 +327,18 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	public void doNeutral() {
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
-
+		boolean containGuarddown = false;
+		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
+			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
+				if (cs.getClass().isInstance(GuardService.class)) {
+					containGuarddown = true;
+				}
+			}
+		}
 		// chute libre
 		if (pos != Cell.LAD && pos != Cell.HDR && pos != Cell.HOL) {
 			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
-				if (env.getCellContent(width, height - 1).getCar().isEmpty()) {
+				if (!containGuarddown) {
 					env.getCellContent(width, height).removeCharacter(this);
 					height -= 1;
 					env.getCellContent(width, height).addCar(this);
@@ -345,11 +353,18 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	public void goLeft() {
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
+		boolean containGuarddown = false;
+		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
+			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
+				if (cs.getClass().isInstance(GuardService.class)) {
+					containGuarddown = true;
+				}
+			}
+		}
 		// chute libre
 		if (pos != Cell.LAD && pos != Cell.HDR && pos != Cell.HOL) {
 			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
-				if (env.getCellContent(width, height - 1).getCar().isEmpty()) {
-
+				if (!containGuarddown) {
 					env.getCellContent(width, height).removeCharacter(this);
 					height -= 1;
 					env.getCellContent(width, height).addCar(this);
@@ -358,14 +373,114 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 			}
 		}
-
-		if (width != 0) {
+		if (width > 0) {
 			Cell left = env.getCellNature(width - 1, height);
+			boolean containGuardleft = false;
+			if (!env.getCellContent(width-1, height).getCar().isEmpty()) {
+				for (CharacterService cs : env.getCellContent(width-1, height).getCar()) {
+					if (cs.getClass().isInstance(GuardService.class)) {
+						containGuardleft = true;
+					}
+				}
+			}
 			if (left != Cell.PLT && left != Cell.MTL) {
 				if ((pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD
-						|| !(env.getCellContent(width, height - 1).getCar().isEmpty()))) {
+						|| containGuarddown )) {
+					if(!containGuardleft) {
+						env.getCellContent(width, height).removeCharacter(this);
+						width -= 1;
+						env.getCellContent(width, height).addCar(this);
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void goRight() {
+		Cell pos = env.getCellNature(width, height);
+		Cell down = env.getCellNature(width, height - 1);
+		boolean containGuarddown = false;
+		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
+			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
+				if (cs.getClass().isInstance(GuardService.class)) {
+					containGuarddown = true;
+				}
+			}
+		}
+		// chute libre
+		if (pos != Cell.LAD && pos != Cell.HDR && pos != Cell.HOL) {
+			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
+				if (!containGuarddown) {
 					env.getCellContent(width, height).removeCharacter(this);
-					width -= 1;
+					height -= 1;
+					env.getCellContent(width, height).addCar(this);
+					return;
+				}
+
+			}
+		}
+		if (width < env.getWidth() - 1) {
+			Cell right = env.getCellNature(width + 1, height);
+			boolean containGuardright = false;
+			if (!env.getCellContent(width+1, height).getCar().isEmpty()) {
+				for (CharacterService cs : env.getCellContent(width-1, height).getCar()) {
+					if (cs.getClass().isInstance(GuardService.class)) {
+						containGuardright = true;
+					}
+				}
+			}
+			if (right != Cell.PLT && right != Cell.MTL) {
+				if ((pos == Cell.LAD || pos == Cell.HDR) || (down == Cell.PLT || down == Cell.MTL || down == Cell.LAD
+						|| containGuarddown )) {
+					if(!containGuardright) {
+						env.getCellContent(width, height).removeCharacter(this);
+						width += 1;
+						env.getCellContent(width, height).addCar(this);
+					}
+				}
+			}
+		}
+	}
+	@Override
+	public void goUp() {
+		
+		Cell pos = env.getCellNature(width, height);
+		Cell down = env.getCellNature(width, height - 1);
+		boolean containGuarddown = false;
+		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
+			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
+				if (cs.getClass().isInstance(GuardService.class)) {
+					containGuarddown = true;
+				}
+			}
+		}
+		// chute libre
+		if (pos != Cell.LAD && pos != Cell.HDR && pos != Cell.HOL) {
+			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
+				if (!containGuarddown) {
+					env.getCellContent(width, height).removeCharacter(this);
+					height -= 1;
+					env.getCellContent(width, height).addCar(this);
+					return;
+				}
+
+			}
+		}
+		if (height < env.getHeight() - 1) {
+			Cell cell_up = env.getCellNature(width, height + 1);
+			boolean containGuardup = false;
+			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
+				for (CharacterService cs : env.getCellContent(width + 1, height).getCar()) {
+					if (cs.getClass().isInstance(GuardService.class)) {
+						containGuardup = true;
+					}
+				}
+			}
+			if (pos == Cell.LAD && (cell_up == Cell.LAD || cell_up == Cell.EMP)) {
+				if(!containGuardup) {
+					env.getCellContent(width, height).removeCharacter(this);
+					height += 1;
 					env.getCellContent(width, height).addCar(this);
 				}
 			}

@@ -33,7 +33,7 @@ public interface CharacterService {
 		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) \not in {PLT,MTL,LAD}
 		//\and not exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
 			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
-	//\post: getWdt()@pre != EnvironmentService::getWidth()-1 \and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \not in {MTL,PLT}
+	//\post: getWdt()@pre < EnvironmentService::getWidth()-1 \and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) \not in {MTL,PLT}
 		//\and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt(),getHgt()@pre) \in {LAD,HDR}
 			//\or EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD}
 			//\or \exist CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) )
@@ -41,12 +41,12 @@ public interface CharacterService {
 	public void goRight();
 	
 	//\post: getHgt()@pre == EnvironmentService::getHeight()-1 \implies getHgt() == getHgt()@pre \and getWdt() == getWdt()@pre
-	//\post: getHgt()@pre != EnvironmentService::getHeight()-1 \and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL,PLT,HDR} \implies getHgt() = getHgt()@pre \and getWdt() == getWdt()@pre
+	//\post: getHgt()@pre < EnvironmentService::getHeight()-1 \and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL,PLT,HDR} \implies getHgt() = getHgt()@pre \and getWdt() == getWdt()@pre
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) not in {LAD,HDR}
 		//\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1) not in {MTL, PLT, LAD} 
 		//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre, getWdt()@pre, getHgt()@pre - 1)
 			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
-	//\post: getHgt()@pre != EnvironmentService::getHeight() -  1
+	//\post: getHgt()@pre < EnvironmentService::getHeight() -  1
 		//\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) == LAD
 		//\and EnvironmentService::CellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {LAD,EMP} 
 			//\implies getHgt() = getHgt()@pre + 1 \and getWdt() == getWdt()@pre
@@ -54,7 +54,7 @@ public interface CharacterService {
 	
 
 	//\post: getHgt()@pre == 0 \implies getHgt()==getHgt()@pre \and getWdt() == getWdt()@pre
-	//\post: getHgt()@pre != 0 \and (EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {MTL, PLT} \implies getHgt()==getHgt()@pre \and getWdt() == getWdt()@pre
+	//\post: getHgt()@pre > 0 \and (EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \in {MTL, PLT} \implies getHgt()==getHgt()@pre \and getWdt() == getWdt()@pre
 	//\post: (Environment::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre) \not \in {LAD,HDR}
 		//\and EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre-1) \not \in {PLT,MTL,LAD}
 		//\and not exists CharacterService c \in EnvironmentService::getCellContent(getEnvi()@, getWdt()@pre, getHgt()@pre-1))

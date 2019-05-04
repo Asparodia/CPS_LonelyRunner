@@ -115,11 +115,13 @@ public interface GuardService extends /*include*/ CharacterService {
 		//\and getTimeInHole()@pre>=5 
 		//\and getBehaviour()@pre == RIGHT 
 		//\and clone@pre:GuardService 
+			//\implies getWdt() == clone@pre.climbRight().getWdt() \and getHgt() = clone@pre.climbRight().getHgt()
 	//\post:EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL
 		//\and getTimeInHole()@pre>=5 
 		//\and getBehaviour()@pre == NEUTRAL 
 		//\and clone@pre:GuardService 
 			//\implies getWdt() == clone@pre.doNeutral().getWdt() \and getHgt() = clone@pre.doNeutral().getHgt()
+	
 	//\post:EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL
 		//\and getBehaviour()@pre == LEFT
 		//\and clone@pre:GuardService 
@@ -142,8 +144,11 @@ public interface GuardService extends /*include*/ CharacterService {
 			//\implies getWdt() == clone@pre.doNeutral().getWdt() = clone@pre.doNeutral().getHgt()
 	public void step();
 	
+	
 	// Invariants
 	
+	// EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) \in {EMP,HOL,LAD,HDR}
+	//\exist CharacterService X in EnvironmentService::getCellContent(getEnvi(),getWdt(),getHgt()) \implies X = this
 	//EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == LAD
 		//\and getTarget().getHgt() > getHgt() 
 			//\implies getBehaviour() == UP
