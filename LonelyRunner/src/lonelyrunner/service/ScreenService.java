@@ -25,7 +25,7 @@ public interface ScreenService {
 	
 	//\pre : dig(S,u,v) requires getCellNature(S,u,v) = PLT
 	//\post :getCellNature(u,v) = HOL
-	//\post : \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()  (x!=u or y!=v) \implies getCellNature()@pre = getCellNature() 
+	//\post : \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()  (x!=u or y!=v) \implies getCellNature()@pre = getCellNature()
 	public void dig(int u,int v);
 	
 	//\pre : fill(S,x,y) requires getCellNature(S,x,y) = HOL

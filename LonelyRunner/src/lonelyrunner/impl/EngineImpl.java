@@ -37,6 +37,8 @@ public class EngineImpl implements EngineService {
 	public void init(EditableScreenService es, Couple<Integer, Integer> posChar,
 			ArrayList<Couple<Integer, Integer>> posGuards, ArrayList<Couple<Integer, Integer>> posItems) {
 		
+		status = Status.Playing;
+		
 		EnvironmentImpl envi = new EnvironmentImpl();
 		environment = new EnvironmentContract(envi);
 		environment.init(es);
@@ -68,7 +70,7 @@ public class EngineImpl implements EngineService {
 			this.treasures.add(i);
 		}
 		
-		status = Status.Playing;
+		
 		
 		
 	}
@@ -126,37 +128,6 @@ public class EngineImpl implements EngineService {
 		
 		
 		player.step();
-
-		for (GuardService g : guards) {
-			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
-				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
-				environment.getCellContent(g.getWdt(), g.getHgt()).removeItem();
-				g.step();
-				environment.getCellContent(g.getWdt(), g.getHgt()).setItem(i);
-				for(Item it : treasures) {
-					if(it.getId() == i.getId() ) {
-						if(g.getEnvi().getCellNature(g.getWdt(), g.getHgt()) != Cell.HOL) {
-							i.setCol(g.getWdt());
-							i.setHgt(g.getHgt());
-							it.setCol(g.getWdt());
-							it.setHgt(g.getHgt());
-						}
-						else {
-							// relache l'item si il tombe dans un trou
-							i.setCol(g.getWdt());
-							i.setHgt(g.getHgt()+1);
-							it.setCol(g.getWdt());
-							it.setHgt(g.getHgt()+1);
-						}
-					}
-				}
-				
-			}
-			else {
-				g.step();	
-			}
-			
-		}
 		
 		ArrayList<Item> torem = new ArrayList<>();
 		for (Item i : treasures) {
@@ -169,6 +140,41 @@ public class EngineImpl implements EngineService {
 			}
 		}
 		treasures.removeAll(torem);
+
+		for (GuardService g : guards) {
+//			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
+//				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
+//				environment.getCellContent(g.getWdt(), g.getHgt()).removeItem();
+//				g.step();
+//				environment.getCellContent(g.getWdt(), g.getHgt()).setItem(i);
+//				for(Item it : treasures) {
+//					if(it.getId() == i.getId() ) {
+//						if(g.getEnvi().getCellNature(g.getWdt(), g.getHgt()) != Cell.HOL) {
+////							i.setCol(g.getWdt());
+////							i.setHgt(g.getHgt());
+//							it.setCol(g.getWdt());
+//							it.setHgt(g.getHgt());
+//						}
+//						else {
+//							// relache l'item si il tombe dans un trou
+//							environment.getCellContent(it.getCol(), it.getHgt()).removeItem();
+////							i.setCol(g.getWdt());
+////							i.setHgt(g.getHgt()+1);
+//							it.setCol(g.getWdt());
+//							it.setHgt(g.getHgt()+1);
+//							environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
+//						}
+//					}
+//				}
+//				
+//			}
+//			else {
+				g.step();	
+//			}
+			
+		}
+		
+		
 		
 		for (GuardService g : guards) {
 			if(g.getWdt() == player.getWdt() && g.getHgt() == player.getHgt()) {
@@ -280,4 +286,6 @@ public class EngineImpl implements EngineService {
 	public int getScore() {
 		return score;
 	}
+	
+
 }

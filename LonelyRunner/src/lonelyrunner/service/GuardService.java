@@ -2,7 +2,7 @@ package lonelyrunner.service;
 
 import lonelyrunner.service.utils.Move;
 
-public interface GuardService extends CharacterService {
+public interface GuardService extends /*include*/ CharacterService {
 	
 	// Observators
 	

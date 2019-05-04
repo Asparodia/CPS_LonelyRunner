@@ -596,6 +596,7 @@ public class GuardContract extends GuardDecorator {
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Move getBehaviour_atpre = getDelegate().getBehaviour();
 		int getTimeInHole_atpre = getDelegate().getTimeInHole();
+		
 		GuardImpl cloneR = new GuardImpl();
 		cloneR.init(getDelegate().getEnvi(), getDelegate().getWdt(), getDelegate().getHgt());
 		cloneR.goRight();

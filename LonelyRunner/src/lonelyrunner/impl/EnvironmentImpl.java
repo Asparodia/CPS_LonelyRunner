@@ -1,5 +1,6 @@
 package lonelyrunner.impl;
 
+import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.utils.Cell;
@@ -50,6 +51,10 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService {
 		for (int i = 0; i < base.getWidth(); i++) {
 			for (int j = 0; j < base.getHeight(); j++) {
 				this.env[i][j] = new SetCharItem();
+				this.env[i][j].setItem(base.getCellContent(i, j).getItem());
+				for(CharacterService c : base.getCellContent(i, j).getCar()) {
+					this.env[i][j].addCar(c);
+				}
 			}
 		}
 

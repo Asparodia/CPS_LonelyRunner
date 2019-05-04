@@ -22,7 +22,7 @@ public class CharacterContract extends CharacterDecorator {
 		}
 		boolean chara = (getDelegate().getEnvi().getCellContent(getDelegate().getWdt(), getDelegate().getHgt())).isInside(getDelegate());
 		if(!(chara)) {
-			throw new InvariantError("exist Character X in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre) should implie c = this");	
+			throw new InvariantError("exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre) should implie c = this");	
 		}
 	}
 	
@@ -114,7 +114,7 @@ public class CharacterContract extends CharacterDecorator {
 		}
 		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
-				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty() ) {
+				if( getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()  ) {
 					if(!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre-1 == getDelegate().getHgt()))
 						throw new PostconditionError("goRight()" , "goRight() is impossible while falling");
 				}

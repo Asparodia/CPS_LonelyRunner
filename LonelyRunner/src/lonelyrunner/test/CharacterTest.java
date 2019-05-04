@@ -40,11 +40,13 @@ public class CharacterTest {
 	}
 
 	public void testInvariant() {
-
+		Cell c = env.getCellNature(character.getWdt(), character.getHgt());
+		assertTrue(c == Cell.EMP || c== Cell.HOL || c== Cell.LAD || c== Cell.HDR) ;
+		boolean in =env.getCellContent(character.getWdt(), character.getHgt()).isInside(character);
+		assertTrue(in);
 	}
 
 	public void initialisation() {
-		System.out.println("charac est sur des plt");
 		editscreen.init(10, 15);
 		for (int x = 0; x < editscreen.getWidth(); x++) {
 			editscreen.setNature(x, 1, Cell.PLT);
@@ -111,7 +113,7 @@ public class CharacterTest {
 		editscreen.setNature(5, 1, hol);
 		editscreen.setNature(6, 1, plt);
 		env.init(editscreen);
-		testInvariant();
+
 		boolean error = false;
 		try {
 			character.init(env, 1, 1);
@@ -319,7 +321,9 @@ public class CharacterTest {
 		editscreen.setNature(0, 2, Cell.LAD);
 		env.init(editscreen);
 		character.init(env, 1, 2);
+		testInvariant();
 		character.goLeft();
+		testInvariant();
 		int xbefore = character.getWdt();
 		int ybefore = character.getHgt();
 		testInvariant();
@@ -331,16 +335,17 @@ public class CharacterTest {
 
 	@Test
 	public void testGoUpObstacle() {
-		editscreen.init(3, 4);
+		editscreen.init(4, 4);
 		for (int x = 0; x < editscreen.getWidth(); x++) {
 			editscreen.setNature(x, 1, Cell.PLT);
 		}
 		editscreen.setNature(1, 2, Cell.LAD);
-		editscreen.setNature(1, 2, Cell.MTL);
+		editscreen.setNature(1, 3, Cell.MTL);
 		env.init(editscreen);
 		character.init(env, 0, 2);
+		testInvariant();
 		character.goRight();
-
+		testInvariant();
 		int xbefore = character.getWdt();
 		int ybefore = character.getHgt();
 		testInvariant();
@@ -349,11 +354,12 @@ public class CharacterTest {
 		assertTrue(xbefore == character.getWdt());
 		assertTrue(ybefore == character.getHgt());
 
-		editscreen.setNature(1, 2, Cell.PLT);
+		editscreen.setNature(1, 3, Cell.PLT);
 		env.init(editscreen);
 		character.init(env, 0, 2);
+		testInvariant();
 		character.goRight();
-
+		testInvariant();
 		xbefore = character.getWdt();
 		ybefore = character.getHgt();
 		testInvariant();
@@ -362,11 +368,12 @@ public class CharacterTest {
 		assertTrue(xbefore == character.getWdt());
 		assertTrue(ybefore == character.getHgt());
 
-		editscreen.setNature(1, 2, Cell.HDR);
+		editscreen.setNature(1, 3, Cell.HDR);
 		env.init(editscreen);
 		character.init(env, 0, 2);
+		testInvariant();
 		character.goRight();
-
+		testInvariant();
 		xbefore = character.getWdt();
 		ybefore = character.getHgt();
 		testInvariant();
@@ -404,17 +411,18 @@ public class CharacterTest {
 		}
 		env.init(editscreen);
 		character.init(env, 1, 2);
+		testInvariant();
 		character.goRight();
-
+		testInvariant();
 		int xbefore = character.getWdt();
 		int ybefore = character.getHgt();
 		testInvariant();
 		int j = 0;
 		for (int x = 2; x < 9; x++) {
 			character.goUp();
+			testInvariant();
 			j++;
 		}
-		testInvariant();
 		assertTrue(xbefore == character.getWdt());
 		assertTrue(ybefore + j == character.getHgt());
 	}
@@ -491,7 +499,9 @@ public class CharacterTest {
 		editscreen.setNature(3, 2, Cell.HOL);
 		env.init(editscreen);
 		character.init(env, 2, 3);
+		testInvariant();
 		character.goRight();
+		testInvariant();
 		xbefore = character.getWdt();
 		ybefore = character.getHgt();
 		testInvariant();
@@ -504,7 +514,9 @@ public class CharacterTest {
 		editscreen.setNature(3, 2, Cell.HDR);
 		env.init(editscreen);
 		character.init(env, 2, 3);
+		testInvariant();
 		character.goRight();
+		testInvariant();
 		xbefore = character.getWdt();
 		ybefore = character.getHgt();
 		testInvariant();
@@ -517,7 +529,9 @@ public class CharacterTest {
 		editscreen.setNature(3, 2, Cell.EMP);
 		env.init(editscreen);
 		character.init(env, 2, 3);
+		testInvariant();
 		character.goRight();
+		testInvariant();
 		xbefore = character.getWdt();
 		ybefore = character.getHgt();
 		testInvariant();
@@ -525,6 +539,56 @@ public class CharacterTest {
 		testInvariant();
 		assertTrue(xbefore == character.getWdt());
 		assertTrue(ybefore - 1 == character.getHgt());
+	}
+	@Test
+	public void testManyCharacterOnTheSameCase() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		env.init(editscreen);
+		
+		character.init(env, 1, 2);
+		CharacterContract c2 = new CharacterContract(new CharacterImpl());
+		c2.init(env, 3, 2);
+		
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		testInvariant();
+		c2.goLeft();
+		testInvariant();
+		
+		assertTrue(c2.getWdt() == character.getWdt());
+		assertTrue(c2.getHgt() == character.getHgt());
+	}
+
+	@Test
+	public void testCharacterOnCharacter() {
+		editscreen.init(10, 15);
+		
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(1, 2, Cell.PLT);
+		editscreen.setNature(3, 2, Cell.PLT);
+		
+		env.init(editscreen);
+		CharacterContract c2 = new CharacterContract(new CharacterImpl());
+		c2.init(env, 2, 2);
+		character.init(env, 1, 3);
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		assertTrue(c2.getWdt() == character.getWdt());
+		assertTrue(c2.getHgt()+1 == character.getHgt());
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		assertTrue(character.getWdt() == 3);
+		assertTrue(character.getHgt() == 3);
+		
+		
 	}
 
 }
