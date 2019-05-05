@@ -125,18 +125,6 @@ public class EngineImpl implements EngineService {
 		int currentHp = lives;
 		player.step();
 		
-		ArrayList<Item> torem = new ArrayList<>();
-		for (Item i : treasures) {
-			if(i.getNature() == ItemType.Treasure) {
-				if(i.getCol() == player.getWdt() && i.getHgt() == player.getHgt()) {
-					environment.getCellContent(i.getCol(), i.getHgt()).removeItem();
-					torem.add(i);
-					score++;
-				}
-			}
-		}
-		treasures.removeAll(torem);
-
 		for (GuardService g : guards) {
 //			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
 //				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
@@ -170,7 +158,17 @@ public class EngineImpl implements EngineService {
 			
 		}
 		
-		
+		ArrayList<Item> torem = new ArrayList<>();
+		for (Item i : treasures) {
+			if(i.getNature() == ItemType.Treasure) {
+				if(i.getCol() == player.getWdt() && i.getHgt() == player.getHgt()) {
+					environment.getCellContent(i.getCol(), i.getHgt()).removeItem();
+					torem.add(i);
+					score++;
+				}
+			}
+		}
+		treasures.removeAll(torem);
 		
 		for (GuardService g : guards) {
 			if(g.getWdt() == player.getWdt() && g.getHgt() == player.getHgt()) {

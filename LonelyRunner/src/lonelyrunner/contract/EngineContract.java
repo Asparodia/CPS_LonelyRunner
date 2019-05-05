@@ -7,6 +7,7 @@ import lonelyrunner.contract.contracterr.InvariantError;
 import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.contract.contracterr.PreconditionError;
 import lonelyrunner.decorators.EngineDecorator;
+import lonelyrunner.impl.EnvironmentImpl;
 import lonelyrunner.impl.GuardImpl;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EditableScreenService;
@@ -229,7 +230,18 @@ public class EngineContract extends EngineDecorator {
 			Holes_atpre.add(nh);
 			
 		}
+		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
+		getEnvi_atpre.clone(getDelegate().getEnvironment());
+		ArrayList<Item> Items_atpre = new ArrayList<>();
+		for(Item h : getDelegate().getTreasures() ) {
+			Item nh = new Item(h.getId(),h.getNature(),h.getCol(),h.getHgt());
+			Items_atpre.add(nh);
+			
+		}
 		int nbLive_atpre = getDelegate().getNbLives();
+		int score_atpre = getDelegate().getScore();
+		int hgtPlayer_atpre = getDelegate().getPlayer().getHgt();
+		int wdtPlayer_atpre = getDelegate().getPlayer().getWdt();
 		
 //		ArrayList<GuardService> guards_atpre = new ArrayList<>();
 //		for(GuardService gs : getDelegate().getGuards()) {
@@ -242,7 +254,33 @@ public class EngineContract extends EngineDecorator {
 		getDelegate().step();
 		checkInvariant();
 		
+		for(Item i : Items_atpre) {
+			if(getEnvi_atpre.getCellContent(wdtPlayer_atpre,hgtPlayer_atpre).getItem()!=null) {
+				if(getEnvi_atpre.getCellContent(wdtPlayer_atpre,hgtPlayer_atpre).getItem().getId() == i.getId()) {
+System.out.println("yout");
+					if(!(getDelegate().getScore() == score_atpre+1))
+						throw new PostconditionError("step()", "score should have been incremented");
+					for(Item ni : getDelegate().getTreasures()) {
+						if(!(ni.getId() != i.getId())) {
+							throw new PostconditionError("step()", "this item should be in the item list anymore");
+						}
+					}
+				}
+			}
+		}
 		
+		//\post:  \forall T:Item \in getTreasures()@pre
+			// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
+				//\implies T not in getTreasures() \and getScore() == getScore()@pre + 1
+		//\post: \forall G:Guard \in getGuards() @pre
+			// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
+				//\implies  getNbLives() == getNbLives()@pre - 1
+		
+		//\post: \forall G:Guard \in getGuards()@pre
+			// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) == HOL
+				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
+			// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) != HOL
+					//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
 		
 		for(Hole H : Holes_atpre) {
 			if(H.getTime()<14) {
