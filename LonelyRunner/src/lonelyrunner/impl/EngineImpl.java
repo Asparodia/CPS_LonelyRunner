@@ -22,7 +22,6 @@ public class EngineImpl implements EngineService {
 	
 	ArrayList<Vector<Integer>> guardInit = new ArrayList<Vector<Integer>>();
 	
-	
 	EnvironmentContract environment;
 	PlayerContract player;
 	ArrayList<GuardService> guards = new ArrayList<>();
@@ -123,10 +122,7 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public void step() {
-		player.getWdt();
-		player.getHgt();
-		
-		
+		int currentHp = lives;
 		player.step();
 		
 		ArrayList<Item> torem = new ArrayList<>();
@@ -182,28 +178,26 @@ public class EngineImpl implements EngineService {
 					status = Status.Loss;
 				}
 				lives--;
-				return;
 			}
 		}
 		
 		ArrayList<Hole> holeToRem = new ArrayList<>();
 		for (Hole g : holes) {
 			int time = g.getTime();
+			boolean killHol = false;
 			g.setTime(time+1);
-			if(g.getTime() == 10) {
+			if(g.getTime() == 15) {
 				holeToRem.add(g);
 				if(g.getX() == player.getWdt() && g.getY() == player.getHgt()) {
 					if(lives == 0 ) {
 						status = Status.Loss;
 					}
+					killHol = true;
 					lives--;
-					
-					return;
 				}
-				// getCar la est chelou
 				if(!environment.getCellContent(g.getX(), g.getY()).getCar().isEmpty()) {
 					int nbEntity = environment.getCellContent(g.getX(), g.getY()).getCar().size();
-					if(nbEntity == 1 ) {
+					if(nbEntity == 1 && !killHol ) {
 							GuardService id = ((GuardService)environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
 							
 							int oldId = id.getId();
@@ -241,24 +235,22 @@ public class EngineImpl implements EngineService {
 							}
 							continue;
 						}
-					if(nbEntity == 2) {
+					if(nbEntity == 2  && !killHol) {
 						//ptete faire plus de test ici
 						if(lives == 0 ) {
 							status = Status.Loss;
 						}
 						lives--;
-						return;
-					}
-					else {
-						System.err.println("ici t'es dans l'implem de engine ya un pb 3 perso dans le meme hol");
 					}
 				}
-				environment.fill(g.getX(), g.getY());
-				
+				if(!killHol)
+					environment.fill(g.getX(), g.getY());
 			}
 		}
 		holes.removeAll(holeToRem);
-		
+		if(currentHp > lives) {
+			return;
+		}
 		boolean end = true;
 		for (Item i : treasures) {
 			if(i.getNature() == ItemType.Treasure) {
@@ -268,9 +260,7 @@ public class EngineImpl implements EngineService {
 		if(end) {
 			status = Status.Win;
 			return;
-		}
-		System.out.println(status);
-		
+		}		
 	}
 
 	@Override
@@ -285,6 +275,11 @@ public class EngineImpl implements EngineService {
 	@Override
 	public int getScore() {
 		return score;
+	}
+
+	@Override
+	public ArrayList<Vector<Integer>> guardInitPos() {
+		return guardInit;
 	}
 	
 

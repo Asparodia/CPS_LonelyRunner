@@ -1,6 +1,8 @@
 package lonelyrunner.decorators;
 
 import java.util.ArrayList;
+import java.util.Vector;
+
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
 import lonelyrunner.service.EnvironmentService;
@@ -87,6 +89,11 @@ public class EngineDecorator extends Decorator implements EngineService{
 	@Override
 	public void setNbLives(int l) {
 		getDelegate().setNbLives(l);
+	}
+
+	@Override
+	public ArrayList<Vector<Integer>> guardInitPos() {
+		return getDelegate().guardInitPos();
 	}
 
 }

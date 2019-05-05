@@ -1,14 +1,23 @@
 package lonelyrunner.service.utils;
 
 public class Hole {
+	private static int cpt = 0;
 	private int x;
 	private int y;
 	private int time;
+	private int id;
 	public Hole(int x, int y, int time) {
-		super();
 		this.x = x;
 		this.y = y;
 		this.time = time;
+		id = cpt;
+		cpt++;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public int getX() {
 		return x;

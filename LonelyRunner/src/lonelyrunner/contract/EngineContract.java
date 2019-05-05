@@ -1,10 +1,14 @@
 package lonelyrunner.contract;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import lonelyrunner.contract.contracterr.InvariantError;
+import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.contract.contracterr.PreconditionError;
 import lonelyrunner.decorators.EngineDecorator;
+import lonelyrunner.impl.GuardImpl;
+import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
 import lonelyrunner.service.EnvironmentService;
@@ -48,7 +52,27 @@ public class EngineContract extends EngineDecorator {
 				throw new InvariantError("holes are not synchro with the engine ");
 			}
 		}
+		if(getDelegate().getNbLives()<0) {
+			if(!(getDelegate().getStatus()==Status.Loss)) {
+				throw new InvariantError("the player should have lost he doesnt have HP");
+			}
+		}
+		if(getDelegate().getTreasures().isEmpty()) {
+			if(!(getDelegate().getStatus()==Status.Win)) {
+				throw new InvariantError( "the player should have won there is no more treasure left");
+			}
+		}
 		
+		
+	}
+	@Override
+	public int getNbLives() {
+		return getDelegate().getNbLives();
+	}
+
+	@Override
+	public int getScore() {
+		return getDelegate().getScore();
 	}
 
 	@Override
@@ -92,14 +116,14 @@ public class EngineContract extends EngineDecorator {
 		if (!es.isPlayable()) {
 			throw new PreconditionError("init()", "editable screen not playable");
 		}
-		if (!(es.getCellNature(posChar.getElem1(), posChar.getElem2()) == Cell.EMP)) {
-			throw new PreconditionError("init()", "to init a player you have to be on a emp case");
+		if (!(es.getCellNature(posChar.getElem1(), posChar.getElem2()) == Cell.EMP && ( posChar.getElem1()>= 0 && posChar.getElem2()<es.getWidth()))) {
+			throw new PreconditionError("init()", "to init a player you have to be on a emp case and player coord must be in the screen");
 		}
 		for (Couple<Integer, Integer> c : posGuards) {
 			if (!((es.getCellNature(c.getElem1(), c.getElem2()) == Cell.EMP)
-					&& (c.getElem1() != posChar.getElem1() || c.getElem2() != posChar.getElem2()))) {
+					&& (c.getElem1() != posChar.getElem1() || c.getElem2() != posChar.getElem2()) && ( c.getElem1()>= 0 && c.getElem2()<es.getWidth()))) {
 				throw new PreconditionError("init()",
-						"guard must be init on a emp case and not on the same case as the player");
+						"guard must be init on a emp case and not on the same case as the player and guard coord must be in the screen");
 			}
 		}
 		for (Couple<Integer, Integer> c : posItems) {
@@ -112,69 +136,176 @@ public class EngineContract extends EngineDecorator {
 			if (!( ((es.getCellNature(c.getElem1(), c.getElem2() - 1) == Cell.MTL
 					|| es.getCellNature(c.getElem1(), c.getElem2() - 1) == Cell.PLT)
 					&& es.getCellNature(c.getElem1(), c.getElem2()) == Cell.EMP) && (c.getElem1() != posChar.getElem1()
-					|| c.getElem2() != posChar.getElem2()))) {
+					|| c.getElem2() != posChar.getElem2()) && ( c.getElem1()>= 0 && c.getElem2()<es.getWidth()) ) ) {
 				throw new PreconditionError("init()",
-						"cant put an item on a case if it's not emp or above a mtl or a plt case and not on the same case as a the player");
+						"cant put an item on a case if it's not emp or above a mtl or a plt case and not on the same case as a the player and item coord must be in the screen");
 			}
 		}
 		getDelegate().init(es, posChar, posGuards, posItems);
+		checkInvariant();
+		
+		if(!(getDelegate().getStatus()==Status.Playing)) {
+			throw new PostconditionError("init()", "engine status should be at playing after init");
+		}
+		if(!(getDelegate().getEnvironment().getCellContent(getDelegate().getPlayer().getWdt(), getDelegate().getPlayer().getHgt()).isInside(getDelegate().getPlayer()))) {
+			throw new PostconditionError("init()", "player is not on the right place");
+		}
+		for (int i =0;i<getDelegate().getEnvironment().getWidth();i++){
+			for(int j =0;j<getDelegate().getEnvironment().getHeight();j++) {
+				if(i!=getDelegate().getPlayer().getWdt() || j!=getDelegate().getPlayer().getHgt()) {
+					if(!(!getDelegate().getEnvironment().getCellContent(i,j).isInside(getDelegate().getPlayer()))) {
+						throw new PostconditionError("init()", "player is not on the right place");
+					}
+				}
+			}
+		}
+		for(GuardService gs : getDelegate().getGuards()) {
+			if(!(getDelegate().getEnvironment().getCellContent(gs.getWdt(), gs.getHgt()).isInside(gs))) {
+				throw new PostconditionError("init()", "guard is not on the right place");
+			}
+			for (int i =0;i<getDelegate().getEnvironment().getWidth();i++){
+				for(int j =0;j<getDelegate().getEnvironment().getHeight();j++) {
+					if(i!=gs.getWdt() || j!=gs.getHgt()) {
+						if(!(!getDelegate().getEnvironment().getCellContent(i,j).isInside(gs))) {
+							throw new PostconditionError("init()", "guard is not on the right place");
+						}
+					}
+				}
+			}
+		}
+		for(Item it : getDelegate().getTreasures()) {
+			if(!(getDelegate().getEnvironment().getCellContent(it.getCol(), it.getHgt()).getItem().getId() == it.getId())) {
+				throw new PostconditionError("init()", "item is not on the right place");
+			}
+			for (int i =0;i<getDelegate().getEnvironment().getWidth();i++){
+				for(int j =0;j<getDelegate().getEnvironment().getHeight();j++) {
+					if(i!=it.getCol() || j!=it.getHgt()) {
+						if(!(!( getDelegate().getEnvironment().getCellContent(i,j).getItem() != null && (getDelegate().getEnvironment().getCellContent(i,j).getItem().getId()) == it.getId()) ) ) {
+							throw new PostconditionError("init()", "item is not on the right place");
+						}
+					}
+				}
+			}
+		}
+		if(!(getDelegate().getNbLives()==2)) {
+			throw new PostconditionError("init()", "number of lives should be 2");
+		}
+		if(!(getDelegate().getScore()==0))
+			throw new PostconditionError("init()", "score should be 0");
+		
+		if(!(getDelegate().getPlayer().getEngine() == getDelegate())) {
+			throw new PostconditionError("init()", "player engine is not this engine");
+		}
+		for(Vector<Integer> v : getDelegate().guardInitPos()) {
+			for(GuardService g : getDelegate().getGuards()) {
+				if(g.getId() == v.get(0)) {
+					if(!(g.getHgt() == v.get(2) && g.getWdt() == v.get(1)))
+						throw new PostconditionError("init()", "guardInitPos should have all init pos of guards");
+				}
+			}
+		}
 	}
 
-	// \post: \forall T:Item \in getTreasures()
-	// T \in
-	// EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
-	// \implies T not in getTreasures() \and getScore() == getScore()@pre + 1
-	// \post: \forall G:Guard \in getGuards()
-	// G \in
-	// EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
-	// \implies getNbLives() == getNbLives()@pre - 1
-	// \post: \forall G:Guard \in getGuards()@pre
-	// t:Item \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
-	// \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G))
-	// == HOL
-	// \implies t \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
-	// t:Item \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
-	// \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G))
-	// != HOL
-	// \implies t \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
-	// \forall H:Hole \in getHoles()
-	// H.time == 15 \and PlayerService p in
-	// EnvironmentService::getCellContent(H.x,H.y)
-	// \implies getNbLives() == getNbLives()@pre - 1
-	// H.time == 15 \and GuardService g in
-	// EnvironmentService::getCellContent(H.x,H.y)
-	// \implies getHoles() == getHoles()@pre \minus H \and g.getHdt() == g.initPos.x
-	// \and g.getWdt() == g.initPos.y
-	// H.time == 15 \implies getHoles() == getHoles()@pre \minus H
-	// \post: getTreasures() == empty \implies getStatus() == Win
-	// \post: getNbLives() <= 0 \implies getStatus() == Loss
+	//\post:  \forall T:Item \in getTreasures()
+		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
+			//\implies T not in getTreasures() \and getScore() == getScore()@pre + 1
+	//\post: \forall G:Guard \in getGuards() 
+		// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
+			//\implies  getNbLives() == getNbLives()@pre - 1
+	//\post: \forall G:Guard \in getGuards()@pre
+		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) 
+			//\and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) == HOL
+				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
+		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) 
+			//\and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) != HOL
+				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
+	 
 	@Override
 	public void step() {
+		ArrayList<Hole> Holes_atpre = new ArrayList<>();
+		for(Hole h : getDelegate().getHoles() ) {
+			Hole nh = new Hole(h.getX(),h.getY(),h.getTime());
+			nh.setId(h.getId());
+			Holes_atpre.add(nh);
+			
+		}
+		int nbLive_atpre = getDelegate().getNbLives();
+		
+//		ArrayList<GuardService> guards_atpre = new ArrayList<>();
+//		for(GuardService gs : getDelegate().getGuards()) {
+//			GuardImpl clone = new GuardImpl();
+//			clone.clone(gs);
+//			guards_atpre.add(clone);
+//		}
+				
+		checkInvariant();
 		getDelegate().step();
+		checkInvariant();
+		
+		
+		
+		for(Hole H : Holes_atpre) {
+			if(H.getTime()<14) {
+				boolean in = false;
+				boolean timeIncr = false;
+				for(Hole h : getDelegate().getHoles()) {
+					if(h.getId() == H.getId()) {
+						in = true;
+						if(h.getTime() == H.getTime()+1 && getDelegate().getStatus() == Status.Playing) {
+							timeIncr = true;
+						}
+					}
+				}
+				if(!(in && timeIncr)){
+					throw new PostconditionError("step()", "time of holes should be incremented and if this time is strictly under 15 its must still be getHole ");
+				}
+			}
+			if(H.getTime() == 14) {
+				if(getDelegate().getEnvironment().getCellContent(H.getX(), H.getY()).isInside(getDelegate().getPlayer())) {
+					if(!(getDelegate().getNbLives() == nbLive_atpre-1)) {
+						throw new PostconditionError("step()", "the player is on a hole that will be fill so he have to lose a life");
+					}
+				}
+				
+				for(Hole h : getDelegate().getHoles()) {
+					if(!(h.getId()!=H.getId()))
+						throw new PostconditionError("step()", "this hole should have been filled");
+				}
+//				for(GuardService gs : guards_atpre) {
+//					for(CharacterService s :getDelegate().getEnvironment().getCellContent(H.getX(), H.getY()).getCar() ) {
+//						if(s.getClass()==GuardImpl.class) {
+//							if(gs.getId() == ((GuardService)s).getId()) {
+//								System.out.println("damn");
+//							}
+//						}
+//					}
+//				}
+				
+			}
+		}
+		
 	}
 
 	@Override
 	public void setCommand(Move c) {
+		checkInvariant();
 		getDelegate().setCommand(c);
+		checkInvariant();
+		if(!(getDelegate().getNextCommand()==c)) {
+			throw new PostconditionError("setCommand("+c+")", "nextCommande should have been "+c);
+		}
 
 	}
 
 	@Override
 	public void setNbLives(int l) {
+		checkInvariant();
 		getDelegate().setNbLives(l);
+		checkInvariant();
+		if(!(getDelegate().getNbLives()==l)) {
+			throw new PostconditionError("setNbLives("+l+")", "nbLives should have been "+l);
+		}
 	}
 
-	@Override
-	public int getNbLives() {
-		return getDelegate().getNbLives();
-	}
-
-	@Override
-	public int getScore() {
-		return getDelegate().getScore();
-	}
+	
 }

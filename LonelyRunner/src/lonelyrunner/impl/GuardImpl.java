@@ -27,6 +27,10 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		target = t;
 		timeInHole = 0;
 	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@Override
 	public int getId() {
