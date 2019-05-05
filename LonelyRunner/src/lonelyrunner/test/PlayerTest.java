@@ -934,5 +934,107 @@ public class PlayerTest {
 		assertTrue(xbefore == player.getWdt());
 		assertTrue(ybefore == player.getHgt());
 	}
+	
+	@Test
+	public void testDigLUnderPLTOrMTL() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(0, 2, Cell.PLT);
+		
+		env.init(editscreen);
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
+				new ArrayList<Couple<Integer, Integer>>());
+		env = engine.getEnvironment();
+		
+		player.init(env, 1, 2, engine);
+
+		Cell beforeDig = env.getCellNature(0, 1);
+		int xbefore = player.getWdt();
+		int ybefore = player.getHgt();
+		testInvariant();
+		player.digL();
+		testInvariant();
+		Cell afterDig = env.getCellNature(0, 1);
+		assertTrue(afterDig == beforeDig);
+		assertTrue(xbefore == player.getWdt());
+		assertTrue(ybefore == player.getHgt());
+		
+		editscreen.setNature(0, 2, Cell.MTL);
+		
+		env.init(editscreen);
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
+				new ArrayList<Couple<Integer, Integer>>());
+		env = engine.getEnvironment();
+		
+		player.init(env, 1, 2, engine);
+
+		beforeDig = env.getCellNature(0, 1);
+		xbefore = player.getWdt();
+		ybefore = player.getHgt();
+		testInvariant();
+		player.digL();
+		testInvariant();
+		afterDig = env.getCellNature(0, 1);
+		assertTrue(afterDig == beforeDig);
+		assertTrue(xbefore == player.getWdt());
+		assertTrue(ybefore == player.getHgt());
+
+		
+	}
+	
+	@Test
+	public void testDigRUnderPLTOrMTL() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(2, 2, Cell.PLT);
+		
+		env.init(editscreen);
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
+				new ArrayList<Couple<Integer, Integer>>());
+		env = engine.getEnvironment();
+		
+		player.init(env, 1, 2, engine);
+
+		Cell beforeDig = env.getCellNature(2, 1);
+		int xbefore = player.getWdt();
+		int ybefore = player.getHgt();
+		testInvariant();
+		player.digR();
+		testInvariant();
+		Cell afterDig = env.getCellNature(2, 1);
+		assertTrue(afterDig == beforeDig);
+		assertTrue(xbefore == player.getWdt());
+		assertTrue(ybefore == player.getHgt());
+		
+		editscreen.setNature(2, 2, Cell.MTL);
+		
+		env.init(editscreen);
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
+				new ArrayList<Couple<Integer, Integer>>());
+		env = engine.getEnvironment();
+		
+		player.init(env, 1, 2, engine);
+
+		beforeDig = env.getCellNature(2, 1);
+		xbefore = player.getWdt();
+		ybefore = player.getHgt();
+		testInvariant();
+		player.digR();
+		testInvariant();
+		afterDig = env.getCellNature(2, 1);
+		assertTrue(afterDig == beforeDig);
+		assertTrue(xbefore == player.getWdt());
+		assertTrue(ybefore == player.getHgt());
+	}
 
 }

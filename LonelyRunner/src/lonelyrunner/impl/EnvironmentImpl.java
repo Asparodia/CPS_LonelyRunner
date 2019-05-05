@@ -77,7 +77,7 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService {
 			}
 		}
 	}
-	public void clone2(EnvironmentService base,GuardService id) {
+	public void clone2(EnvironmentService base) {
 		this.height = base.getHeight();
 		this.width = base.getWidth();
 		this.cells = new Cell[width][height];
@@ -96,15 +96,13 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService {
 				this.env[i][j].setItem(base.getCellContent(i, j).getItem());
 				for(CharacterService c : base.getCellContent(i, j).getCar()) {
 					if(c.getClass()==(GuardImpl.class)) {
-						if(((GuardService)c).getId()==id.getId()) {
-							continue;
-						}
 						this.env[i][j].addCar((GuardService)c);
 						
 					}
 				}
 			}
 		}
+		
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeight(); j++) {
 				this.cells[i][j] = base.getCellNature(i, j);

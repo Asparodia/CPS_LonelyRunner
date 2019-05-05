@@ -47,13 +47,13 @@ public class EngineImpl implements EngineService {
 		player = new PlayerContract(p);
 		player.init(environment, posChar.getElem1(), posChar.getElem2(),this);
 		
-		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).addCar(player.getDelegate());
+//		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).addCar(player.getDelegate());
 		
 		for(Couple<Integer,Integer> c : posGuards) {
 			GuardImpl g = new GuardImpl();
 			GuardContract gc = new GuardContract(g);
 			gc.init(environment,c.getElem1(),c.getElem2(),player);
-			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
+//			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
 			this.guards.add(gc);
 			Vector <Integer> vec = new Vector<>();
 			vec.add(gc.getId());

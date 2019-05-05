@@ -1,6 +1,5 @@
 package lonelyrunner.impl;
 
-import lonelyrunner.contract.contracterr.PostconditionError;
 import lonelyrunner.service.CharacterService;
 import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.GuardService;
@@ -107,6 +106,15 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 			}
 		}
+		if (pos == Cell.LAD && (down != Cell.MTL && down != Cell.PLT && !containGuarddown)) {
+			if (Math.abs(width - wdtTarger) > Math.abs(height - hgtTarger)) {
+				if ((hgtTarger < height)) {
+					behaviour = Move.DOWN;
+					set = true;
+				}
+			}
+		}
+		
 		if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) || containGuarddown) && !set) {
 			if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
 				if (wdtTarger > width) {
@@ -117,25 +125,12 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					behaviour = Move.LEFT;
 					set = true;
 				}
-				if (wdtTarger == width) {
-					behaviour = Move.NEUTRAL;
-					set = true;
-				}
+//				if (wdtTarger == width) {
+//					behaviour = Move.NEUTRAL;
+//					set = true;
+//				}
 
 			}
-		}
-
-		if (pos == Cell.LAD && (hgtTarger > height) && !set) {
-			behaviour = Move.UP;
-			set = true;
-		}
-		if (pos == Cell.LAD && (hgtTarger < height) && !set) {
-			behaviour = Move.DOWN;
-			set = true;
-		}
-		if (pos == Cell.LAD && (hgtTarger == height) && !set) {
-			behaviour = Move.NEUTRAL;
-			set = true;
 		}
 
 		if ((pos == Cell.HOL || pos == Cell.HDR)
@@ -160,6 +155,10 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				set = true;
 
 			}
+		}
+		if (pos == Cell.LAD && (hgtTarger == height) && !set) {
+			behaviour = Move.NEUTRAL;
+			set = true;
 		}
 
 		set = false;
@@ -273,7 +272,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-
 				if (cs.getClass() == (GuardImpl.class)) {
 					containGuarddown = true;
 				}
@@ -449,8 +447,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		this.target = ps.getTarget();
 		this.timeInHole = ps.getTimeInHole();
 		EnvironmentImpl envi = new EnvironmentImpl();
-		
-		envi.clone2(ps.getEnvi(), ps);
+		envi.clone2(ps.getEnvi());
 		this.env = envi;
 	}
 

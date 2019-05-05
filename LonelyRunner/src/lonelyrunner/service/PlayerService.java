@@ -24,6 +24,7 @@ public interface PlayerService extends/*include*/ CharacterService{
 				//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
 	//\post: getWdt()@pre > 0 \and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) \in {MTL,PLT} \or \exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1))
 			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre-1) == PLT 
+			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) not in {PLT, MTL}
 			//\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre 
 			//\and not exist i:Item in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre))
 				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()-1,getHgt()-1) == HOL
@@ -41,6 +42,7 @@ public interface PlayerService extends/*include*/ CharacterService{
 				//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
 	//\post: getWdt()@pre != EnvironmentService::getWidth()-1 \and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) \in {MTL,PLT} \or \exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1))
 			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre-1) == PLT 
+			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) not in {PLT, MTL}
 			//\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) 
 			//\and not exist i:Item in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre))
 				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()+1,getHgt()-1) == HOL 

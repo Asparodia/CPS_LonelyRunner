@@ -109,8 +109,9 @@ public class PlayerContract extends PlayerDecorator{
 		if( getWdt_atpre > 0 ) {
 			if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()))) {
 				Cell cell_leftdown = getEnvi_atpre.getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt()-1);
+				Cell cell_left = getEnvi_atpre.getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt());
 				if( cell_leftdown == Cell.PLT ) {
-					if(getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar().isEmpty() && getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getItem() == null) {
+					if(getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getCar().isEmpty() && getEnvi_atpre.getCellContent(getWdt_atpre-1, getHgt_atpre).getItem() == null && (cell_left != Cell.MTL && cell_left != Cell.PLT ) ) {
 						if(!(getDelegate().getEnvi().getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt()-1) == Cell.HOL)) {
 							throw new PostconditionError("digL()" , "the cell should have been hol");
 						}
@@ -201,8 +202,9 @@ public class PlayerContract extends PlayerDecorator{
 		if( getWdt_atpre < getEnvi_atpre.getHeight()-1 ) {
 			if((cell_down == Cell.MTL || cell_down == Cell.PLT) || (!(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()))) {
 				Cell cell_rightdown = getDelegate().getEnvi().getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt()-1);
+				Cell cell_right = getDelegate().getEnvi().getCellNature(getDelegate().getWdt()+1, getDelegate().getHgt());
 				if( cell_rightdown == Cell.PLT ) {
-					if(getEnvi_atpre.getCellContent(getWdt_atpre+1, getHgt_atpre).getCar().isEmpty() && getEnvi_atpre.getCellContent(getWdt_atpre+1, getHgt_atpre).getItem() == null) {
+					if(getEnvi_atpre.getCellContent(getWdt_atpre+1, getHgt_atpre).getCar().isEmpty() && getEnvi_atpre.getCellContent(getWdt_atpre+1, getHgt_atpre).getItem() == null  && (cell_right != Cell.MTL && cell_right != Cell.PLT )) {
 						if(!(getDelegate().getEnvi().getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt()-1) == Cell.HOL)) {
 							throw new PostconditionError("digR()" , "the cell should have been hol");
 						}
