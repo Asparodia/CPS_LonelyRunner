@@ -81,8 +81,14 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				doNeutral();
 			}
 		}
+		
+		nextBehaviour();
 
-		pos = env.getCellNature(width, height);
+		
+	}
+	
+	public void nextBehaviour() {
+		Cell pos = env.getCellNature(width, height);
 		int hgtTarger = target.getHgt();
 		int wdtTarger = target.getWdt();
 		Cell down = env.getCellNature(width, height - 1);
@@ -135,7 +141,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					canU = false;
 				}
 			}
-			Cell up = env.getCellNature(width + 1, height);
+			Cell up = env.getCellNature(width , height+1);
 			if (up == Cell.MTL || up == Cell.PLT) {
 				canU = false;
 			}
@@ -163,19 +169,21 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		}
 		
 		if (pos == Cell.LAD && !canD) {
-			if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
+			if (Math.abs(width - wdtTarger) <= Math.abs(height - hgtTarger)) {
 				if (hgtTarger > height) {
 					behaviour = Move.UP;
 				}
 			}
 		}
+		
 		if ((pos == Cell.LAD) && (down != Cell.MTL && down != Cell.PLT && !containGuarddown)) {
-			if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
+			if (Math.abs(width - wdtTarger) <= Math.abs(height - hgtTarger)) {
 				if ((hgtTarger < height)) {
 					behaviour = Move.DOWN;
 				}
 			}
 		}
+		
 		if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) || containGuarddown)) {
 			if (Math.abs(width - wdtTarger) > Math.abs(height - hgtTarger)) {
 				if (wdtTarger > width) {
@@ -208,7 +216,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			}
 		}
 		if ((pos == Cell.EMP || pos == Cell.HDR) && (down != Cell.MTL && down != Cell.PLT && !containGuarddown)) {
-			if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
+			if (Math.abs(width - wdtTarger) <= Math.abs(height - hgtTarger)) {
 				if ((hgtTarger < height)) {
 					behaviour = Move.DOWN;
 				}
@@ -245,7 +253,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			boolean containGuardleft = false;
 			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
-					if (cs.getClass() == (GuardImpl.class)) {
+					if (cs.getClass() == (GuardImpl.class)){
 						containGuardleft = true;
 					}
 				}
@@ -523,147 +531,4 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		envi.clone2(ps.getEnvi());
 		this.env = envi;
 	}
-
 }
-
-//if (pos == Cell.LAD) {
-//	
-//	if (Math.abs(width - wdtTarger) < Math.abs(height - hgtTarger)) {
-//		if (hgtTarger > height) {
-//			if (canU) {
-//				behaviour = Move.UP;
-//				set = true;
-//			} else {
-//				if (wdtTarger > width) {
-//					if (canR) {
-//						behaviour = Move.RIGHT;
-//						set = true;
-//					} else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//				if (wdtTarger < width) {
-//					if (canL) {
-//						behaviour = Move.LEFT;
-//						set = true;
-//					} else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//			}
-//
-//		}
-//		if (hgtTarger < height) {
-//			if (canD) {
-//				behaviour = Move.DOWN;
-//				set = true;
-//			}
-//			else {
-//				if (wdtTarger > width) {
-//					if (canR) {
-//						behaviour = Move.RIGHT;
-//						set = true;
-//					}
-//					else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//				if (wdtTarger < width) {
-//					if (canL) {
-//						behaviour = Move.LEFT;
-//						set = true;
-//					}
-//					else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//			}
-//		}
-//		else {
-//			if (wdtTarger > width) {
-//				if (canR) {
-//					behaviour = Move.RIGHT;
-//					set = true;
-//				}
-//				else {
-//					behaviour = Move.NEUTRAL;
-//					set = true;
-//				}
-//			}
-//			if (wdtTarger < width) {
-//				if (canL) {
-//					behaviour = Move.LEFT;
-//					set = true;
-//				}
-//				else {
-//					behaviour = Move.NEUTRAL;
-//					set = true;
-//				}
-//			}
-//		}
-//	}
-//	else {
-//		if (wdtTarger > width) {
-//			if (canR) {
-//				behaviour = Move.RIGHT;
-//				set = true;
-//			} else {
-//				if(hgtTarger > height) {
-//					if(canU) {
-//						behaviour = Move.UP;
-//						set = true;
-//					}
-//					else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//				if(hgtTarger < height) {
-//					if(canD) {
-//						behaviour = Move.DOWN;
-//						set = true;
-//					}
-//					else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//				
-//			}
-//
-//		}
-//		if (wdtTarger < width) {
-//			if (canL) {
-//				behaviour = Move.LEFT;
-//				set = true;
-//			} else {
-//				if(hgtTarger > height) {
-//					if(canU) {
-//						behaviour = Move.UP;
-//						set = true;
-//					}
-//					else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//				if(hgtTarger < height) {
-//					if(canD) {
-//						behaviour = Move.DOWN;
-//						set = true;
-//					}
-//					else {
-//						behaviour = Move.NEUTRAL;
-//						set = true;
-//					}
-//				}
-//				
-//			}
-//
-//		}
-//	}
-//}
