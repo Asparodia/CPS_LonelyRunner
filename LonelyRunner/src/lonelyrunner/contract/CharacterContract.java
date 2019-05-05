@@ -96,7 +96,6 @@ public class CharacterContract extends CharacterDecorator {
 
 	@Override
 	public void goRight() {
-
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -105,7 +104,8 @@ public class CharacterContract extends CharacterDecorator {
 
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
-
+		
+		
 		checkInvariant();
 		getDelegate().goRight();
 		checkInvariant();

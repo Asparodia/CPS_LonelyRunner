@@ -63,7 +63,9 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService {
 							this.env[i][j].addCar((PlayerService)c);
 						}
 						else {
-							System.out.println(c.getClass()== (PlayerImpl.class));
+							if(c.getClass()== (CharacterImpl.class)) {
+								this.env[i][j].addCar((CharacterService)c);
+							}
 						}
 					}
 					

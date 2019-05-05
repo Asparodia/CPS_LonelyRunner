@@ -65,6 +65,20 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 	@Override
 	public void digL() {
+		
+		Cell pos = env.getCellNature(width, height);
+		Cell down = env.getCellNature(width, height - 1);
+		// chute libre
+		if (pos != Cell.LAD && pos != Cell.HDR) {
+			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
+				if (env.getCellContent(width, height - 1).getCar().isEmpty()) {
+					env.getCellContent(width, height).removeCharacter(this);
+					height -= 1;
+					env.getCellContent(width, height).addCar(this);
+					return;
+				}
+			}
+		}
 
 		Cell cell_down = getEnvi().getCellNature(getWdt(), getHgt() - 1);
 		if (this.getWdt() > 0) {
@@ -85,6 +99,20 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 	@Override
 	public void digR() {
+		
+		Cell pos = env.getCellNature(width, height);
+		Cell down = env.getCellNature(width, height - 1);
+		// chute libre
+		if (pos != Cell.LAD && pos != Cell.HDR) {
+			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {
+				if (env.getCellContent(width, height - 1).getCar().isEmpty()) {
+					env.getCellContent(width, height).removeCharacter(this);
+					height -= 1;
+					env.getCellContent(width, height).addCar(this);
+					return;
+				}
+			}
+		}
 		
 		Cell cell_down = getEnvi().getCellNature(getWdt(), getHgt() - 1);
 		if (this.getWdt() < env.getWidth() - 1) {

@@ -111,20 +111,22 @@ public class PlayerTest {
 		for (int x = 0; x < editscreen.getWidth(); x++) {
 			editscreen.setNature(x, 0, Cell.MTL);
 		}
+		
+		editscreen.setNature(0, 1, Cell.MTL);
+		
 		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
 		treasures.add(new Couple<Integer,Integer>(9,1));
 		engine.init(editscreen, new Couple<Integer, Integer>(1, 1), 
 				new ArrayList<Couple<Integer, Integer>>(), treasures);
-		
-		editscreen.setNature(0, 1, Cell.MTL);
 		env = engine.getEnvironment();
+		
 		player.init(env, 1, 1, engine);
+		
 		int xbefore = player.getWdt();
 		int ybefore = player.getHgt();
 		testInvariant();
 		player.goLeft();
 		testInvariant();
-		System.out.println(player.getWdt()+" "+player.getHgt());
 		assertTrue(xbefore == player.getWdt());
 		assertTrue(ybefore == player.getHgt());
 
@@ -153,8 +155,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 0, Cell.MTL);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 3, engine);
 
@@ -174,8 +178,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 0, Cell.MTL);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 1, engine);
 
@@ -195,8 +201,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 0, Cell.MTL);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(14, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(14, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 14, 1, engine);
 
@@ -217,8 +225,10 @@ public class PlayerTest {
 		}
 		editscreen.setNature(1, 1, Cell.MTL);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 1, engine);
 		int xbefore = player.getWdt();
@@ -231,8 +241,10 @@ public class PlayerTest {
 
 		editscreen.setNature(1, 1, Cell.PLT);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 1, engine);
 		xbefore = player.getWdt();
@@ -251,8 +263,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 0, Cell.MTL);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 3, engine);
 		int xbefore = player.getWdt();
@@ -271,8 +285,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 0, Cell.MTL);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 1, 1, engine);
 		int xbefore = player.getWdt();
@@ -292,8 +308,10 @@ public class PlayerTest {
 		}
 		editscreen.setNature(0, 1, Cell.LAD);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(2,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 1, 1, engine);
 		testInvariant();
@@ -317,8 +335,10 @@ public class PlayerTest {
 		editscreen.setNature(1, 1, Cell.LAD);
 		editscreen.setNature(1, 2, Cell.MTL);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(2,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 1, engine);
 		testInvariant();
@@ -334,8 +354,10 @@ public class PlayerTest {
 
 		editscreen.setNature(1, 2, Cell.PLT);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(2,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 1, engine);
 		testInvariant();
@@ -351,8 +373,10 @@ public class PlayerTest {
 
 		editscreen.setNature(1, 2, Cell.HDR);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(2,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 1, engine);
 		testInvariant();
@@ -375,8 +399,10 @@ public class PlayerTest {
 		}
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 3, engine);
 
@@ -401,8 +427,10 @@ public class PlayerTest {
 			editscreen.setNature(1, x, Cell.LAD);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 1), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 1, engine);
 		testInvariant();
@@ -432,8 +460,10 @@ public class PlayerTest {
 		}
 		editscreen.setNature(1, 1, Cell.MTL);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(3,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 1, 2, engine);
 
@@ -447,8 +477,8 @@ public class PlayerTest {
 
 		editscreen.setNature(1, 1, Cell.PLT);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 1, 2, engine);
 
@@ -471,8 +501,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 1, Cell.PLT);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 3, engine);
 		int xbefore = player.getWdt();
@@ -496,8 +528,10 @@ public class PlayerTest {
 		editscreen.setNature(2, 2, Cell.MTL);
 		editscreen.setNature(3, 2, Cell.LAD);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 3, engine);
 
@@ -513,8 +547,8 @@ public class PlayerTest {
 		editscreen.setNature(2, 2, Cell.MTL);
 		editscreen.setNature(3, 2, Cell.HDR);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 3, engine);
 		testInvariant();
@@ -531,8 +565,8 @@ public class PlayerTest {
 		editscreen.setNature(2, 2, Cell.MTL);
 		editscreen.setNature(3, 2, Cell.EMP);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 3, engine);
 		testInvariant();
@@ -565,8 +599,10 @@ public class PlayerTest {
 
 		editscreen.setNature(0, 1, mtl);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 1, 2, engine);
 		int xbefore = player.getWdt();
@@ -581,8 +617,8 @@ public class PlayerTest {
 		editscreen.setNature(1, 1, hdr);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(2, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 2, 2, engine);
 		xbefore = player.getWdt();
@@ -597,8 +633,8 @@ public class PlayerTest {
 		editscreen.setNature(2, 1, emp);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(3, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(3, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 3, 2, engine);
 		xbefore = player.getWdt();
@@ -613,8 +649,8 @@ public class PlayerTest {
 		editscreen.setNature(3, 1, lad);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(4, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(4, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 4, 2, engine);
 		xbefore = player.getWdt();
@@ -638,8 +674,8 @@ public class PlayerTest {
 		assertTrue(beforeDig == Cell.PLT);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(5, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(5, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 5, 2, engine);
 
@@ -693,8 +729,10 @@ public class PlayerTest {
 
 		editscreen.setNature(14, 1, mtl);
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(13, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(0,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(13, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 13, 2, engine);
 		int xbefore = player.getWdt();
@@ -709,8 +747,8 @@ public class PlayerTest {
 		editscreen.setNature(13, 1, hdr);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(12, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(12, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 12, 2, engine);
 		xbefore = player.getWdt();
@@ -725,8 +763,8 @@ public class PlayerTest {
 		editscreen.setNature(12, 1, emp);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(11, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(11, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 11, 2, engine);
 		xbefore = player.getWdt();
@@ -741,8 +779,8 @@ public class PlayerTest {
 		editscreen.setNature(11, 1, lad);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(10, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(10, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 10, 2, engine);
 		xbefore = player.getWdt();
@@ -767,8 +805,8 @@ public class PlayerTest {
 		assertTrue(beforeDig == Cell.PLT);
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(8, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(8, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 8, 2, engine);
 
@@ -814,8 +852,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 1, Cell.PLT);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 2, engine);
 		int xbefore = player.getWdt();
@@ -838,8 +878,10 @@ public class PlayerTest {
 			editscreen.setNature(x, 1, Cell.PLT);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(14, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(14, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 14, 2, engine);
 		int xbefore = player.getWdt();
@@ -861,13 +903,14 @@ public class PlayerTest {
 			editscreen.setNature(x, 1, Cell.PLT);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(14, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(3,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(14, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 14, 2, engine);
 		PlayerContract p2 = new PlayerContract(new PlayerImpl());
 
-		env.getCellContent(13, 2).setItem(new Item(0, ItemType.Treasure, 13, 2));
 		Cell beforeDig = env.getCellNature(13, 1);
 		int xbefore = player.getWdt();
 		int ybefore = player.getHgt();
@@ -880,10 +923,11 @@ public class PlayerTest {
 		assertTrue(ybefore == player.getHgt());
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(14, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
-		player.init(env, 0, 2, engine);
+		player.init(env, 14, 2, engine);
 		p2.init(env, 13, 2);
 		env.getCellContent(13, 2).addCar(p2);
 		beforeDig = env.getCellNature(13, 1);
@@ -908,13 +952,14 @@ public class PlayerTest {
 			editscreen.setNature(x, 1, Cell.PLT);
 		}
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(1,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 2, engine);
 		PlayerContract p2 = new PlayerContract(new PlayerImpl());
 
-		env.getCellContent(1, 2).setItem(new Item(0, ItemType.Treasure, 1, 2));
 		Cell beforeDig = env.getCellNature(1, 1);
 		int xbefore = player.getWdt();
 		int ybefore = player.getHgt();
@@ -927,8 +972,9 @@ public class PlayerTest {
 		assertTrue(ybefore == player.getHgt());
 
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		player.init(env, 0, 2, engine);
 		p2.init(env, 1, 2);
@@ -957,8 +1003,10 @@ public class PlayerTest {
 		editscreen.setNature(0, 2, Cell.PLT);
 		
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);				
 		env = engine.getEnvironment();
 		
 		player.init(env, 1, 2, engine);
@@ -977,8 +1025,8 @@ public class PlayerTest {
 		editscreen.setNature(0, 2, Cell.MTL);
 		
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		
 		player.init(env, 1, 2, engine);
@@ -1009,8 +1057,10 @@ public class PlayerTest {
 		editscreen.setNature(2, 2, Cell.PLT);
 		
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(0, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		
 		player.init(env, 1, 2, engine);
@@ -1029,8 +1079,8 @@ public class PlayerTest {
 		editscreen.setNature(2, 2, Cell.MTL);
 		
 		env.init(editscreen);
-		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), new ArrayList<Couple<Integer, Integer>>(),
-				new ArrayList<Couple<Integer, Integer>>());
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
 		
 		player.init(env, 1, 2, engine);
@@ -1046,5 +1096,52 @@ public class PlayerTest {
 		assertTrue(xbefore == player.getWdt());
 		assertTrue(ybefore == player.getHgt());
 	}
+	
+	@Test
+	public void testDigRFalling() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		env.init(editscreen);
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
+		env = engine.getEnvironment();
+		player.init(env, 2, 3, engine);
 
+		int xbefore = player.getWdt();
+		int ybefore = player.getHgt();
+		testInvariant();
+		player.digR();
+		testInvariant();
+		assertTrue(xbefore == player.getWdt());
+		assertTrue(ybefore - 1 == player.getHgt());
+	}
+	
+	@Test
+	public void testDigLFalling() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		env.init(editscreen);
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,1));
+		engine.init(editscreen, new Couple<Integer, Integer>(2, 3), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
+		env = engine.getEnvironment();
+		player.init(env, 2, 3, engine);
+
+		int xbefore = player.getWdt();
+		int ybefore = player.getHgt();
+		testInvariant();
+		player.digL();
+		testInvariant();
+		assertTrue(xbefore == player.getWdt());
+		assertTrue(ybefore - 1 == player.getHgt());
+	}
+
+	
 }

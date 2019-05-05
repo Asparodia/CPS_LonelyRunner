@@ -579,9 +579,11 @@ public class CharacterTest {
 		character.init(env, 1, 3);
 		testInvariant();
 		character.goRight();
+		
 		testInvariant();
 		assertTrue(c2.getWdt() == character.getWdt());
 		assertTrue(c2.getHgt()+1 == character.getHgt());
+		
 		testInvariant();
 		character.goRight();
 		testInvariant();

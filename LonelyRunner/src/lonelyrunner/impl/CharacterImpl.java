@@ -69,7 +69,6 @@ public class CharacterImpl implements CharacterService {
 		
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
-
 		// chute libre
 		if (pos != Cell.LAD && pos != Cell.HDR) {
 			if (down != Cell.PLT && down != Cell.MTL && down != Cell.LAD) {

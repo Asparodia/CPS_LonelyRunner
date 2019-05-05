@@ -21,7 +21,6 @@ public class PlayerDecorator extends CharacterDecorator implements PlayerService
 
 	@Override
 	public void init(ScreenService s, int x, int y, EngineService engine) {
-		System.out.println(s);
 		getDelegate().init(s, x, y, engine);
 		
 	}
