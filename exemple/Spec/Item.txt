@@ -1,0 +1,15 @@
+Service Item
+
+Observators:
+getName : [Item]-> String
+getDescription: [Item] -> String
+isUse: [Item] ->boolean
+Constructors:
+init: String*String -> Item
+
+
+Operators:
+use:Entity-> Item 
+Observations:
+[init] getName(init(n,d)) = n && getDescription(init(n,d)) = d
+[use] isUse(use(entity)) = true

@@ -1,0 +1,35 @@
+Service : EditableScreen 
+refine : Screen
+
+Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}
+
+Observators:
+
+isPlayable : [EditableScreen] -> bool
+
+Constructors : 
+
+(utilise le init de Screen)
+init : int*int -> EditableScreen
+	pre : init(h,w) requires h > 0 and w > 0
+
+Operators :
+
+setNature : [Screen]*int*int*Cell -> [EditableScreen]
+	pre : setNature(S,x,y,c) requires 0<=y < getHeight(S) and 0 <= x < getWidth(S)
+
+
+Observations :
+
+[Invariants]
+	isPlayable(S) min 
+		forall (x,y) in [0;getWidth(S)[×[0;getHeight(S)[, getCellNature(S,x,y) != HOL and forall x in [0;getWidth(S)[, getCellNature(S,x,0) = MTL 
+
+[init] : getHeight(init(h,w)) == h
+	 getWidth(init(h,w)) == w
+	 forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, getCellNature(init(h,w),x,y) = EMP
+
+[setNature] : getCellNature(setNature(S,x,y,C)),x,y) = C 
+	      forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, (x != u or y != v) implies getCellNature(setNature(S,u,v,C)),x,y) = getCellNature(x,y)
+
+

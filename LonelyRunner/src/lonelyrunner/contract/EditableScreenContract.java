@@ -99,6 +99,9 @@ public class EditableScreenContract extends ScreenContract implements EditableSc
 		checkInvariant();
 		getDelegate().setNature(x, y, c);
 		checkInvariant();
+		if(!(getDelegate().getCellNature(x, y) == c)) {
+			throw new PostconditionError("setNature("+x+", "+y+" c )", " cellNature of "+x+" "+y+" didn't change ");
+		}
 		for(int a=0;a<getWidth();a++) {
 			for(int b=0;b<getHeight();b++) {
 				if(a != x || b != y) {

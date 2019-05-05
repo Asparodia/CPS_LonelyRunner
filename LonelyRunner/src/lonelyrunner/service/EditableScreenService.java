@@ -2,7 +2,7 @@ package lonelyrunner.service;
 
 import lonelyrunner.service.utils.Cell;
 
-public interface EditableScreenService extends  /*refine*/ScreenService {
+public interface EditableScreenService extends  /*refine*/ ScreenService {
 	
 	// Observators
 	
@@ -11,6 +11,7 @@ public interface EditableScreenService extends  /*refine*/ScreenService {
 	// Operators
 	
 	// \pre : setNature(x,y,c) req 0<=y<getHeigh() and 0<=x<getWidth()
+	// \post : getCellNature(x,y) == c
 	// \post : // \forall u:int and v:int with 0<=u<getWidth() and 0<=v<getHeight() 
 					// (x != u or y != v) \implies getCellNature(u,v) = getCellNature(u,v)@pre
 	public void setNature(int x, int y, Cell c);

@@ -159,17 +159,24 @@ public class EditableScreenTest {
 		lad = Cell.LAD;
 		hol = Cell.HOL;
 		plt = Cell.PLT;
+		testInvariant();
 		setNaturePos(mtl,1,1);
+		testInvariant();
 		assertTrue(editscreen.getCellNature(1,1) == mtl);
 		setNaturePos(hdr,1,1);
+		testInvariant();
 		assertTrue(editscreen.getCellNature(1,1) == hdr);
 		setNaturePos(emp,1,1);
+		testInvariant();
 		assertTrue(editscreen.getCellNature(1,1) == emp);
 		setNaturePos(lad,1,1);
+		testInvariant();
 		assertTrue(editscreen.getCellNature(1,1) == lad);
 		setNaturePos(hol,1,1);
+		testInvariant();
 		assertTrue(editscreen.getCellNature(1,1) == hol);
 		setNaturePos(plt,1,1);
+		testInvariant();
 		assertTrue(editscreen.getCellNature(1,1) == plt);
 	}
 
