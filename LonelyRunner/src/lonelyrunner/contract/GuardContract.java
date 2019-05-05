@@ -225,7 +225,7 @@ public class GuardContract extends GuardDecorator {
 						}
 					}
 					if (!containGuardleftUp) {
-						if (!(getWdt() == getWdt_atpre - 1 && getHgt() == getHgt_atpre + 1)) {
+						if (!(getDelegate().getWdt() == getWdt_atpre - 1 && getDelegate().getHgt() == getHgt_atpre + 1 && getDelegate().getTimeInHole() == 0)) {
 							throw new PostconditionError("climbLeft()",
 									"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
 						}
@@ -280,7 +280,7 @@ public class GuardContract extends GuardDecorator {
 						}
 					}
 					if (!containGuardrightUp) {
-						if (!(getWdt() == getWdt_atpre + 1 && getHgt() == getHgt_atpre + 1)) {
+						if (!(getDelegate().getWdt() == getWdt_atpre + 1 && getDelegate().getHgt() == getHgt_atpre + 1 && getDelegate().getTimeInHole() == 0)) {
 							throw new PostconditionError("climbRight()",
 									"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
 						}
@@ -515,6 +515,7 @@ public class GuardContract extends GuardDecorator {
 				throw new PostconditionError("goUp()",
 						"getHgt()@pre == EnvironmentService::getHeight()-1 should implies getHgt() == getHgt()@pre and getWdt() == getWdt()@pre ");
 		}
+		
 		if (getHgt_atpre < getEnvi_atpre.getHeight() - 1) {
 			Cell cell_up = getEnvi_atpre.getCellNature(getWdt_atpre, getHgt_atpre + 1);
 			if (!getEnvi_atpre.getCellContent(getWdt_atpre , getHgt_atpre+1).getCar().isEmpty()) {
@@ -536,7 +537,7 @@ public class GuardContract extends GuardDecorator {
 				}
 		}
 
-		if (cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
+		if (cell_atpre != Cell.LAD && cell_atpre != Cell.HDR && cell_atpre != Cell.HOL) {
 			if (cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
 				if (getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre - 1).getCar().isEmpty()) {
 					if (!containGuarddown) {
@@ -679,7 +680,6 @@ public class GuardContract extends GuardDecorator {
 		Move getBehaviour_atpre = getDelegate().getBehaviour();
 		int getTimeInHole_atpre = getDelegate().getTimeInHole();
 		
-		System.out.println("----");
 		GuardImpl clone = new GuardImpl();
 		clone.clone(getDelegate());
 		GuardContract cloneR = new GuardContract(clone);
@@ -709,7 +709,7 @@ public class GuardContract extends GuardDecorator {
 		GuardContract cloneCL = null;
 		GuardImpl clone7 = null;
 		GuardContract cloneCR = null;
-		if(cell_atpre==Cell.HOL) {
+		if(cell_atpre==Cell.HOL && getTimeInHole_atpre >= 5) {
 			clone6 = new GuardImpl();
 			clone6.clone(getDelegate());
 			cloneCL = new GuardContract(clone6);
