@@ -1,21 +1,41 @@
-package lonelyrunner.service;
+Service : Player
+include : Character
 
-public interface PlayerService extends/*include*/ CharacterService{
-	
-	// Observators 
-	
-	public EngineService getEngine();
-	
-	// Constructors
-	
-	//\pre: init(S,x,y,engine) \req EnvironmentService::getCellNature(S,x,y) = EMP
-	//\post : this in getEngine().getEnvironment().getCellContent(x,y)
-	public void init(ScreenService s, int x,int y,EngineService engine);
-	
-	// Operators
-	
-	public void step();
-	
+Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}, SetCharItem {Item + Character}
+
+Observators:
+
+getEngine : [Player] -> [Engine]
+
+Constructors : 
+
+init : [ScreenService]*int*int*[Engine] -> [Player]
+	pre : init(S,x,y) requires Environment::getCellNature(S,x,y) = EMP 
+
+Operators :
+
+step : [Character] -> [Character]
+
+digL : [Character] -> [Character]
+
+digR : [Character] -> [Character]
+
+doNeutral : [Character] -> [Character]
+
+Observations :
+
+[Invariants]
+	Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)) in {EMP,HOL,LAD,HDR} 
+	exists Player x in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)) implies x = C
+
+[init] : P in Engine::getEnvironment(getEngine(P))::getCellContent(getEnvi(P),getWdt(P),getHgt(P))
+
+[digL] :
+
+[digR] :
+
+[doNeutral] :
+
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
 			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
 			//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
@@ -25,13 +45,10 @@ public interface PlayerService extends/*include*/ CharacterService{
 			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) not in {PLT, MTL}
 			//\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre 
 			//\and not exist i:Item in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre))
-				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()-1,getHgt()-1) == HOL and getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre 
+				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()-1,getHgt()-1) == HOL
 					//\and getEngine().getHoles() ==  getEngine()@pre::getHoles() Union Hole(getWdt()@pre-1,getHgt()@pre-1,0)
 					//\and \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()  (x!=u or y!=v) EnvironmentService::getCellNature()@pre = getCellNature()
-	
-	public void digL();
-	
-	
+
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
 			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
 			//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
@@ -41,19 +58,12 @@ public interface PlayerService extends/*include*/ CharacterService{
 			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) not in {PLT, MTL}
 			//\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) 
 			//\and not exist i:Item in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre))
-				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()+1,getHgt()-1) == HOL getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre 
+				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()+1,getHgt()-1) == HOL 
 					//\and getEngine()::getHoles() ==  getEngine()@pre::getHoles() Union Hole(getWdt()@pre+1,getHgt()@pre-1,0)
 					//\and \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()  (x!=u or y!=v) EnvironmentService::getCellNature()@pre = getCellNature()
-	public void digR();
-	
+
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
 		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
 		//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
 			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
-	public void doNeutral();
-	
-	// Invariants 
-	
-	// EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) \in {EMP,HOL,LAD,HDR}
-	//\exist Player p in EnvironmentService::getCellContent(getEnvi(),getWdt(),getHgt()) \implies p = this
-}
+

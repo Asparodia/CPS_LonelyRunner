@@ -92,12 +92,6 @@ public class PlayerContract extends PlayerDecorator{
 		checkInvariant();
 				
 		// Post
-		if(!(getHgt_atpre == getDelegate().getHgt())) {
-			throw new PostconditionError("digL()" , "getHgt() should be equals to getHgt()@pre");
-		}
-		if(!(getWdt_atpre == getDelegate().getWdt())) {
-			throw new PostconditionError("digL()" , "getHgt() should be equals to getHgt()@pre");
-		}
 		if(cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
 				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()) {
@@ -115,6 +109,9 @@ public class PlayerContract extends PlayerDecorator{
 						if(!(getDelegate().getEnvi().getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt()-1) == Cell.HOL)) {
 							throw new PostconditionError("digL()" , "the cell should have been hol");
 						}
+						if (!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
+							throw new PostconditionError("digL()()",
+									"moving impossible while digging");
 						if((getHoles_atpre.size()+1 == getDelegate().getEngine().getHoles().size())) {
 							for(Hole h : getDelegate().getEngine().getHoles()) {
 								if(h.getX() == getDelegate().getWdt()-1 && h.getY() == getDelegate().getHgt()-1 && h.getTime() == 0) {
@@ -184,13 +181,7 @@ public class PlayerContract extends PlayerDecorator{
 		checkInvariant();
 				
 		// Post
-		
-		if(!(getHgt_atpre == getDelegate().getHgt())) {
-			throw new PostconditionError("digR()" , "getHgt() == getHgt()@pre");
-		}
-		if(!(getWdt_atpre == getDelegate().getWdt())) {
-			throw new PostconditionError("digR()" , "getHgt() == getHgt()@pre");
-		}
+
 		if( cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if(cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
 				if(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre-1).getCar().isEmpty()) {
@@ -208,6 +199,9 @@ public class PlayerContract extends PlayerDecorator{
 						if(!(getDelegate().getEnvi().getCellNature(getDelegate().getWdt()-1, getDelegate().getHgt()-1) == Cell.HOL)) {
 							throw new PostconditionError("digR()" , "the cell should have been hol");
 						}
+						if (!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
+							throw new PostconditionError("digL()()",
+									"moving impossible while digging");
 						if((getHoles_atpre.size()+1 == getDelegate().getEngine().getHoles().size())) {
 							for(Hole h : getDelegate().getEngine().getHoles()) {
 								if(h.getX() == getDelegate().getWdt()+1 && h.getY() == getDelegate().getHgt()-1 && h.getTime() == 0) {
