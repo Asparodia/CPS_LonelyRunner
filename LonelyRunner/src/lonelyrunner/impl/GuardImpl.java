@@ -66,9 +66,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				}
 			}
 		} else {
-//			if (behaviour == Move.LEFT) {
-//				goLeft();
-//			}
+			if (behaviour == Move.LEFT) {
+				goLeft();
+			}
 			if (behaviour == Move.RIGHT) {
 				goRight();
 			}
@@ -91,8 +91,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
-			for (CharacterService cs : env.getCellContent(width, height).getCar()) {
-				if (cs.getClass()==(GuardImpl.class)) {
+			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
+				if (cs.getClass() == (GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -173,7 +173,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			boolean containGuardleft = false;
 			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
-					if (cs.getClass()==(GuardImpl.class)) {
+					if (cs.getClass() == (GuardImpl.class)) {
 						containGuardleft = true;
 					}
 				}
@@ -186,7 +186,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					boolean containGuardupleft = false;
 					if (!env.getCellContent(width - 1, height + 1).getCar().isEmpty()) {
 						for (CharacterService cs : env.getCellContent(width - 1, height + 1).getCar()) {
-							if (cs.getClass()==(GuardImpl.class)) {
+							if (cs.getClass() == (GuardImpl.class)) {
 								containGuardupleft = true;
 							}
 						}
@@ -212,7 +212,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			boolean containGuardright = false;
 			if (!env.getCellContent(width + 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width + 1, height).getCar()) {
-					if (cs.getClass()==(GuardImpl.class)) {
+					if (cs.getClass() == (GuardImpl.class)) {
 						containGuardright = true;
 					}
 				}
@@ -222,7 +222,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					boolean containGuardupright = false;
 					if (!env.getCellContent(width + 1, height + 1).getCar().isEmpty()) {
 						for (CharacterService cs : env.getCellContent(width + 1, height + 1).getCar()) {
-							if (cs.getClass()==(GuardImpl.class)) {
+							if (cs.getClass() == (GuardImpl.class)) {
 								containGuardupright = true;
 							}
 						}
@@ -247,7 +247,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass()==(GuardImpl.class)) {
+				if (cs.getClass() == (GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -273,8 +273,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				
-				if (cs.getClass()==(GuardImpl.class)) {
+
+				if (cs.getClass() == (GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -296,7 +296,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			boolean containGuardleft = false;
 			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
-					if (cs.getClass()==(GuardImpl.class)) {
+					if (cs.getClass() == (GuardImpl.class)) {
 						containGuardleft = true;
 					}
 				}
@@ -321,7 +321,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass()==(GuardImpl.class)) {
+				if (cs.getClass() == (GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -342,8 +342,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 			Cell right = env.getCellNature(width + 1, height);
 			boolean containGuardright = false;
 			if (!env.getCellContent(width + 1, height).getCar().isEmpty()) {
-				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
-					if (cs.getClass()==(GuardImpl.class)) {
+				for (CharacterService cs : env.getCellContent(width + 1, height).getCar()) {
+					if (cs.getClass() == (GuardImpl.class)) {
 						containGuardright = true;
 					}
 				}
@@ -369,7 +369,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass()==(GuardImpl.class)) {
+				if (cs.getClass() == (GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -389,9 +389,9 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		if (height < env.getHeight() - 1) {
 			Cell cell_up = env.getCellNature(width, height + 1);
 			boolean containGuardup = false;
-			if (!env.getCellContent(width, height+1).getCar().isEmpty()) {
-				for (CharacterService cs : env.getCellContent(width + 1, height).getCar()) {
-					if (cs.getClass()==(GuardImpl.class)) {
+			if (!env.getCellContent(width, height + 1).getCar().isEmpty()) {
+				for (CharacterService cs : env.getCellContent(width, height + 1).getCar()) {
+					if (cs.getClass() == (GuardImpl.class)) {
 						containGuardup = true;
 					}
 				}
@@ -413,7 +413,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		boolean containGuarddown = false;
 		if (!env.getCellContent(width, height - 1).getCar().isEmpty()) {
 			for (CharacterService cs : env.getCellContent(width, height - 1).getCar()) {
-				if (cs.getClass()==(GuardImpl.class)) {
+				if (cs.getClass() == (GuardImpl.class)) {
 					containGuarddown = true;
 				}
 			}
@@ -443,14 +443,15 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	}
 
 	public void clone(GuardService ps) {
-		EnvironmentImpl envi = new EnvironmentImpl();
-		envi.clone(ps.getEnvi());
-		this.env = envi;
+		this.id = ps.getId();
 		this.height = ps.getHgt();
 		this.width = ps.getWdt();
 		this.target = ps.getTarget();
 		this.timeInHole = ps.getTimeInHole();
-
+		EnvironmentImpl envi = new EnvironmentImpl();
+		
+		envi.clone2(ps.getEnvi(), ps);
+		this.env = envi;
 	}
 
 }
