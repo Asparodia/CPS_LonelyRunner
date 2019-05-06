@@ -125,6 +125,7 @@ public class EngineTest {
 			assertTrue(engine.getEnvironment().getCellContent(i.getCol(), i.getHgt()).getItem().getId() == i.getId());
 		}
 	}
+
 	
 	@Test(expected=ContractError.class)
 	public void testInitialisationNegatif() {
@@ -313,6 +314,8 @@ public class EngineTest {
 		
 	}
 	
+	
+	
 	@Test
 	public void testSetNblives() {
 		testInitialisationPositif();
@@ -330,6 +333,17 @@ public class EngineTest {
 		testInitialisationPositif();
 		engine.setNbLives(-11);
 		// car pas de step qui s'execute
+	}
+	
+	@Test
+	public void testStep() {
+		
+		testInitialisationPositif();
+		while(engine.getStatus() == Status.Playing) {
+			engine.step();
+		}
+		assertTrue(engine.getStatus()==Status.Loss);
+		
 	}
 	
 
