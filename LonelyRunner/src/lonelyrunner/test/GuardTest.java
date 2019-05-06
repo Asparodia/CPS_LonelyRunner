@@ -2,8 +2,6 @@ package lonelyrunner.test;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +20,7 @@ import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.GuardService;
 import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Cell;
-import lonelyrunner.service.utils.Couple;
+import lonelyrunner.service.utils.Move;
 
 public class GuardTest {
 
@@ -1133,8 +1131,161 @@ public class GuardTest {
 	}
 	
 	@Test
-	public void testStep() {
+	public void testStepWhileInHOL() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(1, 1, Cell.HOL);
+		env.init(editscreen);
+		target.init(env, 3, 2);
+		guard.init(env, 0, 2,target);
+		
+		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.RIGHT);
+		guard.step();
+		assertTrue(guard.getWdt()==2 && guard.getHgt()==2);
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.EMP);
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
+		assertTrue(guard.getWdt()==target.getWdt() && guard.getHgt()==target.getHgt());
 		
 	}
+	
+	@Test
+	public void testStepWhileInHOL2() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(4, 1, Cell.HOL);
+		env.init(editscreen);
+		target.init(env, 2, 2);
+		guard.init(env, 5, 2,target);
+		
+		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.HOL);
+		assertTrue(guard.getBehaviour()==Move.LEFT);
+		guard.step();
+		assertTrue(guard.getWdt()==3 && guard.getHgt()==2);
+		assertTrue(guard.getEnvi().getCellNature(guard.getWdt(), guard.getHgt())==Cell.EMP);
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
+		assertTrue(guard.getWdt()==target.getWdt() && guard.getHgt()==target.getHgt());
+	}
+	
+	@Test
+	public void testStepClimbingLadder() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		for (int y = 2; y < editscreen.getHeight(); y++) {
+			editscreen.setNature(0, y, Cell.LAD);
+		}
+		editscreen.setNature(1, 5, Cell.PLT);
+		env.init(editscreen);
+		target.init(env, 1, 6);
+		guard.init(env, 1, 2,target);
+		guard.goLeft();
+
+		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.UP) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.UP) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.UP) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.UP) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.RIGHT) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
+		assertTrue(guard.getWdt()==target.getWdt() && guard.getHgt()==target.getHgt());
+		
+	}
+	
+	@Test
+	public void testStepDescendingLadder() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		for (int y = 2; y < editscreen.getHeight(); y++) {
+			editscreen.setNature(0, y, Cell.LAD);
+		}
+		editscreen.setNature(1, 5, Cell.PLT);
+		env.init(editscreen);
+		target.init(env, 1, 2);
+		guard.init(env, 1, 6,target);
+		guard.goLeft();
+
+		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.DOWN) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.DOWN) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.DOWN) ;
+		guard.step();
+		assertTrue(guard.getBehaviour()==Move.DOWN) ;
+		
+	}
+	
+	
 	
 }
