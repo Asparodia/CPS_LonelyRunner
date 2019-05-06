@@ -21,17 +21,21 @@ public interface GuardService extends /*include*/ CharacterService {
 	
 	// Operators
 	
-	
-	//\post : getWdt()@pre != 0 \and getHgt()@pre == EnvironmentService::getHeight()-1 \and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL \and getTimeInHoles()@pre >= 5
-		//\and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) in {MTL,PLT} \or GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre))
+	//\pre : EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == HOL 
+	//\post : getWdt()@pre > 0 \and getHgt()@pre < EnvironmentService::getHeight()-1 
+		//\and getTimeInHoles()@pre >= 5
+		//\and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) in {MTL,PLT} 
+			//\or GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre))
 		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre+1) \in {EMP,HOL,LAD,HDR}
 		//\and not exist GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre+1)
 			//implies getWdt() == getWdt()@pre-1 \and getHgt() = getHgt(C)@pre+1 \and getTimeInHole() == 0
 	public void climbLeft();
 	
-	//\pre : EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == HOL \and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL \and getTimeInHoles()@pre >= 5
-	//\post : getWdt()@pre != EnvironmentService::getWidth()-1 \and getHgt()@pre == EnvironmentService::getHeight()-1
-		//\and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) in {MTL,PLT} \or GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre)
+	//\pre : EnvironmentService::getCellNature(getEnvi(),getWdt(),getHgt()) == HOL
+	//\post : getWdt()@pre < EnvironmentService::getWidth()-1 \and getHgt()@pre < EnvironmentService::getHeight()-1
+		// \and getTimeInHoles()@pre >= 5
+		//\and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) in {MTL,PLT} 
+			//\or GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre)
 		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre+1) \in {EMP,HOL,LAD,HDR}
 		//\and not exist GuardService c in  EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre+1)
 			//implies getWdt() == getWdt()@pre+1 \and getHgt() = getHgt(C)@pre+1 \and getTimeInHole() == 0

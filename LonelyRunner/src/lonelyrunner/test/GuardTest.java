@@ -1132,5 +1132,9 @@ public class GuardTest {
 		assertTrue(1 == guard.getHgt());
 	}
 	
+	@Test
+	public void testStep() {
+		
+	}
 	
 }

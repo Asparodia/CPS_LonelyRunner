@@ -218,27 +218,6 @@ public class EngineContract extends EngineDecorator {
 		}
 	}
 
-	// \post: \forall T:Item \in getTreasures()
-	// T \in
-	// EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
-	// \implies T not in getTreasures() \and getScore() == getScore()@pre + 1
-	// \post: \forall G:Guard \in getGuards()
-	// G \in
-	// EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
-	// \implies getNbLives() == getNbLives()@pre - 1
-	// \post: \forall G:Guard \in getGuards()@pre
-	// t:Item \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
-	// \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G))
-	// == HOL
-	// \implies t \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
-	// t:Item \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
-	// \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G))
-	// != HOL
-	// \implies t \in
-	// EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
 
 	@Override
 	public void step() {
@@ -298,11 +277,6 @@ public class EngineContract extends EngineDecorator {
 					throw new PostconditionError("step()", "the player should have lost one life");
 			}
 		}
-		//\post: \forall G:Guard \in getGuards()@pre
-		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) == HOL
-			//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
-		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) != HOL
-				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
 		for (Hole H : Holes_atpre) {
 			if (H.getTime() < 14) {
 				boolean in = false;
