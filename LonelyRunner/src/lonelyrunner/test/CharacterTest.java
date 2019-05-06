@@ -589,8 +589,42 @@ public class CharacterTest {
 		testInvariant();
 		assertTrue(character.getWdt() == 3);
 		assertTrue(character.getHgt() == 3);
+	}
+	
+	@Test
+	public void testCharacterWalkingOnHOL() {
+		editscreen.init(10, 15);
 		
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(1, 3, Cell.PLT);
+		editscreen.setNature(3, 3, Cell.PLT);
 		
+		env.init(editscreen);
+		editscreen.setNature(2, 3, Cell.HOL);
+		character.init(env, 1, 4);
+		int xbefore = character.getWdt();
+		int ybefore = character.getHgt();
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		assertTrue(xbefore+1 == character.getWdt());
+		assertTrue(ybefore== character.getHgt());
+		xbefore = character.getWdt();
+		ybefore = character.getHgt();
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		assertTrue(xbefore == character.getWdt());
+		assertTrue(ybefore-1== character.getHgt());
+		xbefore = character.getWdt();
+		ybefore = character.getHgt();
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		assertTrue(xbefore == character.getWdt());
+		assertTrue(ybefore-1== character.getHgt());
 	}
 
 }

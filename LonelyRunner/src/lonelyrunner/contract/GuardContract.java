@@ -153,11 +153,12 @@ public class GuardContract extends GuardDecorator {
 	}
 
 	@Override
-	public void init(ScreenService s, int x, int y) {
-		if (!(getDelegate().getEnvi().getCellNature(x, y) == Cell.EMP)) {
+	public void init(ScreenService s, int x, int y,PlayerService p) {
+
+		if (!(s.getCellNature(x, y) == Cell.EMP)) {
 			throw new PreconditionError("init( s, " + x + ", " + y + " )", "Cell is not empty");
 		}
-		getDelegate().init(s, x, y);
+		getDelegate().init(s, x, y,p);
 		checkInvariant();
 	}
 

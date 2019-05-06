@@ -104,7 +104,6 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				}
 			}
 		}
-
 		boolean canR = true;
 		boolean canL = true;
 		boolean canU = true;

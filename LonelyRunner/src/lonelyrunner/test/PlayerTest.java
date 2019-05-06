@@ -12,6 +12,7 @@ import lonelyrunner.contract.EditableScreenContract;
 import lonelyrunner.contract.EngineContract;
 import lonelyrunner.contract.EnvironmentContract;
 import lonelyrunner.contract.PlayerContract;
+import lonelyrunner.contract.contracterr.ContractError;
 import lonelyrunner.impl.EditableScreenImpl;
 import lonelyrunner.impl.EngineImpl;
 import lonelyrunner.impl.EnvironmentImpl;
@@ -22,8 +23,6 @@ import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Cell;
 import lonelyrunner.service.utils.Couple;
-import lonelyrunner.service.utils.Item;
-import lonelyrunner.service.utils.ItemType;
 import lonelyrunner.service.utils.Status;
 
 public class PlayerTest {
@@ -1142,6 +1141,7 @@ public class PlayerTest {
 		assertTrue(xbefore == player.getWdt());
 		assertTrue(ybefore - 1 == player.getHgt());
 	}
+	
 
 	
 }

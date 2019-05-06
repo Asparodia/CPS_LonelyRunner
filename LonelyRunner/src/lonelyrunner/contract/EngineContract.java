@@ -270,9 +270,6 @@ public class EngineContract extends EngineDecorator {
 
 		int nbLive_atpre = getDelegate().getNbLives();
 		int score_atpre = getDelegate().getScore();
-		int hgtPlayer_atpre = getDelegate().getPlayer().getHgt();
-		int wdtPlayer_atpre = getDelegate().getPlayer().getWdt();
-
 		ArrayList<GuardService> guards_atpre = new ArrayList<>();
 		for (GuardService gs : getDelegate().getGuards()) {
 			GuardImpl clone = new GuardImpl();

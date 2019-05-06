@@ -123,26 +123,27 @@ public class EngineImpl implements EngineService {
 		for (GuardService g : guards) {
 			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
 				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
-				environment.getCellContent(g.getWdt(), g.getHgt()).removeItem();
 				g.step();
-				if(environment.getCellNature(g.getWdt(), g.getHgt()) == Cell.HOL) {
+				
+				Cell cell_after = environment.getCellNature(g.getWdt(), g.getHgt());
+				Cell cell_downafter = environment.getCellNature(g.getWdt(), g.getHgt()-1);
+				boolean csafter = environment.getCellContent(g.getWdt(), g.getHgt()-1).getCar().isEmpty();
+				boolean validCaseNow = false;
+				if(cell_after == Cell.EMP && (cell_downafter == Cell.MTL || cell_downafter == Cell.PLT || !csafter)) {
+					validCaseNow = true;
+				}
+				if(validCaseNow) {
 					for(Item it : treasures) {
 						if(it.getId() == i.getId() ) {
-								it.setCol(g.getWdt());
-								it.setHgt(g.getHgt()+1);
-								environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
+							environment.getCellContent(it.getCol(), it.getHgt()).removeItem();
+							it.setCol(g.getWdt());
+							it.setHgt(g.getHgt());
+							environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
 						}
 					}
+					
 				}
-				else {
-					for(Item it : treasures) {
-						if(it.getId() == i.getId() ) {
-								it.setCol(g.getWdt());
-								it.setHgt(g.getHgt());
-								environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
-						}
-					}
-				}
+				
 			}
 			else {
 				g.step();
@@ -170,8 +171,8 @@ public class EngineImpl implements EngineService {
 				lives--;
 			}
 		}
-		
 		ArrayList<Hole> holeToRem = new ArrayList<>();
+		
 		for (Hole g : holes) {
 			int time = g.getTime();
 			boolean killHol = false;
