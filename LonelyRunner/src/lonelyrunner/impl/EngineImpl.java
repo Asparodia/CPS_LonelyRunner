@@ -46,20 +46,17 @@ public class EngineImpl implements EngineService {
 		player = new PlayerContract(p);
 		player.init(environment, posChar.getElem1(), posChar.getElem2(),this);
 		
-//		environment.getCellContent(posChar.getElem1(), posChar.getElem2()).addCar(player.getDelegate());
 		
 		for(Couple<Integer,Integer> c : posGuards) {
 			GuardImpl g = new GuardImpl();
 			GuardContract gc = new GuardContract(g);
 			gc.init(environment,c.getElem1(),c.getElem2(),player);
-//			environment.getCellContent(c.getElem1(), c.getElem2()).addCar(gc.getDelegate());
 			this.guards.add(gc);
 			Vector <Integer> vec = new Vector<>();
 			vec.add(gc.getId());
 			vec.add(c.getElem1());
 			vec.add(c.getElem2());
 			guardInit.add(vec);
-			
 		}
 		int id = 0;
 		for(Couple<Integer,Integer> c : posItems) {
@@ -68,9 +65,6 @@ public class EngineImpl implements EngineService {
 			environment.getCellContent(c.getElem1(), c.getElem2()).setItem(i);
 			this.treasures.add(i);
 		}
-		
-		
-		
 		
 	}
 	
@@ -122,39 +116,37 @@ public class EngineImpl implements EngineService {
 
 	@Override
 	public void step() {
+		
 		int currentHp = lives;
 		player.step();
 		
 		for (GuardService g : guards) {
-//			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
-//				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
-//				environment.getCellContent(g.getWdt(), g.getHgt()).removeItem();
-//				g.step();
-//				environment.getCellContent(g.getWdt(), g.getHgt()).setItem(i);
-//				for(Item it : treasures) {
-//					if(it.getId() == i.getId() ) {
-//						if(g.getEnvi().getCellNature(g.getWdt(), g.getHgt()) != Cell.HOL) {
-////							i.setCol(g.getWdt());
-////							i.setHgt(g.getHgt());
-//							it.setCol(g.getWdt());
-//							it.setHgt(g.getHgt());
-//						}
-//						else {
-//							// relache l'item si il tombe dans un trou
-//							environment.getCellContent(it.getCol(), it.getHgt()).removeItem();
-////							i.setCol(g.getWdt());
-////							i.setHgt(g.getHgt()+1);
-//							it.setCol(g.getWdt());
-//							it.setHgt(g.getHgt()+1);
-//							environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
-//						}
-//					}
-//				}
-//				
-//			}
-//			else {
+			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
+				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
+				environment.getCellContent(g.getWdt(), g.getHgt()).removeItem();
 				g.step();
-//			}
+				if(environment.getCellNature(g.getWdt(), g.getHgt()) == Cell.HOL) {
+					for(Item it : treasures) {
+						if(it.getId() == i.getId() ) {
+								it.setCol(g.getWdt());
+								it.setHgt(g.getHgt()+1);
+								environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
+						}
+					}
+				}
+				else {
+					for(Item it : treasures) {
+						if(it.getId() == i.getId() ) {
+								it.setCol(g.getWdt());
+								it.setHgt(g.getHgt());
+								environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
+						}
+					}
+				}
+			}
+			else {
+				g.step();
+			}
 			
 		}
 		
@@ -209,12 +201,19 @@ public class EngineImpl implements EngineService {
 								}
 							}
 							environment.getCellContent(g.getX(), g.getY()).removeCharacter(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
-							environment.fill(g.getX(), g.getY());
+							if(environment.getCellContent(g.getX(), g.getY()+1).getItem()!=null) {
+								Item i = environment.getCellContent(g.getX(), g.getY()+1).getItem();
+								environment.getCellContent(g.getX(), g.getY()+1).removeItem();
+								environment.fill(g.getX(), g.getY());
+								environment.getCellContent(g.getX(), g.getY()+1).setItem(i);
+							}
+							else {
+								environment.fill(g.getX(), g.getY());
+							}
+							
 							
 							GuardImpl newg = new GuardImpl();
 							GuardContract gc = new GuardContract(newg);
-							
-							
 							gc.init(environment,initX,initY ,player);
 							guards.add(gc);	
 							

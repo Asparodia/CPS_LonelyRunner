@@ -36,7 +36,7 @@ public interface EngineService {
 	// Constructor
 	
 	
-	//\pre init(ES,posChar,posGuards,posItems) \req EditableScreenService::isPlayable(ES) == True 
+	//\pre init(ES,posChar,posGuards,posItems) \req EditableScreenService::isPlayable(ES) == True \and posItems != null
 		//\and getCellNature(ES,posChar.x,posChar.y) == EMP \and 0<=posChar.x<ES.getWidth()  0<=posChar.y<ES.getHeigth()
 		//\and \forall pos:Couple<Int,Int> in posGuards ((ScreenService::getCellNature(ES,pos.x,pos.y) = EMP) \and (pos.x != posChar.x \or pos.y != posChar.y)) \and 0<=pos.x<ES.getWidth()  0<=pos.y<ES.getHeigth()
 		//\and \forall posI:Couple<Int,Int> in posItems ((ScreenService::getCellNature(ES,posI.x,posI.y) = EMP) \and ((posI.x != posChar.x \or posI.y != posChar.y \and ( \forall pos:Couple<Int,Int> in posGuards posI.x!= pos.x \or  posI.y!=pos.y ))) )
@@ -65,7 +65,7 @@ public interface EngineService {
 	//\post : getNbLives() == l
 	public void setNbLives(int l);
 	
-	//\post:  \forall T:Item \in getTreasures()
+	//\post:  \forall T:Item \in getTreasures()@pre
 		// T \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
 			//\implies T not in getTreasures() \and getScore() == getScore()@pre + 1
 	//\post: \forall G:Guard \in getGuards() 
@@ -76,14 +76,13 @@ public interface EngineService {
 			//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
 		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) != HOL
 				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
-	//\post: \forall H:Hole \in getHoles()
-		//H.time < 15 \implies H in getHoles() \and H.time == getHoles().get(H) - 1
+	//\post: \forall H:Hole \in getHoles()@pre
+		//H.time < 15 \implies H in getHoles() \and H.time +1 == getHoles().get(H)
 		//H.time == 15 \and PlayerService p in EnvironmentService::getCellContent(H.x,H.y)
 			//\implies getNbLives() == getNbLives()@pre - 1
-		//H.time == 15 \and GuardService g in EnvironmentService::getCellContent(H.x,H.y)
-			//\implies getHoles() == getHoles()@pre \minus H \and g.getHdt() == g.initPos.x \and  g.getWdt() == g.initPos.y
 		//H.time == 15 \implies getHoles() == getHoles()@pre \minus H
-	
+		//H.time == 15 \and \for G:Guard in getGuard()@pre G in EnvironmentService::getCellContent(H.x,H.y)
+			//\implies getHoles() == getHoles()@pre \minus H \and G.getHdt() == guardInitPos().get(G).x \and  g.getWdt() == guardInitPos().get(G).y
 	public void step();
 	
 	

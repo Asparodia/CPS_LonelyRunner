@@ -203,8 +203,8 @@ public class GuardContract extends GuardDecorator {
 		checkInvariant();
 
 		if (getWdt_atpre > 0 && getHgt_atpre < getEnvi_atpre.getHeight() - 1) {
-			Cell cell_leftup = getEnvi_atpre.getCellNature(getDelegate().getWdt() - 1, getDelegate().getHgt() + 1);
-			Cell cell_left = getEnvi_atpre.getCellNature(getDelegate().getWdt() - 1, getDelegate().getHgt());
+			Cell cell_leftup = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre + 1);
+			Cell cell_left = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre);
 			if (!getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre).getCar().isEmpty()) {
 				for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre).getCar()) {
 					if (cs.getClass() == (GuardImpl.class)) {
@@ -260,7 +260,7 @@ public class GuardContract extends GuardDecorator {
 		checkInvariant();
 
 		if (getWdt_atpre < getEnvi_atpre.getWidth() - 1 && getHgt_atpre < getEnvi_atpre.getHeight() - 1) {
-			Cell cell_rightup = getEnvi_atpre.getCellNature(getDelegate().getWdt() + 1, getDelegate().getHgt() + 1);
+			Cell cell_rightup = getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre + 1);
 			if (!getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar().isEmpty()) {
 				for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar()) {
 					if (cs.getClass() == (GuardImpl.class)) {
@@ -268,7 +268,7 @@ public class GuardContract extends GuardDecorator {
 					}
 				}
 			}
-			Cell cell_right = getEnvi_atpre.getCellNature(getDelegate().getWdt() + 1, getDelegate().getHgt());
+			Cell cell_right = getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre);
 			if (cell_right == Cell.MTL || cell_right == Cell.PLT || containGuardright) {
 				if (cell_rightup == Cell.EMP || cell_rightup == Cell.HOL || cell_rightup == Cell.LAD
 						|| cell_rightup == Cell.HDR) {
