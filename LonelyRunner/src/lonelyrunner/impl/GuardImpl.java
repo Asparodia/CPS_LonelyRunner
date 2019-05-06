@@ -31,6 +31,10 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public void setTime(int t) {
+		this.timeInHole = id;
+	}
 
 	@Override
 	public int getId() {
@@ -252,7 +256,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	@Override
 	public void climbLeft() {
 
-		if (width > 0 && height < env.getHeight() - 1) {
+		if (env.getCellNature(width, height ) ==Cell.HOL && width > 0 && height < env.getHeight() - 1) {
 			boolean containGuardleft = false;
 			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
@@ -289,7 +293,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
-		if (width < env.getWidth() - 1 && height < env.getHeight() - 1) {
+		if ( env.getCellNature(width, height )==Cell.HOL && width < env.getWidth() - 1 && height < env.getHeight() - 1) {
 			Cell upright = env.getCellNature(width + 1, height + 1);
 			Cell right = env.getCellNature(width + 1, height);
 			boolean containGuardright = false;

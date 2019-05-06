@@ -758,16 +758,378 @@ public class GuardTest {
 		testInvariant();
 		guard.goRight();
 		testInvariant();
-		guard.goRight();
+		guard.goUp();
 		testInvariant();
-		guard.goRight();
+		guard.goLeft();
 		testInvariant();
-		guard.goRight();
-		testInvariant();
-		guard.goRight();
+		guard.goDown();
 		testInvariant();
 		assertTrue(6 == guard.getWdt());
 		assertTrue(5 == guard.getHgt());
+	}
+	
+	@Test
+	public void testClimbLeftNotInHole() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		
+		boolean caught = false;
+		try {
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 13, 2,target);
+			testInvariant();
+			guard.climbLeft();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		
+		try {
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 5, 5,target);
+			testInvariant();
+			guard.climbLeft();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		
+		try {
+			editscreen.setNature(0, 2, Cell.HDR);
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 1, 2,target);
+			testInvariant();
+			guard.goLeft();
+			testInvariant();
+			testInvariant();
+			guard.climbLeft();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		
+		try {
+			editscreen.setNature(0, 2, Cell.LAD);
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 1, 2,target);
+			testInvariant();
+			guard.goLeft();
+			testInvariant();
+			testInvariant();
+			guard.climbLeft();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		
+	}
+	@Test
+	public void testClimbRightNegatif() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		
+		boolean caught = false;
+		try {
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 10, 2,target);
+			testInvariant();
+			guard.climbRight();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		
+		try {
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 5, 5,target);
+			testInvariant();
+			guard.climbRight();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		
+		try {
+			editscreen.setNature(2, 2, Cell.HDR);
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 1, 2,target);
+			testInvariant();
+			guard.goRight();
+			testInvariant();
+			guard.climbRight();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		
+		try {
+			editscreen.setNature(2, 2, Cell.LAD);
+			env.init(editscreen);
+			target.init(env, 3, 2);
+			guard.init(env, 1, 2,target);
+			testInvariant();
+			guard.goRight();
+			testInvariant();
+			testInvariant();
+			guard.climbRight();
+			testInvariant();
+		}
+		catch(ContractError e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+	}
+	
+	@Test
+	public void testClimbRightEdge() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(14, 2, Cell.HOL);
+		
+		env.init(editscreen);
+		target.init(env, 3, 2);
+		guard.init(env, 13, 2,target);
+		
+		testInvariant();
+		guard.goRight();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbRight();
+		testInvariant();
+		assertTrue(14 == guard.getWdt());
+		assertTrue(2 == guard.getHgt());
+	}
+	
+	@Test
+	public void testClimbLeftEdge() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(0, 2, Cell.HOL);
+		env.init(editscreen);
+		target.init(env, 3, 2);
+		guard.init(env, 1, 2,target);
+		testInvariant();
+		guard.goLeft();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbLeft();
+		testInvariant();
+		assertTrue(0 == guard.getWdt());
+		assertTrue(2 == guard.getHgt());
+	}
+	
+	@Test
+	public void testClimbRightPositif() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(2, 1, Cell.HOL);
+		
+		env.init(editscreen);
+		target.init(env, 5, 2);
+		guard.init(env, 1, 2,target);
+		testInvariant();
+		guard.goRight();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbRight();
+		
+		testInvariant();
+		assertTrue(3 == guard.getWdt());
+		assertTrue(2 == guard.getHgt());
+	}
+	
+	@Test
+	public void testClimbLeftPositif() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(2, 1, Cell.HOL);
+		
+		env.init(editscreen);
+		target.init(env, 5, 2);
+		guard.init(env, 1, 2,target);
+		testInvariant();
+		guard.goRight();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbLeft();
+		
+		testInvariant();
+		assertTrue(1 == guard.getWdt());
+		assertTrue(2 == guard.getHgt());
+	}
+	
+	@Test
+	public void testClimbRightObstacle() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(2, 1, Cell.HOL);
+		editscreen.setNature(3, 2, Cell.PLT);
+		env.init(editscreen);
+		target.init(env, 5, 2);
+		guard.init(env, 1, 2,target);
+		testInvariant();
+		guard.goRight();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbRight();
+		testInvariant();
+		assertTrue(2 == guard.getWdt());
+		assertTrue(1 == guard.getHgt());
+		
+		editscreen.setNature(3, 2, Cell.MTL);
+		env.init(editscreen);
+		target.init(env, 5, 2);
+		guard.init(env, 1, 2,target);
+		testInvariant();
+		guard.goRight();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbRight();
+		testInvariant();
+		assertTrue(2 == guard.getWdt());
+		assertTrue(1 == guard.getHgt());
+		
+		GuardContract g2 = new GuardContract(new GuardImpl());
+		editscreen.setNature(3, 2, Cell.EMP);
+		
+		env.init(editscreen);
+		g2.init(env, 3, 2,target);
+		target.init(env, 5, 2);
+		guard.init(env, 1, 2,target);
+		testInvariant();
+		guard.goRight();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbRight();
+		testInvariant();
+		assertTrue(2 == guard.getWdt());
+		assertTrue(1 == guard.getHgt());
+	}
+	@Test
+	public void testClimbLeftObstacle() {
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(2, 1, Cell.HOL);
+		editscreen.setNature(1, 2, Cell.PLT);
+		env.init(editscreen);
+		target.init(env, 5, 2);
+		guard.init(env, 3, 2,target);
+		testInvariant();
+		guard.goLeft();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbLeft();
+		testInvariant();
+		assertTrue(2 == guard.getWdt());
+		assertTrue(1 == guard.getHgt());
+		
+		editscreen.setNature(1, 2, Cell.MTL);
+		env.init(editscreen);
+		target.init(env, 5, 2);
+		guard.init(env, 3, 2,target);
+		testInvariant();
+		guard.goLeft();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbLeft();
+		testInvariant();
+		assertTrue(2 == guard.getWdt());
+		assertTrue(1 == guard.getHgt());
+		
+		GuardContract g2 = new GuardContract(new GuardImpl());
+		editscreen.setNature(1, 2, Cell.EMP);
+		
+		env.init(editscreen);
+		g2.init(env, 1, 2,target);
+		target.init(env, 5, 2);
+		guard.init(env, 3, 2,target);
+		testInvariant();
+		guard.goLeft();
+		testInvariant();
+		guard.goUp();
+		testInvariant();
+		guard.climbLeft();
+		testInvariant();
+		assertTrue(2 == guard.getWdt());
+		assertTrue(1 == guard.getHgt());
 	}
 	
 	

@@ -194,48 +194,48 @@ public class GuardContract extends GuardDecorator {
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 
 		boolean containGuardleft = false;
-
-		if (!(cell_atpre == Cell.HOL)) {
-			throw new PreconditionError("climbLeft()", "guard pos must be a HOL to call climb left");
-		}
-
+		
+		
 		checkInvariant();
 		getDelegate().climbLeft();
 		checkInvariant();
 
-		if (getWdt_atpre > 0 && getHgt_atpre < getEnvi_atpre.getHeight() - 1) {
-			Cell cell_leftup = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre + 1);
-			Cell cell_left = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre);
-			if (!getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre).getCar().isEmpty()) {
-				for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre).getCar()) {
-					if (cs.getClass() == (GuardImpl.class)) {
-						containGuardleft = true;
-					}
-				}
-			}
-			if (cell_left == Cell.MTL || cell_left == Cell.PLT || containGuardleft) {
-
-				if (cell_leftup == Cell.EMP || cell_leftup == Cell.HOL || cell_leftup == Cell.LAD
-						|| cell_leftup == Cell.HDR) {
-					boolean containGuardleftUp = false;
-					if (!getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre + 1).getCar().isEmpty()) {
-						for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre + 1)
-								.getCar()) {
-							if (cs.getClass() == (GuardImpl.class)) {
-								containGuardleftUp = true;
-							}
+		if(cell_atpre == Cell.HOL) {
+			if (getWdt_atpre > 0 && getHgt_atpre < getEnvi_atpre.getHeight() - 1) {
+				Cell cell_leftup = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre + 1);
+				Cell cell_left = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre);
+				if (!getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre).getCar().isEmpty()) {
+					for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre).getCar()) {
+						if (cs.getClass() == (GuardImpl.class)) {
+							containGuardleft = true;
 						}
 					}
-					if (!containGuardleftUp) {
-						if (!(getDelegate().getWdt() == getWdt_atpre - 1 && getDelegate().getHgt() == getHgt_atpre + 1
-								&& getDelegate().getTimeInHole() == 0)) {
-							throw new PostconditionError("climbLeft()",
-									"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
+				}
+				if (cell_left == Cell.MTL || cell_left == Cell.PLT || containGuardleft) {
+
+					if (cell_leftup == Cell.EMP || cell_leftup == Cell.HOL || cell_leftup == Cell.LAD
+							|| cell_leftup == Cell.HDR) {
+						boolean containGuardleftUp = false;
+						if (!getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre + 1).getCar().isEmpty()) {
+							for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre - 1, getHgt_atpre + 1)
+									.getCar()) {
+								if (cs.getClass() == (GuardImpl.class)) {
+									containGuardleftUp = true;
+								}
+							}
+						}
+						if (!containGuardleftUp) {
+							if (!(getDelegate().getWdt() == getWdt_atpre - 1 && getDelegate().getHgt() == getHgt_atpre + 1
+									&& getDelegate().getTimeInHole() == 0)) {
+								throw new PostconditionError("climbLeft()",
+										"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
+							}
 						}
 					}
 				}
 			}
 		}
+		
 
 	}
 
@@ -250,9 +250,6 @@ public class GuardContract extends GuardDecorator {
 
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 
-		if (!(cell_atpre == Cell.HOL)) {
-			throw new PreconditionError("climbRight()", "guard pos must be a HOL to call climb right");
-		}
 
 		boolean containGuardright = false;
 
@@ -260,37 +257,40 @@ public class GuardContract extends GuardDecorator {
 		getDelegate().climbRight();
 		checkInvariant();
 
-		if (getWdt_atpre < getEnvi_atpre.getWidth() - 1 && getHgt_atpre < getEnvi_atpre.getHeight() - 1) {
-			Cell cell_rightup = getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre + 1);
-			if (!getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar().isEmpty()) {
-				for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar()) {
-					if (cs.getClass() == (GuardImpl.class)) {
-						containGuardright = true;
+		if(cell_atpre == Cell.HOL) {
+			if (getWdt_atpre < getEnvi_atpre.getWidth() - 1 && getHgt_atpre < getEnvi_atpre.getHeight() - 1) {
+				Cell cell_rightup = getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre + 1);
+				if (!getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar().isEmpty()) {
+					for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar()) {
+						if (cs.getClass() == (GuardImpl.class)) {
+							containGuardright = true;
+						}
 					}
 				}
-			}
-			Cell cell_right = getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre);
-			if (cell_right == Cell.MTL || cell_right == Cell.PLT || containGuardright) {
-				if (cell_rightup == Cell.EMP || cell_rightup == Cell.HOL || cell_rightup == Cell.LAD
-						|| cell_rightup == Cell.HDR) {
-					boolean containGuardrightUp = false;
-					if (!getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre + 1).getCar().isEmpty()) {
-						for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre + 1)
-								.getCar()) {
-							if (cs.getClass() == (GuardImpl.class)) {
-								containGuardrightUp = true;
+				Cell cell_right = getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre);
+				if (cell_right == Cell.MTL || cell_right == Cell.PLT || containGuardright) {
+					if (cell_rightup == Cell.EMP || cell_rightup == Cell.HOL || cell_rightup == Cell.LAD
+							|| cell_rightup == Cell.HDR) {
+						boolean containGuardrightUp = false;
+						if (!getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre + 1).getCar().isEmpty()) {
+							for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre + 1)
+									.getCar()) {
+								if (cs.getClass() == (GuardImpl.class)) {
+									containGuardrightUp = true;
+								}
+							}
+						}
+						if (!containGuardrightUp) {
+							if (!(getDelegate().getWdt() == getWdt_atpre + 1 && getDelegate().getHgt() == getHgt_atpre + 1
+									&& getDelegate().getTimeInHole() == 0)) {
+								throw new PostconditionError("climbRight()",
+										"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
 							}
 						}
 					}
-					if (!containGuardrightUp) {
-						if (!(getDelegate().getWdt() == getWdt_atpre + 1 && getDelegate().getHgt() == getHgt_atpre + 1
-								&& getDelegate().getTimeInHole() == 0)) {
-							throw new PostconditionError("climbRight()",
-									"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
-						}
-					}
 				}
 			}
+		
 		}
 
 	}
@@ -308,7 +308,6 @@ public class GuardContract extends GuardDecorator {
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
 
 		boolean containGuardleft = false;
-
 		boolean containGuarddown = false;
 
 		if (!getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre - 1).getCar().isEmpty()) {
