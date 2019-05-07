@@ -37,7 +37,39 @@ Observations :
 	Environment::getGellNature(getEnvi(G),getWdt(G),getHgt(G)) in [EMP,HOL,LAD,HDR] 
 	exists Guard x in Environment::getGellGontent(getEnvi(G),getWdt(G),getHgt(G)) implies x = G
 
-[step] : 
+[step] : clone(G) est un clone du Guard avant le step, il evolue dans son propre environement et sert a avoir la position theorique du garde si il fait tel ou tel action
+
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) = HOL
+		and getTimeInHole(G)<5 
+			implies getTimeInHole(step(G)) = getTimeInHole(G) + 1 and getWdt(G) = getWdt(step(G)) and getHgt(G) = getHgt(step(G))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) = HOL
+		and getTimeInHole(G)>=5 
+		and getBehaviour(G) = LEFT
+			implies getWdt(step(G)) = getWdt(climbLeft(clone(G))) and getHgt(step(G)) = getHgt((climbLeft(clone(G)))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) = HOL
+		and getTimeInHole(G)>=5 
+		and getBehaviour(G) = RIGHT 
+			implies getWdt(step(G)) = getWdt(climbRight(clone(G))) and getHgt(step(G)) = getHgt((climbRight(clone(G)))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) = HOL
+		and getTimeInHole(G)>=5 
+		and getBehaviour(G) = NEUTRAL 
+			implies getWdt(step(G)) = getWdt(doNeutral(clone(G))) and getHgt(step(G)) = getHgt((doNeutral(clone(G)))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) != HOL
+		and getBehaviour(G) = LEFT
+			implies getWdt(step(G)) = getWdt(goLeft(clone(G))) and getHgt(step(G)) = getHgt((goLeft(clone(G)))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) != HOL
+		and getBehaviour(G) = RIGHT 
+			getWdt(step(G)) = getWdt(goRight(clone(G))) and getHgt(step(G)) = getHgt((goRight(clone(G)))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) != HOL
+		and getBehaviour(G) = UP
+			implies getWdt(step(G)) = getWdt(goUp(clone(G))) and getHgt(step(G)) = getHgt((goUp(clone(G)))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) != HOL
+		and getBehaviour(G) = DOWN
+			implies getWdt(step(G)) = getWdt(goDown(clone(G))) and getHgt(step(G)) = getHgt((goDown(clone(G)))
+	Environment::getCellNature(getEnvi(G),getWdt(G),getHgt(G)) != HOL
+		and getBehaviour(G) = NEUTRAL
+			implies getWdt(step(G)) = getWdt(doNeutral(clone(G))) and getHgt(step(G)) = getHgt((doNeutral(clone(G)))	
+
 
 [GlimbLeft] : getWdt(G) > 0 and getHgt(G) < Environment::getHeigth(getEnvi(P)) -1 
 		and getTimeInHole(G) >= 5
@@ -87,7 +119,7 @@ Observations :
 	   Environment::getGellNature(getEnvi(G),getWdt(G),getHgt(G)) not in [LAD,HDR,HOL]
 			and Environment::getGellNature(getEnvi(G),getWdt(G),getHgt(G)-1) not in [MTL,PLT,LAD] 
 			and not exists Guard G in Environment::getGellGontent(getEnvi(G),getWdt(G),getHgt(G)-1)
-				implies getHgt(goLeft(G)) = getHgt(G) - 1 and getWdt(goLeft(G)) = getWdt(G)
+				implies getHgt(goRight(G)) = getHgt(G) - 1 and getWdt(goRight(G)) = getWdt(G)
 	   getHgt(G) < Environment::getWidth(getEnvi(G)) - 1 and Environment::getGellNature(getEnvi(G),getWdt(G) + 1,getHgt(G)) not in [MTL,PLT] 
 			and not exists Guard G in  Environment::getGellGontent(getEnvi(G),getWdt(G)+1,getHgt(G))
 			and (Environment::getGellNature(getEnvi(G),getWdt(G),getHgt(G)) in [LAD,HDR] 
@@ -105,7 +137,7 @@ Observations :
 	 Environment::getGellNature(getEnvi(G),getWdt(G),getHgt(G)) not in [LAD,HDR,HOL]
 			and Environment::getGellNature(getEnvi(G),getWdt(G),getHgt(G)-1) not in [MTL,PLT,LAD] 
 			and not exists Guard G in Environment::getGellGontent(getEnvi(G),getWdt(G),getHgt(G)-1)
-				implies getHgt(goLeft(G)) = getHgt(G) - 1 and getWdt(goLeft(G)) = getWdt(G)
+				implies getHgt(goUp(G)) = getHgt(G) - 1 and getWdt(goUp(G)) = getWdt(G)
 	 getHgt(G) < Environment::getHeight()-1 and Environment::getGellNature(getEnvi(G), getWdt(G), getHgt(G)) = LAD
 			and Environment::GellNature(getEnvi(G), getWdt(G), getHgt(G) + 1) in [LAD,EMP] 
 			and not exists Guard G in  Environment::getGellGontent(getEnvi(G),getWdt(G),getHgt(G)+1)
@@ -122,7 +154,6 @@ Observations :
 				implies getHgt(goLDown(G)) = getHgt(G) - 1 and getWdt(goDown(G)) = getWdt(G)
 	  getHgt(G) > 0 and Environment::getGellNature(getEnvi(G), getWdt(G), getHgt(G)) in [LAD,HDR,EMP]
 			and Environment::getGellNature(getEnvi(G), getWdt(G), getHgt(G)-1) in [EMP,LAD,HDR,HOL]
-			and not exists Guard G in Environment::getGellGontent(getEnvi()@, getWdt(G), getHgt(G)-1))
+			and not exists Guard G in Environment::getGellGontent(getEnvi(G), getWdt(G), getHgt(G)-1))
 				implies getHgt(goDown(G))=getHgt(G)-1 and getWdt(goDown(G)) = getWdt(G)
-
 
