@@ -271,6 +271,32 @@ public class EngineContract extends EngineDecorator {
 				}
 			}
 		}
+		for (GuardService g : guards_atpre) {
+			if (getEnvi_atpre.getCellContent(g.getWdt(),g.getHgt()).getItem()!=null) {
+				Item id = getEnvi_atpre.getCellContent(g.getWdt(),g.getHgt()).getItem();
+				for(GuardService ga : getDelegate().getGuards()) {
+					if(g.getId()==ga.getId()) {
+						Cell cell_after = getDelegate().getEnvironment().getCellNature(ga.getWdt(), ga.getHgt());
+						Cell cell_downafter = getDelegate().getEnvironment().getCellNature(ga.getWdt(), ga.getHgt()-1);
+						boolean csafter = getDelegate().getEnvironment().getCellContent(ga.getWdt(), ga.getHgt()-1).getCar().isEmpty();
+						boolean validCaseNow = false;
+						if(cell_after == Cell.EMP && (cell_downafter == Cell.MTL || cell_downafter == Cell.PLT || !csafter)) {
+							validCaseNow = true;
+						}
+						if(validCaseNow) {
+							for(Item it : getDelegate().getTreasures()) {
+								if(it.getId() == id.getId() ) {
+									if(!(it.getCol() == ga.getWdt() && it.getHgt() == ga.getHgt())) {
+										throw new PostconditionError("step","the guard should have move this item");
+									}
+								}
+							}	
+						}
+					}
+					
+				}
+			}
+		}
 		for (GuardService g : getDelegate().getGuards()) {
 			if (g.getWdt() == getDelegate().getPlayer().getWdt() && g.getHgt() == getDelegate().getPlayer().getHgt()) {
 				if (!(getDelegate().getNbLives() == nbLive_atpre - 1))

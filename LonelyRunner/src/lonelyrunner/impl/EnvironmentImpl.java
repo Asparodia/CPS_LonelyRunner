@@ -111,5 +111,42 @@ public class EnvironmentImpl extends ScreenImpl implements EnvironmentService {
 			}
 		}
 	}
+	
+	public void clone3(EnvironmentService base) {
+		this.height = base.getHeight();
+		this.width = base.getWidth();
+		this.cells = new Cell[width][height];
+		
+		for(int i = 0;i<width;i++) {
+			for(int j=0;j<height;j++) {
+				this.cells[i][j] = Cell.EMP;
+			}
+		}
+		
+		this.env = new SetCharItem[base.getWidth()][base.getHeight()];
+
+		for (int i = 0; i < base.getWidth(); i++) {
+			for (int j = 0; j < base.getHeight(); j++) {
+				this.env[i][j] = new SetCharItem();
+				this.env[i][j].setItem(base.getCellContent(i, j).getItem());
+				for(CharacterService c : base.getCellContent(i, j).getCar()) {
+					if(c.getClass()==(PlayerImpl.class)) {
+						this.env[i][j].addCar((PlayerService)c);
+						
+					}
+					if(c.getClass()==(GuardImpl.class)) {
+						this.env[i][j].addCar((GuardService)c);
+						
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < getWidth(); i++) {
+			for (int j = 0; j < getHeight(); j++) {
+				this.cells[i][j] = base.getCellNature(i, j);
+			}
+		}
+	}
 
 }

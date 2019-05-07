@@ -8,7 +8,9 @@ import lonelyrunner.contract.GuardContract;
 import lonelyrunner.contract.PlayerContract;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EngineService;
+import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.GuardService;
+import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Cell;
 import lonelyrunner.service.utils.Couple;
 import lonelyrunner.service.utils.Hole;
@@ -22,8 +24,8 @@ public class EngineImpl implements EngineService {
 	
 	ArrayList<Vector<Integer>> guardInit = new ArrayList<Vector<Integer>>();
 	
-	EnvironmentContract environment;
-	PlayerContract player;
+	EnvironmentService environment;
+	PlayerService player;
 	ArrayList<GuardService> guards = new ArrayList<>();
 	ArrayList<Item> treasures = new ArrayList<>();
 	Status status;
@@ -69,12 +71,12 @@ public class EngineImpl implements EngineService {
 	}
 	
 	@Override
-	public EnvironmentContract getEnvironment() {
+	public EnvironmentService getEnvironment() {
 		return environment;
 	}
 
 	@Override
-	public PlayerContract getPlayer() {
+	public PlayerService getPlayer() {
 		return player;
 	}
 
@@ -136,7 +138,6 @@ public class EngineImpl implements EngineService {
 			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
 				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
 				g.step();
-				
 				Cell cell_after = environment.getCellNature(g.getWdt(), g.getHgt());
 				Cell cell_downafter = environment.getCellNature(g.getWdt(), g.getHgt()-1);
 				boolean csafter = environment.getCellContent(g.getWdt(), g.getHgt()-1).getCar().isEmpty();
@@ -152,8 +153,7 @@ public class EngineImpl implements EngineService {
 							it.setHgt(g.getHgt());
 							environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
 						}
-					}
-					
+					}	
 				}
 				
 			}
@@ -278,6 +278,30 @@ public class EngineImpl implements EngineService {
 	@Override
 	public ArrayList<Vector<Integer>> guardInitPos() {
 		return guardInit;
+	}
+	
+	public void clone(EngineService base) {
+		
+		EnvironmentImpl envi = new EnvironmentImpl();
+		envi.clone3(base.getEnvironment());
+		
+		this.environment = envi;
+		ArrayList<Hole> Holes_atpre = new ArrayList<>();
+		for (Hole h : base.getHoles()) {
+			Hole nh = new Hole(h.getX(), h.getY(), h.getTime());
+			nh.setId(h.getId());
+			Holes_atpre.add(nh);
+
+		}
+		ArrayList<Item> Items_atpre = new ArrayList<>();
+		for (Item h : base.getTreasures()) {
+			Item nh = new Item(h.getId(), h.getNature(), h.getCol(), h.getHgt());
+			Items_atpre.add(nh);
+
+		}
+		this.treasures = Items_atpre;
+		this.holes = Holes_atpre;
+		
 	}
 	
 

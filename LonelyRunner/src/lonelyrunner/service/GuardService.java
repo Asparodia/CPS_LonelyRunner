@@ -16,7 +16,7 @@ public interface GuardService extends /*include*/ CharacterService {
 	
 	// Constructors
 	
-	//\pre: init(S,x,y) \req EnvironmentService::getCellNature(S,x,y) = EMP
+	//\pre: init(S,x,y,t) \req EnvironmentService::getCellNature(S,x,y) = EMP
 	public void init(ScreenService s, int x,int y,PlayerService t);
 	
 	// Operators

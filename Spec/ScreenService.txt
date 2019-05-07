@@ -7,7 +7,7 @@ Observators:
 getHeight : [Screen] -> int
 getWidth : [Screen] -> int
 getCellNature : [Screen]*int*int -> Cell
-	pre : getCellNature(S,i,j) requires 0<=i<getWidth(S) and 0<=j<getHeight(S)
+	pre : getCellNature(S,i,j) requires (i,j) in [0;getWidth(S)[ × [0;getHeight(S)[
 
 Constructors : 
 
@@ -17,21 +17,21 @@ init : int*int -> Screen
 Operators :
 
 dig : [Screen]*int*int -> [Screen]
-	pre : dig(S,u,v) req getCellNature(S,u,v) = PLT
+	pre : dig(S,u,v) requires getCellNature(S,u,v) = PLT
 
 fill: [Screen]*int*int -> [Screen]
-	pre : fill(S,u,v) req getCellNature(S,u,v) = HOL
+	pre : fill(S,u,v) requires getCellNature(S,u,v) = HOL
 
 Observations :
 
 [Invariants]
 	pas d'invariant
 
-[init] : getHeight(init(h,w)) == h
-	 getWidth(init(h,w)) == w
+[init] : getHeight(init(h,w)) = h
+	 getWidth(init(h,w)) = w
 	 forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, getCellNature(init(h,w),x,y) = EMP
 
-[dig] : forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, (x != u or y != v) implies getCellNature(Dig(S,u,v)),x,y) = getCellNature(x,y)
+[dig] : forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, (x != u or y != v) implies getCellNature(Dig(S,u,v)),x,y) = getCellNature(S,x,y)
 
-[fill] : forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, (x != u or y != v) implies getCellNature(Dig(S,u,v)),x,y) = getCellNature(x,y)
+[fill] : forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, (x != u or y != v) implies getCellNature(Dig(S,u,v)),x,y) = getCellNature(S,x,y)
 

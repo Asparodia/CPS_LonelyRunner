@@ -14,6 +14,28 @@ public interface PlayerService extends/*include*/ CharacterService{
 	
 	// Operators
 	
+	//\post: getNextCommand()@pre == LEFT
+		//\and clone@pre:PlayerService 
+			//\implies getWdt() == clone@pre.goLeft.getWdt() \and getHgt() = clone@pre.goLeft().getHgt()
+	//\post: getNextCommand()@pre == RIGHT
+			//\and clone@pre:PlayerService 
+				//\implies getWdt() == clone@pre.goRight.getWdt() \and getHgt() = clone@pre.goRight().getHgt()
+	//\post: getNextCommand()@pre == UP
+			//\and clone@pre:PlayerService 
+				//\implies getWdt() == clone@pre.goUp.getWdt() \and getHgt() = clone@pre.goUp().getHgt()
+	//\post: getNextCommand()@pre == DOWN
+			//\and clone@pre:PlayerService 
+				//\implies getWdt() == clone@pre.goDown.getWdt() \and getHgt() = clone@pre.goDown().getHgt()
+	//\post: getNextCommand()@pre == DigL
+			//\and clone@pre:PlayerService 
+				//\implies getWdt() == clone@pre.digL.getWdt() \and getHgt() = clone@pre.digL.getHgt()
+	//\post: getNextCommand()@pre == DigR
+			//\and clone@pre:PlayerService 
+				//\implies getWdt() == clone@pre.digR.getWdt() \and getHgt() = clone@pre.digR().getHgt()
+	//\post: getNextCommand()@pre == Neutral
+			//\and clone@pre:PlayerService 
+				//\implies getWdt() == clone@pre.doNeutral.getWdt() \and getHgt() = clone@pre.doNeutral.getHgt()
+	
 	public void step();
 	
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 

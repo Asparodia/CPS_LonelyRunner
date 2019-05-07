@@ -71,11 +71,16 @@ public interface EngineService {
 	//\post: \forall G:Guard \in getGuards() 
 		// G \in EnvironmentService::getCellContent(getEnvironment(getPlayer()),getWdt(getPlayer()),getHgt(getPlayer()))
 			//\implies  getNbLives() == getNbLives()@pre - 1
-	//\post: \forall G:Guard \in getGuards()@pre
-		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) == HOL
-			//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)-1)
-		// t:Item \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G)) \and EnvironmentService::getCellNature(getEnvironment(G),getWdt(G),getHgt(G)) != HOL
-				//\implies t \in EnvironmentService::getCellContent(getEnvironment(G),getWdt(G),getHgt(G))
+//	\post : getPlayer(step(E)) = Player::step(getPlayer(E))
+//	\post : forall G::Guard in getGuards(step(E)) and G2 in getGuards(E)
+//				G::id = G2::id implie G = Guard::step(G2)
+//	\post : forall G:Guard in getGuards(E)
+//	 exists t:Item in Environment::getCellContent(getEnvironment(G),Guard::getWdt(G),Guard::getHgt(G)) 
+//			and forall G2:Guard in getGuards(step(E))
+//				G2::id == G::id and (Environment::getCellNature(getEnvironment(step(E)),Guard::getWdt(G2),Guard::getHgt(G2)) = EMP 
+//					and (Environment::getCellNature(getEnvironment(step(E)),Guard::getWdt(G2),Guard::getHgt(G2)-1) in [MTL, PLT]
+//					 	or exist Character c in Environment::getCellContent(getEnvironment(step(E)),Guard::getWdt(G),Guard::getHgt(G2)-1) ) )
+//			implies t in EnvironmentService::getCellContent(getEnvironment(step(E)),Guard::getWdt(G),Guard::getHgt(G))
 	//\post: \forall H:Hole \in getHoles()@pre
 		//H.time < 15 \implies H in getHoles() \and H.time +1 == getHoles().get(H)
 		//H.time == 15 \and PlayerService p in EnvironmentService::getCellContent(H.x,H.y)

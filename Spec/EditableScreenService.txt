@@ -16,20 +16,19 @@ init : int*int -> EditableScreen
 Operators :
 
 setNature : [Screen]*int*int*Cell -> [EditableScreen]
-	pre : setNature(S,x,y,c) requires 0<=y < getHeight(S) and 0 <= x < getWidth(S)
-
+	pre : setNature(S,x,y,c) requires (x,y) in [0;getWidth(S)[×[0;getHeight(S)
 
 Observations :
 
 [Invariants]
 	isPlayable(S) min 
-		forall (x,y) in [0;getWidth(S)[×[0;getHeight(S)[, getCellNature(S,x,y) != HOL and forall x in [0;getWidth(S)[, getCellNature(S,x,0) = MTL 
+		forall (x,y) in [0;getWidth(ES)[×[0;getHeight(ES)[, getCellNature(ES,x,y) != HOL and forall x in [0;getWidth(ES)[, getCellNature(ES,x,0) = MTL 
 
 [init] : getHeight(init(h,w)) == h
 	 getWidth(init(h,w)) == w
-	 forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, getCellNature(init(h,w),x,y) = EMP
+	 forall (x,y) in [0;getWidth(ES)[ × [0;getHeight(ES)[, getCellNature(init(h,w),x,y) = EMP
 
-[setNature] : getCellNature(setNature(S,x,y,C)),x,y) = C 
-	      forall (x,y) in [0;getWidth(S)[ × [0;getHeight(S)[, (x != u or y != v) implies getCellNature(setNature(S,u,v,C)),x,y) = getCellNature(x,y)
+[setNature] : getCellNature(setNature(ES,x,y,C)),x,y) = C 
+	      forall (x,y) in [0;getWidth(ES)[ × [0;getHeight(ES)[, (x != u or y != v) implies getCellNature(setNature(ES,u,v,C)),x,y) = getCellNature(ES,x,y)
 
 

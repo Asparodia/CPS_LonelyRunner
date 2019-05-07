@@ -9,6 +9,8 @@ import lonelyrunner.service.utils.Hole;
 import lonelyrunner.service.utils.Move;
 
 public class PlayerImpl extends CharacterImpl implements PlayerService {
+	
+	private static int id = 1111;
 
 	private EngineService engine;
 
@@ -32,31 +34,31 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		switch (next) {
 		case RIGHT:
 			super.goRight();
-			engine.setCommand(Move.NEUTRAL);
+//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case LEFT:
 			super.goLeft();
-			engine.setCommand(Move.NEUTRAL);
+//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DOWN:
 			super.goDown();
-			engine.setCommand(Move.NEUTRAL);
+//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case UP:
 			super.goUp();
-			engine.setCommand(Move.NEUTRAL);
+//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DigL:
 			digL();
-			engine.setCommand(Move.NEUTRAL);
+//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DigR:
 			digR();
-			engine.setCommand(Move.NEUTRAL);
+//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case NEUTRAL:
 			doNeutral();
-			engine.setCommand(Move.NEUTRAL);
+//			engine.setCommand(Move.NEUTRAL);
 			break;
 		default:
 			break;
@@ -150,13 +152,20 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 	}
 	
-	public void clone(PlayerService ps) {
-		EnvironmentImpl envi = new EnvironmentImpl();
-		envi.clone(ps.getEnvi());
-		this.env = envi;
+	public void clone(PlayerService ps,EngineService eng) {
+		EngineImpl ena = new EngineImpl();
+		ena.clone(eng);
+		
+		this.engine=ena;
+		this.env = this.engine.getEnvironment();
 		this.height = ps.getHgt();
 		this.width = ps.getWdt();
 		
+	}
+	
+	public int getId() {
+		int i = PlayerImpl.id;
+		return i;
 	}
 
 }
