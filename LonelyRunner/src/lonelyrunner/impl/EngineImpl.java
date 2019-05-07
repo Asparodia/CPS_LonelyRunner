@@ -169,6 +169,7 @@ public class EngineImpl implements EngineService {
 					status = Status.Loss;
 				}
 				lives--;
+				break;
 			}
 		}
 		ArrayList<Hole> holeToRem = new ArrayList<>();

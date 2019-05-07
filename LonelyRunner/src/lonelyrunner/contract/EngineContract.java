@@ -310,7 +310,7 @@ public class EngineContract extends EngineDecorator {
 				for (Hole h : getDelegate().getHoles()) {
 					if (h.getId() == H.getId()) {
 						in = true;
-						if (h.getTime() == H.getTime() + 1 && getDelegate().getStatus() == Status.Playing) {
+						if (h.getTime() == H.getTime() + 1) {
 							timeIncr = true;
 						}
 					}

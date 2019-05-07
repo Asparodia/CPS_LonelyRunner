@@ -229,6 +229,37 @@ public class CharacterTest {
 		testInvariant();
 		assertTrue(xbefore - 1 == character.getWdt());
 		assertTrue(ybefore == character.getHgt());
+		
+		editscreen.setNature(3, 2, Cell.LAD);
+		editscreen.setNature(3, 3, Cell.LAD);
+		
+		env.init(editscreen);
+		character.init(env, 2, 2);
+		character.goLeft();
+		character.goUp();
+		character.goUp();
+		xbefore = character.getWdt();
+		ybefore = character.getHgt();
+		testInvariant();
+		character.goLeft();
+		testInvariant();
+		assertTrue(xbefore - 1 == character.getWdt());
+		assertTrue(ybefore == character.getHgt());
+		
+		editscreen.setNature(3, 2, Cell.HDR);
+		editscreen.setNature(4, 2, Cell.HDR);
+		
+		env.init(editscreen);
+		character.init(env, 2, 2);
+		character.goLeft();
+		xbefore = character.getWdt();
+		ybefore = character.getHgt();
+		testInvariant();
+		character.goLeft();
+		testInvariant();
+		assertTrue(xbefore - 1 == character.getWdt());
+		assertTrue(ybefore == character.getHgt());
+		
 	}
 
 	@Test
@@ -305,6 +336,36 @@ public class CharacterTest {
 		character.init(env, 2, 2);
 		int xbefore = character.getWdt();
 		int ybefore = character.getHgt();
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		assertTrue(xbefore + 1 == character.getWdt());
+		assertTrue(ybefore == character.getHgt());
+		
+		editscreen.setNature(3, 2, Cell.LAD);
+		editscreen.setNature(3, 3, Cell.LAD);
+		
+		env.init(editscreen);
+		character.init(env, 2, 2);
+		character.goLeft();
+		character.goUp();
+		character.goUp();
+		xbefore = character.getWdt();
+		ybefore = character.getHgt();
+		testInvariant();
+		character.goRight();
+		testInvariant();
+		assertTrue(xbefore + 1 == character.getWdt());
+		assertTrue(ybefore == character.getHgt());
+		
+		editscreen.setNature(3, 2, Cell.HDR);
+		editscreen.setNature(4, 2, Cell.HDR);
+		
+		env.init(editscreen);
+		character.init(env, 2, 2);
+		character.goLeft();
+		xbefore = character.getWdt();
+		ybefore = character.getHgt();
 		testInvariant();
 		character.goRight();
 		testInvariant();

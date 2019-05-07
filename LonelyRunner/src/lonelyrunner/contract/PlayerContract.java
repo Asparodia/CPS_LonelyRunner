@@ -66,29 +66,25 @@ public class PlayerContract extends PlayerDecorator {
 	public void step() {
 
 		Move com = getDelegate().getEngine().getNextCommand();
-		PlayerImpl clone = new PlayerImpl();
-		clone.clone(getDelegate() , getDelegate().getEngine());
-		PlayerContract cloneR = new PlayerContract(clone);
+		
+		PlayerImpl cloneR = new PlayerImpl();
+		cloneR.clone(getDelegate() , getDelegate().getEngine());
 		cloneR.goRight();
 
-		PlayerImpl clone2 = new PlayerImpl();
-		clone2.clone(getDelegate() , getDelegate().getEngine());
-		PlayerContract cloneL = new PlayerContract(clone2);
+		PlayerImpl cloneL = new PlayerImpl();
+		cloneL.clone(getDelegate() , getDelegate().getEngine());
 		cloneL.goLeft();
 
-		PlayerImpl clone3 = new PlayerImpl();
-		clone3.clone(getDelegate() , getDelegate().getEngine());
-		PlayerContract cloneU = new PlayerContract(clone3);
+		PlayerImpl cloneU = new PlayerImpl();
+		cloneU.clone(getDelegate() , getDelegate().getEngine());
 		cloneU.goUp();
 
-		PlayerImpl clone4 = new PlayerImpl();
-		clone4.clone(getDelegate() , getDelegate().getEngine());
-		PlayerContract cloneD = new PlayerContract(clone4);
+		PlayerImpl cloneD = new PlayerImpl();
+		cloneD.clone(getDelegate() , getDelegate().getEngine());
 		cloneD.goDown();
 
-		PlayerImpl clone5 = new PlayerImpl();
-		clone5.clone(getDelegate() , getDelegate().getEngine());
-		PlayerContract cloneN = new PlayerContract(clone5);
+		PlayerImpl cloneN = new PlayerImpl();
+		cloneN.clone(getDelegate() , getDelegate().getEngine());
 		cloneN.doNeutral();
 
 		checkInvariant();
@@ -168,7 +164,7 @@ public class PlayerContract extends PlayerDecorator {
 			}
 		}
 		if (getWdt_atpre > 0) {
-			if ((cell_down == Cell.MTL || cell_down == Cell.PLT)
+			if ((cell_down == Cell.MTL || cell_down == Cell.PLT || cell_down == Cell.LAD)
 					|| (!(getEnvi_atpre.getCellContent(getWdt_atpre, getHgt_atpre - 1).getCar().isEmpty()))) {
 				Cell cell_leftdown = getEnvi_atpre.getCellNature(getDelegate().getWdt() - 1,
 						getDelegate().getHgt() - 1);

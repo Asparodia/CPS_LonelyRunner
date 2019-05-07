@@ -123,7 +123,7 @@ public class LonelyRunnerMain extends lonelyRunner{
 		System.out.println("XXXXXXXXXXXXX z to move up");
 		System.out.println("XXXXXXXXXXXXX 4 to dig left");
 		System.out.println("XXXXXXXXXXXXX 6 to dig right");
-		System.out.println("XXXXXXXXXXXXX all other input will just make the game advence be carefull :)");
+		System.out.println("XXXXXXXXXXXXX all other input will just make the game advance be careful :)");
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX HAVE FUN OR DIE TRYING :) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 	}

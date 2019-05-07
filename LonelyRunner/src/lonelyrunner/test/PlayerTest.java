@@ -22,6 +22,7 @@ import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.PlayerService;
 import lonelyrunner.service.utils.Cell;
 import lonelyrunner.service.utils.Couple;
+import lonelyrunner.service.utils.Move;
 import lonelyrunner.service.utils.Status;
 
 public class PlayerTest {
@@ -1139,6 +1140,86 @@ public class PlayerTest {
 		testInvariant();
 		assertTrue(xbefore == player.getWdt());
 		assertTrue(ybefore - 1 == player.getHgt());
+	}
+	
+	@Test
+	public void testStep() {
+		
+		editscreen.init(10, 15);
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 0, Cell.MTL);
+		}
+		for (int x = 0; x < editscreen.getWidth(); x++) {
+			editscreen.setNature(x, 1, Cell.PLT);
+		}
+		editscreen.setNature(0, 2, Cell.LAD);
+		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
+		treasures.add(new Couple<Integer,Integer>(9,2));
+		engine.init(editscreen, new Couple<Integer, Integer>(1, 2), 
+				new ArrayList<Couple<Integer, Integer>>(), treasures);
+		env = engine.getEnvironment();
+		player.init(env, 1, 2, engine);
+		testInvariant();
+		engine.setCommand(Move.LEFT);
+		testInvariant();
+		player.step();
+		testInvariant();
+		assertTrue(0==player.getWdt());
+		assertTrue(2==player.getHgt());
+		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.LAD);
+		engine.setCommand(Move.UP);
+		testInvariant();
+		player.step();
+		testInvariant();
+		assertTrue(0==player.getWdt());
+		assertTrue(3==player.getHgt());
+		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
+		engine.setCommand(Move.NEUTRAL);
+		testInvariant();
+		player.step();
+		testInvariant();
+		assertTrue(0==player.getWdt());
+		assertTrue(3==player.getHgt());
+		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
+		engine.setCommand(Move.DOWN);
+		testInvariant();
+		player.step();
+		testInvariant();
+		assertTrue(0==player.getWdt());
+		assertTrue(2==player.getHgt());
+		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.LAD);
+		engine.setCommand(Move.RIGHT);
+		testInvariant();
+		player.step();
+		testInvariant();
+		assertTrue(1==player.getWdt());
+		assertTrue(2==player.getHgt());
+		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
+		engine.setCommand(Move.RIGHT);
+		testInvariant();
+		player.step();
+		testInvariant();
+		assertTrue(2==player.getWdt());
+		assertTrue(2==player.getHgt());
+		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
+//		engine.setCommand(Move.DigL);
+//		assertTrue(player.getEnvi().getCellNature(1, 1)==Cell.PLT);
+//		testInvariant();
+//		player.step();
+//		testInvariant();
+//		
+//		assertTrue(player.getEnvi().getCellNature(1, 1)==Cell.HOL);
+//		assertTrue(2==player.getWdt());
+//		assertTrue(2==player.getHgt());
+//		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
+//		
+//		engine.setCommand(Move.DigR);
+//		testInvariant();
+//		player.step();
+//		testInvariant();
+//		assertTrue(2==player.getWdt());
+//		assertTrue(2==player.getHgt());
+//		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
 	}
 	
 

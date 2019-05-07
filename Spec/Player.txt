@@ -36,7 +36,7 @@ Observations :
 				implies getWdt(digL(P)) = getWdt(P) and getHgt(digL(P)) = getHgt(P) - 1
 	 getWdt(P) > 0 and (Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)-1) in [MTL,PLT] or exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)-1))
 			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)-1) = PLT 
-			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)) not in [PLT, MTL]
+			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)) not in [PLT, MTL, LAD]
 			and not exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P)-1,getHgt(P) 
 			and not exist Item i in Environment::getCellContent(getEnvi(P),getWdt(P)-1,getHgt(P)))
 				implies  Environment::getCellNature(getEnvi(digL(P)),getWdt(digL(P))-1,getHgt(digL(P))-1) = HOL 
@@ -52,7 +52,7 @@ Observations :
 	getWdt(P) < Environment::getWidth()-1 and (Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)-1) in [MTL,PLT] 
 				or exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)-1))
 			and Environment::getCellNature(getEnvi(P),getWdt(P)+1,getHgt(P)-1) = PLT 
-			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)) not in [PLT, MTL]
+			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)) not in [PLT, MTL, LAD]
 			and not exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P)+1,getHgt(P)) 
 			and not exist Item i in Environment::getCellContent(getEnvi(P),getWdt(P)+1,getHgt(P)))
 				implies  Environment::getCellNature(getEnvi(digR(P)),getWdt(digR(P))+1,getHgt(digR(P))-1) = HOL 

@@ -78,7 +78,7 @@ Observations:
 		 exist G:Guard in getGuards(init(ES,posChar,posGuards,posItems)) with G::id = p::Id and Guard::getWdt(G) = p::X and Guard::getHgt(G) = p::Y
 
 [step] : getPlayer(step(E)) = Player::step(getPlayer(E))
-	 forall G::Guard in getGuards(step(E)) and G2 in getGuards(E)
+	 forall G:Guard in getGuards(step(E)) and G2 in getGuards(E)
 		G::id = G2::id implie G = Guard::step(G2)
 	 forall T:Item in getTreasures(E)
 		 T in Environment::getCellContent(getEnvironment(step(E)),Player::getWdt(getPlayer(step(E))),Player::getHgt(getPlayer(step(E))))
@@ -93,7 +93,7 @@ Observations:
 						and (Environment::getCellNature(getEnvironment(step(E)),Guard::getWdt(G2),Guard::getHgt(G2)-1) in [MTL, PLT]
 						 	or exist Character c in Environment::getCellContent(getEnvironment(step(E)),Guard::getWdt(G),Guard::getHgt(G2)-1) ) )
 				implies t in EnvironmentService::getCellContent(getEnvironment(step(E)),Guard::getWdt(G),Guard::getHgt(G))
-	 forall H::Hole in getHoles(E)
+	 forall H:Hole in getHoles(E)
 		H::time < 14 implies H in getHoles(step(E)) and H::time+1 = getHoles(step(E))::get(H)::time
 		H::time = 14 and Player p in Environment::getCellContent(getEnvironment(step(E)),H::x,H::y)
 			implies getNbLives(step(E)) = getNbLives(E) - 1

@@ -34,31 +34,24 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		switch (next) {
 		case RIGHT:
 			super.goRight();
-//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case LEFT:
 			super.goLeft();
-//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DOWN:
 			super.goDown();
-//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case UP:
 			super.goUp();
-//			engine.setCommand(Move.NEUTRAL);
 			break;
 		case DigL:
-			digL();
-//			engine.setCommand(Move.NEUTRAL);
+			this.digL();
 			break;
 		case DigR:
-			digR();
-//			engine.setCommand(Move.NEUTRAL);
+			this.digR();
 			break;
 		case NEUTRAL:
 			doNeutral();
-//			engine.setCommand(Move.NEUTRAL);
 			break;
 		default:
 			break;
@@ -67,7 +60,6 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 
 	@Override
 	public void digL() {
-		
 		Cell pos = env.getCellNature(width, height);
 		Cell down = env.getCellNature(width, height - 1);
 		// chute libre
@@ -86,7 +78,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		if (this.getWdt() > 0) {
 			Cell cell_leftdown = getEnvi().getCellNature(getWdt() - 1, getHgt() - 1);
 			Cell cell_left = getEnvi().getCellNature(getWdt() - 1, getHgt() );
-			if ((cell_down == Cell.MTL || cell_down == Cell.PLT)
+			if ((cell_down == Cell.MTL || cell_down == Cell.PLT || cell_down == Cell.LAD)
 					|| (!(getEnvi().getCellContent(getWdt(), getHgt() - 1).getCar().isEmpty()))) {
 				if (cell_leftdown == Cell.PLT) {
 					if (getEnvi().getCellContent(getWdt() - 1, getHgt() ).getCar().isEmpty()
@@ -120,7 +112,7 @@ public class PlayerImpl extends CharacterImpl implements PlayerService {
 		if (this.getWdt() < env.getWidth() - 1) {
 			Cell cell_rightdown = getEnvi().getCellNature(getWdt() + 1, getHgt() - 1);
 			Cell cell_right = getEnvi().getCellNature(getWdt() + 1, getHgt() );
-			if ((cell_down == Cell.MTL || cell_down == Cell.PLT)
+			if ((cell_down == Cell.MTL || cell_down == Cell.PLT || cell_down == Cell.LAD)
 					|| (!(getEnvi().getCellContent(getWdt(), getHgt() - 1).getCar().isEmpty()))) {
 				if (cell_rightdown == Cell.PLT) {
 					if (getEnvi().getCellContent(getWdt() + 1, getHgt() ).getCar().isEmpty()
