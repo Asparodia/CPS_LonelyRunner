@@ -6,6 +6,7 @@ public class Hole {
 	private int y;
 	private int time;
 	private int id;
+
 	public Hole(int x, int y, int time) {
 		this.x = x;
 		this.y = y;
@@ -13,30 +14,39 @@ public class Hole {
 		id = cpt;
 		cpt++;
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public int getX() {
 		return x;
 	}
+
 	public void setX(int x) {
 		this.x = x;
 	}
+
 	public int getY() {
 		return y;
 	}
+
 	public void setY(int y) {
 		this.y = y;
 	}
+
 	public int getTime() {
 		return time;
 	}
+
 	public void setTime(int time) {
 		this.time = time;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -46,6 +56,7 @@ public class Hole {
 		result = prime * result + y;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -63,7 +74,5 @@ public class Hole {
 			return false;
 		return true;
 	}
-	
-	
 
 }

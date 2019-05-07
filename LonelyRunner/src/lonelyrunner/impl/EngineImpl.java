@@ -20,56 +20,54 @@ import lonelyrunner.service.utils.Move;
 import lonelyrunner.service.utils.Status;
 
 public class EngineImpl implements EngineService {
-	
-	
+
 	ArrayList<Vector<Integer>> guardInit = new ArrayList<Vector<Integer>>();
-	
+
 	EnvironmentService environment;
 	PlayerService player;
 	ArrayList<GuardService> guards = new ArrayList<>();
 	ArrayList<Item> treasures = new ArrayList<>();
 	Status status;
-	Move command = Move.NEUTRAL ;
-	int lives = 2; 
+	Move command = Move.NEUTRAL;
+	int lives = 2;
 	int score = 0;
 	ArrayList<Hole> holes = new ArrayList<>();
 
 	@Override
 	public void init(EditableScreenService es, Couple<Integer, Integer> posChar,
 			ArrayList<Couple<Integer, Integer>> posGuards, ArrayList<Couple<Integer, Integer>> posItems) {
-		
+
 		status = Status.Playing;
-		
+
 		EnvironmentImpl envi = new EnvironmentImpl();
 		environment = new EnvironmentContract(envi);
 		environment.init(es);
-		
+
 		PlayerImpl p = new PlayerImpl();
 		player = new PlayerContract(p);
-		player.init(environment, posChar.getElem1(), posChar.getElem2(),this);
-		
-		
-		for(Couple<Integer,Integer> c : posGuards) {
+		player.init(environment, posChar.getElem1(), posChar.getElem2(), this);
+
+		for (Couple<Integer, Integer> c : posGuards) {
 			GuardImpl g = new GuardImpl();
 			GuardContract gc = new GuardContract(g);
-			gc.init(environment,c.getElem1(),c.getElem2(),player);
+			gc.init(environment, c.getElem1(), c.getElem2(), player);
 			this.guards.add(gc);
-			Vector <Integer> vec = new Vector<>();
+			Vector<Integer> vec = new Vector<>();
 			vec.add(gc.getId());
 			vec.add(c.getElem1());
 			vec.add(c.getElem2());
 			guardInit.add(vec);
 		}
 		int id = 0;
-		for(Couple<Integer,Integer> c : posItems) {
-			Item i = new Item(id, ItemType.Treasure,c.getElem1(),c.getElem2());
+		for (Couple<Integer, Integer> c : posItems) {
+			Item i = new Item(id, ItemType.Treasure, c.getElem1(), c.getElem2());
 			id++;
 			environment.getCellContent(c.getElem1(), c.getElem2()).setItem(i);
 			this.treasures.add(i);
 		}
-		
+
 	}
-	
+
 	@Override
 	public EnvironmentService getEnvironment() {
 		return environment;
@@ -89,7 +87,7 @@ public class EngineImpl implements EngineService {
 	public ArrayList<Item> getTreasures() {
 		ArrayList<Item> res = new ArrayList<>();
 		for (Item i : treasures) {
-			if(i.getNature() == ItemType.Treasure) {
+			if (i.getNature() == ItemType.Treasure) {
 				res.add(i);
 			}
 		}
@@ -114,18 +112,17 @@ public class EngineImpl implements EngineService {
 	public void setCommand(Move c) {
 		this.command = c;
 	}
-	
 
 	@Override
 	public void step() {
-		
+
 		int currentHp = lives;
 		player.step();
-		
+
 		ArrayList<Item> torem = new ArrayList<>();
 		for (Item i : treasures) {
-			if(i.getNature() == ItemType.Treasure) {
-				if(i.getCol() == player.getWdt() && i.getHgt() == player.getHgt()) {
+			if (i.getNature() == ItemType.Treasure) {
+				if (i.getCol() == player.getWdt() && i.getHgt() == player.getHgt()) {
 					environment.getCellContent(i.getCol(), i.getHgt()).removeItem();
 					torem.add(i);
 					score++;
@@ -133,39 +130,38 @@ public class EngineImpl implements EngineService {
 			}
 		}
 		treasures.removeAll(torem);
-		
+
 		for (GuardService g : guards) {
-			if(environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
+			if (environment.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
 				Item i = environment.getCellContent(g.getWdt(), g.getHgt()).getItem();
 				g.step();
 				Cell cell_after = environment.getCellNature(g.getWdt(), g.getHgt());
-				Cell cell_downafter = environment.getCellNature(g.getWdt(), g.getHgt()-1);
-				boolean csafter = environment.getCellContent(g.getWdt(), g.getHgt()-1).getCar().isEmpty();
+				Cell cell_downafter = environment.getCellNature(g.getWdt(), g.getHgt() - 1);
+				boolean csafter = environment.getCellContent(g.getWdt(), g.getHgt() - 1).getCar().isEmpty();
 				boolean validCaseNow = false;
-				if(cell_after == Cell.EMP && (cell_downafter == Cell.MTL || cell_downafter == Cell.PLT || !csafter)) {
+				if (cell_after == Cell.EMP && (cell_downafter == Cell.MTL || cell_downafter == Cell.PLT || !csafter)) {
 					validCaseNow = true;
 				}
-				if(validCaseNow) {
-					for(Item it : treasures) {
-						if(it.getId() == i.getId() ) {
+				if (validCaseNow) {
+					for (Item it : treasures) {
+						if (it.getId() == i.getId()) {
 							environment.getCellContent(it.getCol(), it.getHgt()).removeItem();
 							it.setCol(g.getWdt());
 							it.setHgt(g.getHgt());
 							environment.getCellContent(it.getCol(), it.getHgt()).setItem(it);
 						}
-					}	
+					}
 				}
-				
-			}
-			else {
+
+			} else {
 				g.step();
 			}
-			
+
 		}
-		
+
 		for (GuardService g : guards) {
-			if(g.getWdt() == player.getWdt() && g.getHgt() == player.getHgt()) {
-				if(lives == 0 ) {
+			if (g.getWdt() == player.getWdt() && g.getHgt() == player.getHgt()) {
+				if (lives == 0) {
 					status = Status.Loss;
 				}
 				lives--;
@@ -173,100 +169,100 @@ public class EngineImpl implements EngineService {
 			}
 		}
 		ArrayList<Hole> holeToRem = new ArrayList<>();
-		
+
 		for (Hole g : holes) {
 			int time = g.getTime();
 			boolean killHol = false;
-			g.setTime(time+1);
-			if(g.getTime() == 15) {
+			g.setTime(time + 1);
+			if (g.getTime() == 15) {
 				holeToRem.add(g);
-				if(g.getX() == player.getWdt() && g.getY() == player.getHgt()) {
-					if(lives == 0 ) {
+				if (g.getX() == player.getWdt() && g.getY() == player.getHgt()) {
+					if (lives == 0) {
 						status = Status.Loss;
 					}
 					killHol = true;
 					lives--;
 				}
-				if(!environment.getCellContent(g.getX(), g.getY()).getCar().isEmpty()) {
+				if (!environment.getCellContent(g.getX(), g.getY()).getCar().isEmpty()) {
 					int nbEntity = environment.getCellContent(g.getX(), g.getY()).getCar().size();
-					if(nbEntity == 1 && !killHol ) {
-							GuardService id = ((GuardService)environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
-							
-							int oldId = id.getId();
-							int initX = 0;
-							int initY = 0;
-							
-							for(Vector<Integer> v : guardInit) {
-								if(oldId == v.get(0)) {
-									initX = v.get(1);
-									initY = v.get(2);
-								}
+					if (nbEntity == 1 && !killHol) {
+						GuardService id = ((GuardService) environment.getCellContent(g.getX(), g.getY()).getCar()
+								.get(0));
+
+						int oldId = id.getId();
+						int initX = 0;
+						int initY = 0;
+
+						for (Vector<Integer> v : guardInit) {
+							if (oldId == v.get(0)) {
+								initX = v.get(1);
+								initY = v.get(2);
 							}
-							environment.getCellContent(g.getX(), g.getY()).removeCharacter(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
-							if(environment.getCellContent(g.getX(), g.getY()+1).getItem()!=null) {
-								Item i = environment.getCellContent(g.getX(), g.getY()+1).getItem();
-								environment.getCellContent(g.getX(), g.getY()+1).removeItem();
-								environment.fill(g.getX(), g.getY());
-								environment.getCellContent(g.getX(), g.getY()+1).setItem(i);
-							}
-							else {
-								environment.fill(g.getX(), g.getY());
-							}
-							
-							
-							GuardImpl newg = new GuardImpl();
-							GuardContract gc = new GuardContract(newg);
-							gc.init(environment,initX,initY ,player);
-							guards.add(gc);	
-							
-							for(Vector<Integer> v : guardInit) {
-								if(oldId == v.get(0)) {
-									v.set(0,gc.getId());
-									v.set(1,initX);
-									v.set(2,initY);
-								}
-							}
-							for(GuardService gg : guards) {
-								if(gg.getId()==oldId) {
-									guards.remove(gg);
-									break;
-								}
-							}
-							continue;
 						}
-					if(nbEntity == 2  && !killHol) {
-						//ptete faire plus de test ici
-						if(lives == 0 ) {
+						environment.getCellContent(g.getX(), g.getY())
+								.removeCharacter(environment.getCellContent(g.getX(), g.getY()).getCar().get(0));
+						if (environment.getCellContent(g.getX(), g.getY() + 1).getItem() != null) {
+							Item i = environment.getCellContent(g.getX(), g.getY() + 1).getItem();
+							environment.getCellContent(g.getX(), g.getY() + 1).removeItem();
+							environment.fill(g.getX(), g.getY());
+							environment.getCellContent(g.getX(), g.getY() + 1).setItem(i);
+						} else {
+							environment.fill(g.getX(), g.getY());
+						}
+
+						GuardImpl newg = new GuardImpl();
+						GuardContract gc = new GuardContract(newg);
+						gc.init(environment, initX, initY, player);
+						guards.add(gc);
+
+						for (Vector<Integer> v : guardInit) {
+							if (oldId == v.get(0)) {
+								v.set(0, gc.getId());
+								v.set(1, initX);
+								v.set(2, initY);
+							}
+						}
+						for (GuardService gg : guards) {
+							if (gg.getId() == oldId) {
+								guards.remove(gg);
+								break;
+							}
+						}
+						continue;
+					}
+					if (nbEntity == 2 && !killHol) {
+						// ptete faire plus de test ici
+						if (lives == 0) {
 							status = Status.Loss;
 						}
 						lives--;
 					}
 				}
-				if(!killHol)
+				if (!killHol)
 					environment.fill(g.getX(), g.getY());
 			}
 		}
 		holes.removeAll(holeToRem);
-		if(currentHp > lives) {
+		if (currentHp > lives) {
 			return;
 		}
 		boolean end = true;
 		for (Item i : treasures) {
-			if(i.getNature() == ItemType.Treasure) {
+			if (i.getNature() == ItemType.Treasure) {
 				end = false;
 			}
 		}
-		if(end) {
+		if (end) {
 			status = Status.Win;
 			return;
-		}		
+		}
 	}
 
 	@Override
 	public int getNbLives() {
 		return lives;
 	}
-	
+
 	public void setNbLives(int a) {
 		lives = a;
 	}
@@ -280,12 +276,12 @@ public class EngineImpl implements EngineService {
 	public ArrayList<Vector<Integer>> guardInitPos() {
 		return guardInit;
 	}
-	
+
 	public void clone(EngineService base) {
-		
+
 		EnvironmentImpl envi = new EnvironmentImpl();
 		envi.clone3(base.getEnvironment());
-		
+
 		this.environment = envi;
 		ArrayList<Hole> Holes_atpre = new ArrayList<>();
 		for (Hole h : base.getHoles()) {
@@ -302,8 +298,7 @@ public class EngineImpl implements EngineService {
 		}
 		this.treasures = Items_atpre;
 		this.holes = Holes_atpre;
-		
+
 	}
-	
 
 }

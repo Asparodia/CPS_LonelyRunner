@@ -214,6 +214,10 @@ public class GuardTest {
 		assertTrue(ybefore == guard.getHgt());
 	}
 
+	/*
+	 * Test de GoLeft() avec un obstacle sur le chemin ( case MTL, PLT, un autre Guard ) 
+	 * On s'attend a ce que sa position n'ai pas changer apres le GoLeft()
+	 */
 	@Test
 	public void testGoLeftObstacle() {
 		editscreen.init(10, 15);
@@ -331,6 +335,9 @@ public class GuardTest {
 		assertTrue(ybefore == guard.getHgt());
 	}
 
+	/*
+	 * Symétrique de GoLeft
+	 */
 	@Test
 	public void testGoRightObstacle() {
 		editscreen.init(10, 15);
@@ -713,6 +720,9 @@ public class GuardTest {
 		assertTrue(ybefore - 1 == guard.getHgt());
 	}
 	
+	/*
+	 * Test pour verifier qu'un Guard peut etre sur la même case qu'un player
+	 */
 	@Test
 	public void guardOnPlayerCase() {
 		editscreen.init(10, 15);
@@ -736,6 +746,9 @@ public class GuardTest {
 		assertTrue(target.getHgt() == guard.getHgt());
 	}
 	
+	/*
+	 * Test qui verifie qu'un Guard reste coincer dans un trou quand il tombe dedans et cela peut importe les operations qu'il fait
+	 */
 	@Test
 	public void guardStuckOnHole() {
 		editscreen.init(10, 15);
@@ -766,6 +779,9 @@ public class GuardTest {
 		assertTrue(5 == guard.getHgt());
 	}
 	
+	/*
+	 * Test qui verifie que faire un climbLeft alors qu'on est pas dans un trou declenche bien une erreur
+	 */
 	@Test
 	public void testClimbLeftNotInHole() {
 		editscreen.init(10, 15);
@@ -842,6 +858,10 @@ public class GuardTest {
 		caught = false;
 		
 	}
+	
+	/*
+	 * Symetrique
+	 */
 	@Test
 	public void testClimbRightNegatif() {
 		editscreen.init(10, 15);
@@ -917,6 +937,9 @@ public class GuardTest {
 		caught = false;
 	}
 	
+	/*
+	 * Test qui verifie qu'un climbRight au bord de l'ecran ne fait rien et nous laisse dans le trou
+	 */
 	@Test
 	public void testClimbRightEdge() {
 		editscreen.init(10, 15);
@@ -943,6 +966,9 @@ public class GuardTest {
 		assertTrue(2 == guard.getHgt());
 	}
 	
+	/*
+	 * Symetrie
+	 */
 	@Test
 	public void testClimbLeftEdge() {
 		editscreen.init(10, 15);
@@ -967,6 +993,9 @@ public class GuardTest {
 		assertTrue(2 == guard.getHgt());
 	}
 	
+	/*
+	 * Test qui verifie qu'un climbRight alors qu'on est dans un trou nous fait bien grimper a droite du trou
+	 */
 	@Test
 	public void testClimbRightPositif() {
 		editscreen.init(10, 15);
@@ -1019,6 +1048,10 @@ public class GuardTest {
 		assertTrue(2 == guard.getHgt());
 	}
 	
+	/*
+	 * Test qui verifie qu'un climbRight alors qu'il y a un obstacle ne fait rien 
+	 * un obstacle est un MTL, PLT, ou un autre Guard
+	 */
 	@Test
 	public void testClimbRightObstacle() {
 		editscreen.init(10, 15);
@@ -1130,8 +1163,11 @@ public class GuardTest {
 		assertTrue(1 == guard.getHgt());
 	}
 	
+	/*
+	 * Scenario ou le guard se dirige vers la target tombe dans un trou, il y reste pour quelque step puis sort en direction de la target
+	 */
 	@Test
-	public void testStepWhileInHOL() {
+	public void testStepWhileMoving() {
 		editscreen.init(10, 15);
 		for (int x = 0; x < editscreen.getWidth(); x++) {
 			editscreen.setNature(x, 0, Cell.MTL);
@@ -1221,6 +1257,9 @@ public class GuardTest {
 		assertTrue(guard.getWdt()==target.getWdt() && guard.getHgt()==target.getHgt());
 	}
 	
+	/*
+	 * Scenario ou le guard monte une echelle pour rejoindre la target
+	 */
 	@Test
 	public void testStepClimbingLadder() {
 		editscreen.init(10, 15);
@@ -1256,6 +1295,9 @@ public class GuardTest {
 		
 	}
 	
+	/*
+	 * Scenario ou le guard descend une echelle pour rejoindre la target
+	 */
 	@Test
 	public void testStepDescendingLadder() {
 		editscreen.init(10, 15);

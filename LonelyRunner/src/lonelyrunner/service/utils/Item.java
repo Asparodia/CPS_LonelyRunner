@@ -2,11 +2,11 @@ package lonelyrunner.service.utils;
 
 public class Item {
 
-    private int id;
-    private ItemType nature;
-    private int hgt;
-    private int col;
-    
+	private int id;
+	private ItemType nature;
+	private int hgt;
+	private int col;
+
 	public Item(int id, ItemType nature, int col, int hgt) {
 		this.id = id;
 		this.nature = nature;

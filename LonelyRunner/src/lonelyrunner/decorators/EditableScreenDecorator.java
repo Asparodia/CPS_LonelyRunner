@@ -3,16 +3,16 @@ package lonelyrunner.decorators;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.utils.Cell;
 
-public class EditableScreenDecorator extends ScreenDecorator implements EditableScreenService{
-	
+public class EditableScreenDecorator extends ScreenDecorator implements EditableScreenService {
+
 	public EditableScreenDecorator(EditableScreenService ess) {
 		super(ess);
 	}
-	
+
 	public EditableScreenService getDelegate() {
 		return (EditableScreenService) super.getDelegate();
 	}
-	
+
 	@Override
 	public boolean isPlayable() {
 		return getDelegate().isPlayable();
@@ -21,7 +21,7 @@ public class EditableScreenDecorator extends ScreenDecorator implements Editable
 	@Override
 	public void setNature(int x, int y, Cell c) {
 		getDelegate().setNature(x, y, c);
-		
+
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class EditableScreenDecorator extends ScreenDecorator implements Editable
 	@Override
 	public void init(int h, int w) {
 		getDelegate().init(h, w);
-		
+
 	}
 
 	@Override
@@ -54,8 +54,5 @@ public class EditableScreenDecorator extends ScreenDecorator implements Editable
 	public void fill(int x, int y) {
 		getDelegate().fill(x, y);
 	}
-
-	
-	
 
 }

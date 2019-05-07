@@ -580,6 +580,10 @@ public class PlayerTest {
 		assertTrue(ybefore - 1 == player.getHgt());
 	}
 
+	/*
+	 * Test pour verifier que digL n'a aucun effet les case autres que PLT
+	 * On fait plusieurs digL sur differentes cases ils sont tous sans effets sauf celui qui est fait sur une case PLT et qui la transforme en HOL
+	 */
 	@Test
 	public void testDigLCase() {
 		editscreen.init(10, 15);
@@ -710,6 +714,9 @@ public class PlayerTest {
 
 	}
 
+	/*
+	 * c'est le symetrique de digL
+	 */
 	@Test
 	public void testDigRCase() {
 		editscreen.init(10, 15);
@@ -841,6 +848,9 @@ public class PlayerTest {
 
 	}
 
+	/*
+	 * On verifie que quand on digL au bord de l'ecran il ne se passe rien, rien n'est dig et le player n'a pas bouger
+	 */
 	@Test
 	public void testDigLEdge() {
 		editscreen.init(10, 15);
@@ -867,6 +877,9 @@ public class PlayerTest {
 
 	}
 
+	/*
+	 * symétrique pde digL
+	 */
 	@Test
 	public void testDigREdge() {
 		editscreen.init(10, 15);
@@ -892,6 +905,10 @@ public class PlayerTest {
 		assertTrue(ybefore == player.getHgt());
 	}
 
+	/*
+	 * On verifie que quand on veux digL une case au dessus de laquelle il y a un Character ou un Item
+	 *  il ne se passe rien, rien n'est dig et le player n'a pas bouger
+	 */
 	@Test
 	public void testDigLUnderItemOrCharacter() {
 		editscreen.init(10, 15);
@@ -941,6 +958,9 @@ public class PlayerTest {
 		assertTrue(ybefore == player.getHgt());
 	}
 
+	/*
+	 * C'est le symetrique de digL
+	 */
 	@Test
 	public void testDigRUnderItemOrCharacter() {
 		editscreen.init(10, 15);
@@ -990,6 +1010,10 @@ public class PlayerTest {
 		assertTrue(ybefore == player.getHgt());
 	}
 	
+	/*
+	 * On verifie que quand on veux digL une case au dessus de laquelle il y a un MTL ou un PLT
+	 *  il ne se passe rien, rien n'est dig et le player n'a pas bouger
+	 */
 	@Test
 	public void testDigLUnderPLTOrMTL() {
 		editscreen.init(10, 15);
@@ -1044,6 +1068,10 @@ public class PlayerTest {
 		
 	}
 	
+	
+	/*
+	 * Symétrique de DigL
+	 */
 	@Test
 	public void testDigRUnderPLTOrMTL() {
 		editscreen.init(10, 15);
@@ -1096,6 +1124,9 @@ public class PlayerTest {
 		assertTrue(ybefore == player.getHgt());
 	}
 	
+	/*
+	 * Un test qui verifie qu'un dig alors qu'on est en chute libre ne fait rien a part faire tomber le player
+	 */
 	@Test
 	public void testDigRFalling() {
 		editscreen.init(10, 15);
@@ -1142,6 +1173,10 @@ public class PlayerTest {
 		assertTrue(ybefore - 1 == player.getHgt());
 	}
 	
+	/*
+	 * Test qui verifie que apres chaque step les deplacements effectuer par le player sont bien ceux qui sont dans le getNextCommand de engine
+	 * On verifie en suivant le chemin qu'on fait prendre au player 
+	 */
 	@Test
 	public void testStep() {
 		
@@ -1202,24 +1237,7 @@ public class PlayerTest {
 		assertTrue(2==player.getWdt());
 		assertTrue(2==player.getHgt());
 		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
-//		engine.setCommand(Move.DigL);
-//		assertTrue(player.getEnvi().getCellNature(1, 1)==Cell.PLT);
-//		testInvariant();
-//		player.step();
-//		testInvariant();
-//		
-//		assertTrue(player.getEnvi().getCellNature(1, 1)==Cell.HOL);
-//		assertTrue(2==player.getWdt());
-//		assertTrue(2==player.getHgt());
-//		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
-//		
-//		engine.setCommand(Move.DigR);
-//		testInvariant();
-//		player.step();
-//		testInvariant();
-//		assertTrue(2==player.getWdt());
-//		assertTrue(2==player.getHgt());
-//		assertTrue(player.getEnvi().getCellNature(player.getWdt(), player.getHgt())==Cell.EMP);
+
 	}
 	
 

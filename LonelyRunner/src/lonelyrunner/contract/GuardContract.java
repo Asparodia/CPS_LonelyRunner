@@ -42,12 +42,14 @@ public class GuardContract extends GuardDecorator {
 	}
 
 	@Override
-	public void init(ScreenService s, int x, int y,PlayerService p) {
-
+	public void init(ScreenService s, int x, int y, PlayerService p) {
+		// pre
 		if (!(s.getCellNature(x, y) == Cell.EMP)) {
 			throw new PreconditionError("init( s, " + x + ", " + y + " )", "Cell is not empty");
 		}
-		getDelegate().init(s, x, y,p);
+
+		// Call
+		getDelegate().init(s, x, y, p);
 		checkInvariant();
 	}
 
@@ -73,7 +75,7 @@ public class GuardContract extends GuardDecorator {
 
 	@Override
 	public void climbLeft() {
-
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 		int time = getDelegate().getTimeInHole();
@@ -83,16 +85,18 @@ public class GuardContract extends GuardDecorator {
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 
 		boolean containGuardleft = false;
-		
-		if(!(cell_atpre == Cell.HOL)) {
+		// pre
+		if (!(cell_atpre == Cell.HOL)) {
 			throw new PreconditionError("climbLeft()", "must be on a hole to climb");
 		}
-		
+
+		// Call
 		checkInvariant();
 		getDelegate().climbLeft();
 		checkInvariant();
 
-		if(cell_atpre == Cell.HOL) {
+		// Post
+		if (cell_atpre == Cell.HOL) {
 			if (getWdt_atpre > 0 && getHgt_atpre < getEnvi_atpre.getHeight() - 1 && time >= 5) {
 				Cell cell_leftup = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre + 1);
 				Cell cell_left = getEnvi_atpre.getCellNature(getWdt_atpre - 1, getHgt_atpre);
@@ -117,7 +121,8 @@ public class GuardContract extends GuardDecorator {
 							}
 						}
 						if (!containGuardleftUp) {
-							if (!(getDelegate().getWdt() == getWdt_atpre - 1 && getDelegate().getHgt() == getHgt_atpre + 1
+							if (!(getDelegate().getWdt() == getWdt_atpre - 1
+									&& getDelegate().getHgt() == getHgt_atpre + 1
 									&& getDelegate().getTimeInHole() == 0)) {
 								throw new PostconditionError("climbLeft()",
 										"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
@@ -127,13 +132,12 @@ public class GuardContract extends GuardDecorator {
 				}
 			}
 		}
-		
 
 	}
 
 	@Override
 	public void climbRight() {
-
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 		int time = getDelegate().getTimeInHole();
@@ -143,18 +147,22 @@ public class GuardContract extends GuardDecorator {
 
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 
-		if(!(cell_atpre == Cell.HOL)) {
+		// pre
+		if (!(cell_atpre == Cell.HOL)) {
 			throw new PreconditionError("climbRight()", "must be on a hole to climb");
 		}
 
 		boolean containGuardright = false;
 
+		// Call
 		checkInvariant();
 		getDelegate().climbRight();
 		checkInvariant();
 
-		if(cell_atpre == Cell.HOL) {
-			if (getWdt_atpre < getEnvi_atpre.getWidth() - 1 && getHgt_atpre < getEnvi_atpre.getHeight() - 1 && time >= 5) {
+		// Post
+		if (cell_atpre == Cell.HOL) {
+			if (getWdt_atpre < getEnvi_atpre.getWidth() - 1 && getHgt_atpre < getEnvi_atpre.getHeight() - 1
+					&& time >= 5) {
 				Cell cell_rightup = getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre + 1);
 				if (!getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar().isEmpty()) {
 					for (CharacterService cs : getEnvi_atpre.getCellContent(getWdt_atpre + 1, getHgt_atpre).getCar()) {
@@ -177,7 +185,8 @@ public class GuardContract extends GuardDecorator {
 							}
 						}
 						if (!containGuardrightUp) {
-							if (!(getDelegate().getWdt() == getWdt_atpre + 1 && getDelegate().getHgt() == getHgt_atpre + 1
+							if (!(getDelegate().getWdt() == getWdt_atpre + 1
+									&& getDelegate().getHgt() == getHgt_atpre + 1
 									&& getDelegate().getTimeInHole() == 0)) {
 								throw new PostconditionError("climbRight()",
 										"The cell you are trying to reach is not free or you are trying to climb on a unfree case adn your height and width should have change");
@@ -186,7 +195,7 @@ public class GuardContract extends GuardDecorator {
 					}
 				}
 			}
-		
+
 		}
 
 	}
@@ -214,6 +223,7 @@ public class GuardContract extends GuardDecorator {
 				}
 			}
 		}
+		// Call
 
 		checkInvariant();
 		getDelegate().goLeft();
@@ -287,6 +297,7 @@ public class GuardContract extends GuardDecorator {
 
 	@Override
 	public void goRight() {
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -307,6 +318,8 @@ public class GuardContract extends GuardDecorator {
 				}
 			}
 		}
+
+		// Call
 
 		checkInvariant();
 		getDelegate().goRight();
@@ -379,6 +392,8 @@ public class GuardContract extends GuardDecorator {
 
 	@Override
 	public void goUp() {
+
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
@@ -469,6 +484,7 @@ public class GuardContract extends GuardDecorator {
 
 	@Override
 	public void goDown() {
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -488,6 +504,7 @@ public class GuardContract extends GuardDecorator {
 			}
 		}
 
+		// Call
 		checkInvariant();
 		getDelegate().goDown();
 		checkInvariant();
@@ -533,6 +550,7 @@ public class GuardContract extends GuardDecorator {
 
 	@Override
 	public void doNeutral() {
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -550,11 +568,13 @@ public class GuardContract extends GuardDecorator {
 				}
 			}
 		}
+		// Call
 
 		checkInvariant();
 		getDelegate().doNeutral();
 		checkInvariant();
 
+		// Post
 		if (cell_atpre != Cell.LAD && cell_atpre != Cell.HDR && cell_atpre != Cell.HOL) {
 			if (cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
 				if (!containGuarddown) {
@@ -568,58 +588,59 @@ public class GuardContract extends GuardDecorator {
 
 	@Override
 	public void step() {
-		
+		// Captures
+
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
-		
+
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
-		
+
 		Move getBehaviour_atpre = getDelegate().getBehaviour();
 		int getTimeInHole_atpre = getDelegate().getTimeInHole();
-		
+
 		GuardImpl clone = new GuardImpl();
 		clone.clone(getDelegate());
 		GuardContract cloneR = new GuardContract(clone);
 		cloneR.goRight();
-		
+
 		GuardImpl clone2 = new GuardImpl();
 		clone2.clone(getDelegate());
 		GuardContract cloneL = new GuardContract(clone2);
 		cloneL.goLeft();
-		
+
 		GuardImpl clone3 = new GuardImpl();
 		clone3.clone(getDelegate());
 		GuardContract cloneU = new GuardContract(clone3);
 		cloneU.goUp();
-		
+
 		GuardImpl clone4 = new GuardImpl();
 		clone4.clone(getDelegate());
 		GuardContract cloneD = new GuardContract(clone4);
 		cloneD.goDown();
-		
+
 		GuardImpl clone5 = new GuardImpl();
 		clone5.clone(getDelegate());
 		GuardContract cloneN = new GuardContract(clone5);
 		cloneN.doNeutral();
-		
+
 		GuardImpl clone6 = null;
 		GuardContract cloneCL = null;
 		GuardImpl clone7 = null;
 		GuardContract cloneCR = null;
-		if(cell_atpre==Cell.HOL && getTimeInHole_atpre >= 5) {
+		if (cell_atpre == Cell.HOL && getTimeInHole_atpre >= 5) {
 			clone6 = new GuardImpl();
 			clone6.clone(getDelegate());
 			cloneCL = new GuardContract(clone6);
 			cloneCL.climbLeft();
-			
+
 			clone7 = new GuardImpl();
 			clone7.clone(getDelegate());
 			cloneCR = new GuardContract(clone7);
 			cloneCR.climbRight();
 		}
 		
-		
-		
+		// Call
+
 		checkInvariant();
 		getDelegate().step();
 		checkInvariant();
@@ -631,9 +652,9 @@ public class GuardContract extends GuardDecorator {
 				if (!(getDelegate().getTimeInHole() == getTimeInHole_atpre + 1 && getWdt_atpre == getDelegate().getWdt()
 						&& getHgt_atpre == getDelegate().getHgt())) {
 					throw new PostconditionError("step()",
-							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
-							"		//\\and getTimeInHole()@pre<5 \r\n" + 
-							"		//\\implies getTimeInHole() == getTimeInHole()@pre + 1 \\and getWdt()@pre == getWdt() \\and getHgt()@pre = getHgt()");
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n"
+									+ "		//\\and getTimeInHole()@pre<5 \r\n"
+									+ "		//\\implies getTimeInHole() == getTimeInHole()@pre + 1 \\and getWdt()@pre == getWdt() \\and getHgt()@pre = getHgt()");
 				}
 			}
 		}
@@ -641,11 +662,11 @@ public class GuardContract extends GuardDecorator {
 			if (getTimeInHole_atpre >= 5 && getBehaviour_atpre == Move.LEFT) {
 				if (!(cloneCL.getWdt() == getDelegate().getWdt() && cloneCL.getHgt() == getDelegate().getHgt())) {
 					throw new PostconditionError("step()",
-							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
-							"		//\\and getTimeInHole()@pre>=5 \r\n" + 
-							"		//\\and getBehaviour()@pre == LEFT\r\n" + 
-							"		//\\and clone@pre:GuardService \r\n" + 
-							"			//\\implies getWdt() == clone@pre.climbLeft().getWdt() \\and getHgt() = clone@pre.climbLeft().getHgt()");
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n"
+									+ "		//\\and getTimeInHole()@pre>=5 \r\n"
+									+ "		//\\and getBehaviour()@pre == LEFT\r\n"
+									+ "		//\\and clone@pre:GuardService \r\n"
+									+ "			//\\implies getWdt() == clone@pre.climbLeft().getWdt() \\and getHgt() = clone@pre.climbLeft().getHgt()");
 				}
 			}
 		}
@@ -653,11 +674,11 @@ public class GuardContract extends GuardDecorator {
 			if (getTimeInHole_atpre >= 5 && getBehaviour_atpre == Move.RIGHT) {
 				if (!(cloneCR.getWdt() == getDelegate().getWdt() && cloneCR.getHgt() == getDelegate().getHgt())) {
 					throw new PostconditionError("step()",
-							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
-							"		//\\and getTimeInHole()@pre>=5 \r\n" + 
-							"		//\\and getBehaviour()@pre == RIGHT \r\n" + 
-							"		//\\and clone@pre:GuardService \r\n" + 
-							"	//\\implies getWdt() == clone@pre.climbRight().getWdt() \\and getHgt() = clone@pre.climbRight().getHgt()");
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n"
+									+ "		//\\and getTimeInHole()@pre>=5 \r\n"
+									+ "		//\\and getBehaviour()@pre == RIGHT \r\n"
+									+ "		//\\and clone@pre:GuardService \r\n"
+									+ "	//\\implies getWdt() == clone@pre.climbRight().getWdt() \\and getHgt() = clone@pre.climbRight().getHgt()");
 				}
 			}
 		}
@@ -665,11 +686,11 @@ public class GuardContract extends GuardDecorator {
 			if (getTimeInHole_atpre >= 5 && getBehaviour_atpre == Move.NEUTRAL) {
 				if (!(cloneN.getWdt() == getDelegate().getWdt() && cloneN.getHgt() == getDelegate().getHgt())) {
 					throw new PostconditionError("step()",
-							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n" + 
-							"		//\\and getTimeInHole()@pre>=5 \r\n" + 
-							"		//\\and getBehaviour()@pre == NEUTRAL \r\n" + 
-							"		//\\and clone@pre:GuardService \r\n" + 
-							"			//\\implies getWdt() == clone@pre.doNeutral().getWdt() \\and getHgt() = clone@pre.doNeutral().getHgt()");
+							"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) == HOL\r\n"
+									+ "		//\\and getTimeInHole()@pre>=5 \r\n"
+									+ "		//\\and getBehaviour()@pre == NEUTRAL \r\n"
+									+ "		//\\and clone@pre:GuardService \r\n"
+									+ "			//\\implies getWdt() == clone@pre.doNeutral().getWdt() \\and getHgt() = clone@pre.doNeutral().getHgt()");
 				}
 			}
 		}
@@ -677,46 +698,46 @@ public class GuardContract extends GuardDecorator {
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.LEFT) {
 			if (!(cloneL.getWdt() == getDelegate().getWdt() && cloneL.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
-						"		//\\and getBehaviour()@pre == LEFT\r\n" + 
-						"		//\\and clone@pre:GuardService \r\n" + 
-						"			//\\implies getWdt() == clone@pre.goLeft().getWdt() \\and getHgt() = clone@pre.goLeft().getHgt()");
+						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n"
+								+ "		//\\and getBehaviour()@pre == LEFT\r\n"
+								+ "		//\\and clone@pre:GuardService \r\n"
+								+ "			//\\implies getWdt() == clone@pre.goLeft().getWdt() \\and getHgt() = clone@pre.goLeft().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.RIGHT) {
 			if (!(cloneR.getWdt() == getDelegate().getWdt() && cloneR.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						":EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
-						"		//\\and getBehaviour()@pre == RIGHT\r\n" + 
-						"		//\\and clone@pre:GuardService \r\n" + 
-						"			//\\implies getWdt() == clone@pre.goRight().getWdt() = clone@pre.goRight().getHgt()");
+						":EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n"
+								+ "		//\\and getBehaviour()@pre == RIGHT\r\n"
+								+ "		//\\and clone@pre:GuardService \r\n"
+								+ "			//\\implies getWdt() == clone@pre.goRight().getWdt() = clone@pre.goRight().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.UP) {
 			if (!(cloneU.getWdt() == getDelegate().getWdt() && cloneU.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						":EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
-						"		//\\and getBehaviour()@pre == UP\r\n" + 
-						"		//\\and clone@pre:GuardService \r\n" + 
-						"			//\\implies getWdt() == clone@pre.goUp().getWdt() = clone@pre.goUp().getHgt()");
+						":EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n"
+								+ "		//\\and getBehaviour()@pre == UP\r\n"
+								+ "		//\\and clone@pre:GuardService \r\n"
+								+ "			//\\implies getWdt() == clone@pre.goUp().getWdt() = clone@pre.goUp().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.DOWN) {
 			if (!(cloneD.getWdt() == getDelegate().getWdt() && cloneD.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
-						"		//\\and getBehaviour()@pre == DOWN\r\n" + 
-						"		//\\and clone@pre:GuardService \r\n" + 
-						"			//\\implies getWdt() == clone@pre.goDown().getWdt() = clone@pre.goDown().getHgt()");
+						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n"
+								+ "		//\\and getBehaviour()@pre == DOWN\r\n"
+								+ "		//\\and clone@pre:GuardService \r\n"
+								+ "			//\\implies getWdt() == clone@pre.goDown().getWdt() = clone@pre.goDown().getHgt()");
 			}
 		}
 		if (cell_atpre != Cell.HOL && getBehaviour_atpre == Move.NEUTRAL) {
 			if (!(cloneN.getWdt() == getDelegate().getWdt() && cloneN.getHgt() == getDelegate().getHgt())) {
 				throw new PostconditionError("step()",
-						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n" + 
-						"		//\\and getBehaviour()@pre == NEUTRAL\r\n" + 
-						"		//\\and clone@pre:GuardService \r\n" + 
-						"			//\\implies getWdt() == clone@pre.doNeutral().getWdt() = clone@pre.doNeutral().getHgt()");
+						"EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) != HOL\r\n"
+								+ "		//\\and getBehaviour()@pre == NEUTRAL\r\n"
+								+ "		//\\and clone@pre:GuardService \r\n"
+								+ "			//\\implies getWdt() == clone@pre.doNeutral().getWdt() = clone@pre.doNeutral().getHgt()");
 			}
 		}
 	}

@@ -65,31 +65,34 @@ public class PlayerContract extends PlayerDecorator {
 	@Override
 	public void step() {
 
+		// Captures
 		Move com = getDelegate().getEngine().getNextCommand();
-		
 		PlayerImpl cloneR = new PlayerImpl();
-		cloneR.clone(getDelegate() , getDelegate().getEngine());
+		cloneR.clone(getDelegate(), getDelegate().getEngine());
 		cloneR.goRight();
 
 		PlayerImpl cloneL = new PlayerImpl();
-		cloneL.clone(getDelegate() , getDelegate().getEngine());
+		cloneL.clone(getDelegate(), getDelegate().getEngine());
 		cloneL.goLeft();
 
 		PlayerImpl cloneU = new PlayerImpl();
-		cloneU.clone(getDelegate() , getDelegate().getEngine());
+		cloneU.clone(getDelegate(), getDelegate().getEngine());
 		cloneU.goUp();
 
 		PlayerImpl cloneD = new PlayerImpl();
-		cloneD.clone(getDelegate() , getDelegate().getEngine());
+		cloneD.clone(getDelegate(), getDelegate().getEngine());
 		cloneD.goDown();
 
 		PlayerImpl cloneN = new PlayerImpl();
-		cloneN.clone(getDelegate() , getDelegate().getEngine());
+		cloneN.clone(getDelegate(), getDelegate().getEngine());
 		cloneN.doNeutral();
 
+		// Call
 		checkInvariant();
 		getDelegate().step();
 		checkInvariant();
+
+		// Post
 
 		if (com == Move.LEFT) {
 			if (!(cloneL.getWdt() == getDelegate().getWdt() && cloneL.getHgt() == getDelegate().getHgt())) {
@@ -117,12 +120,13 @@ public class PlayerContract extends PlayerDecorator {
 				throw new PostconditionError("step()", "should have made a doNeutral");
 			}
 		}
-		
 
 	}
 
 	@Override
 	public void digL() {
+
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -150,6 +154,7 @@ public class PlayerContract extends PlayerDecorator {
 			getHoles_atpre.add(new Hole(h.getX(), h.getY(), h.getTime()));
 		}
 
+		// Call
 		checkInvariant();
 		getDelegate().digL();
 		checkInvariant();
@@ -220,6 +225,9 @@ public class PlayerContract extends PlayerDecorator {
 
 	@Override
 	public void digR() {
+
+		// Captures
+
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -246,6 +254,8 @@ public class PlayerContract extends PlayerDecorator {
 		for (Hole h : getDelegate().getEngine().getHoles()) {
 			getHoles_atpre.add(new Hole(h.getX(), h.getY(), h.getTime()));
 		}
+
+		// Call
 
 		checkInvariant();
 		getDelegate().digR();
@@ -298,7 +308,6 @@ public class PlayerContract extends PlayerDecorator {
 										nc = getCellNature_atpre.get(cp);
 									}
 								}
-
 								if (nc != null) {
 									if (!(getEnvi_atpre.getCellNature(i, j) == nc)) {
 										throw new PostconditionError(
@@ -319,20 +328,25 @@ public class PlayerContract extends PlayerDecorator {
 
 	@Override
 	public EngineService getEngine() {
-		return getDelegate().getEngine(); // bizarre
+		return getDelegate().getEngine();
 	}
 
 	@Override
 	public void doNeutral() {
+
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 		EnvironmentService getEnvi_atpre = getDelegate().getEnvi();
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
 
+		// Call
 		checkInvariant();
 		getDelegate().doNeutral();
 		checkInvariant();
+
+		// Post
 
 		if (cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
 			if (cell_down != Cell.PLT && cell_down != Cell.MTL && cell_down != Cell.LAD) {
@@ -361,6 +375,8 @@ public class PlayerContract extends PlayerDecorator {
 
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
+
+		// Call
 
 		checkInvariant();
 		getDelegate().goLeft();
@@ -408,6 +424,8 @@ public class PlayerContract extends PlayerDecorator {
 
 	@Override
 	public void goRight() {
+
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -416,6 +434,8 @@ public class PlayerContract extends PlayerDecorator {
 
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
+
+		// Call
 
 		checkInvariant();
 		getDelegate().goRight();
@@ -467,6 +487,8 @@ public class PlayerContract extends PlayerDecorator {
 	@Override
 	public void goUp() {
 
+		// Captures
+
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 		EnvironmentImpl getEnvi_atpre = new EnvironmentImpl();
@@ -475,6 +497,8 @@ public class PlayerContract extends PlayerDecorator {
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
+
+		// Call
 
 		checkInvariant();
 		getDelegate().goUp();
@@ -521,6 +545,8 @@ public class PlayerContract extends PlayerDecorator {
 
 	@Override
 	public void goDown() {
+
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -530,6 +556,7 @@ public class PlayerContract extends PlayerDecorator {
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
 
+		// Call
 		checkInvariant();
 		getDelegate().goDown();
 		checkInvariant();

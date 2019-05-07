@@ -5,9 +5,7 @@ import lonelyrunner.service.utils.SetCharItem;
 import lonelyrunner.service.EditableScreenService;
 import lonelyrunner.service.EnvironmentService;
 
-public class EnvironmentDecorator extends ScreenDecorator implements EnvironmentService{
-	
-	
+public class EnvironmentDecorator extends ScreenDecorator implements EnvironmentService {
 
 	public EnvironmentDecorator(EnvironmentService delegate) {
 		super(delegate);
@@ -16,9 +14,9 @@ public class EnvironmentDecorator extends ScreenDecorator implements Environment
 	public EnvironmentService getDelegate() {
 		return (EnvironmentService) super.getDelegate();
 	}
-	
+
 	@Override
-	public SetCharItem  getCellContent(int x, int y) {
+	public SetCharItem getCellContent(int x, int y) {
 		return getDelegate().getCellContent(x, y);
 	}
 
@@ -40,7 +38,7 @@ public class EnvironmentDecorator extends ScreenDecorator implements Environment
 	@Override
 	public void init(int h, int w) {
 		getDelegate().init(h, w);
-		
+
 	}
 
 	@Override
@@ -56,9 +54,7 @@ public class EnvironmentDecorator extends ScreenDecorator implements Environment
 	@Override
 	public void init(EditableScreenService ess) {
 		getDelegate().init(ess);
-		
-	}
 
-	
+	}
 
 }

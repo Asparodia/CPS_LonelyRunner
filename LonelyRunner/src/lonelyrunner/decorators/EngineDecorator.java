@@ -14,14 +14,14 @@ import lonelyrunner.service.utils.Item;
 import lonelyrunner.service.utils.Move;
 import lonelyrunner.service.utils.Status;
 
-public class EngineDecorator extends Decorator implements EngineService{
+public class EngineDecorator extends Decorator implements EngineService {
 
 	public EngineDecorator(EngineService delegate) {
 		super(delegate);
 	}
 
 	public EngineService getDelegate() {
-		return (EngineService)super.getDelegate();
+		return (EngineService) super.getDelegate();
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class EngineDecorator extends Decorator implements EngineService{
 	@Override
 	public void setCommand(Move c) {
 		getDelegate().setCommand(c);
-		
+
 	}
 
 	@Override

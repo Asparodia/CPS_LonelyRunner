@@ -114,6 +114,8 @@ public class EngineContract extends EngineDecorator {
 	@Override
 	public void init(EditableScreenService es, Couple<Integer, Integer> posChar,
 			ArrayList<Couple<Integer, Integer>> posGuards, ArrayList<Couple<Integer, Integer>> posItems) {
+
+		// pre
 		if (!es.isPlayable()) {
 			throw new PreconditionError("init()", "editable screen not playable");
 		}
@@ -148,9 +150,12 @@ public class EngineContract extends EngineDecorator {
 						"cant put an item on a case if it's not emp or above a mtl or a plt case and not on the same case as a the player and item coord must be in the screen");
 			}
 		}
+
+		// Call
 		getDelegate().init(es, posChar, posGuards, posItems);
 		checkInvariant();
 
+		// Post
 		if (!(getDelegate().getStatus() == Status.Playing)) {
 			throw new PostconditionError("init()", "engine status should be at playing after init");
 		}
@@ -218,9 +223,9 @@ public class EngineContract extends EngineDecorator {
 		}
 	}
 
-
 	@Override
 	public void step() {
+		// Captures
 		ArrayList<Hole> Holes_atpre = new ArrayList<>();
 		for (Hole h : getDelegate().getHoles()) {
 			Hole nh = new Hole(h.getX(), h.getY(), h.getTime());
@@ -237,9 +242,9 @@ public class EngineContract extends EngineDecorator {
 			Items_atpre.add(nh);
 
 		}
-		
+
 		ArrayList<Vector<Integer>> guardInit = new ArrayList<>();
-		for(Vector<Integer> v : getDelegate().guardInitPos()) {
+		for (Vector<Integer> v : getDelegate().guardInitPos()) {
 			Vector<Integer> add = new Vector<Integer>();
 			add.add(v.get(0));
 			add.add(v.get(1));
@@ -256,9 +261,13 @@ public class EngineContract extends EngineDecorator {
 			guards_atpre.add(clone);
 		}
 
+		// Call
+
 		checkInvariant();
 		getDelegate().step();
 		checkInvariant();
+
+		// Post
 
 		for (Item i : Items_atpre) {
 			if (i.getCol() == getDelegate().getPlayer().getWdt() && i.getHgt() == getDelegate().getPlayer().getHgt()) {
@@ -272,28 +281,31 @@ public class EngineContract extends EngineDecorator {
 			}
 		}
 		for (GuardService g : guards_atpre) {
-			if (getEnvi_atpre.getCellContent(g.getWdt(),g.getHgt()).getItem()!=null) {
-				Item id = getEnvi_atpre.getCellContent(g.getWdt(),g.getHgt()).getItem();
-				for(GuardService ga : getDelegate().getGuards()) {
-					if(g.getId()==ga.getId()) {
+			if (getEnvi_atpre.getCellContent(g.getWdt(), g.getHgt()).getItem() != null) {
+				Item id = getEnvi_atpre.getCellContent(g.getWdt(), g.getHgt()).getItem();
+				for (GuardService ga : getDelegate().getGuards()) {
+					if (g.getId() == ga.getId()) {
 						Cell cell_after = getDelegate().getEnvironment().getCellNature(ga.getWdt(), ga.getHgt());
-						Cell cell_downafter = getDelegate().getEnvironment().getCellNature(ga.getWdt(), ga.getHgt()-1);
-						boolean csafter = getDelegate().getEnvironment().getCellContent(ga.getWdt(), ga.getHgt()-1).getCar().isEmpty();
+						Cell cell_downafter = getDelegate().getEnvironment().getCellNature(ga.getWdt(),
+								ga.getHgt() - 1);
+						boolean csafter = getDelegate().getEnvironment().getCellContent(ga.getWdt(), ga.getHgt() - 1)
+								.getCar().isEmpty();
 						boolean validCaseNow = false;
-						if(cell_after == Cell.EMP && (cell_downafter == Cell.MTL || cell_downafter == Cell.PLT || !csafter)) {
+						if (cell_after == Cell.EMP
+								&& (cell_downafter == Cell.MTL || cell_downafter == Cell.PLT || !csafter)) {
 							validCaseNow = true;
 						}
-						if(validCaseNow) {
-							for(Item it : getDelegate().getTreasures()) {
-								if(it.getId() == id.getId() ) {
-									if(!(it.getCol() == ga.getWdt() && it.getHgt() == ga.getHgt())) {
-										throw new PostconditionError("step","the guard should have move this item");
+						if (validCaseNow) {
+							for (Item it : getDelegate().getTreasures()) {
+								if (it.getId() == id.getId()) {
+									if (!(it.getCol() == ga.getWdt() && it.getHgt() == ga.getHgt())) {
+										throw new PostconditionError("step", "the guard should have move this item");
 									}
 								}
-							}	
+							}
 						}
 					}
-					
+
 				}
 			}
 		}
@@ -334,7 +346,7 @@ public class EngineContract extends EngineDecorator {
 				}
 				for (GuardService gs : guards_atpre) {
 					if (gs.getWdt() == H.getX() && gs.getHgt() == H.getY()) {
-						
+
 						if (!(getDelegate().getEnvironment().getCellContent(H.getX(), H.getY()).getCar().isEmpty())) {
 							throw new PostconditionError("step",
 									"no one should be here now that this hole doesnt exists");
@@ -344,7 +356,8 @@ public class EngineContract extends EngineDecorator {
 								for (CharacterService cs : getDelegate().getEnvironment()
 										.getCellContent(v.get(1), v.get(2)).getCar()) {
 									if (cs.getClass() == GuardImpl.class) {
-										if (!(((GuardImpl) cs).getHgt() == v.get(2) && ((GuardImpl) cs).getWdt() == v.get(1))) {
+										if (!(((GuardImpl) cs).getHgt() == v.get(2)
+												&& ((GuardImpl) cs).getWdt() == v.get(1))) {
 											throw new PostconditionError("step",
 													"this guard should be at his init pos");
 										}

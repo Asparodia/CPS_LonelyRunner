@@ -26,12 +26,6 @@ public interface PlayerService extends/*include*/ CharacterService{
 	//\post: getNextCommand()@pre == DOWN
 			//\and clone@pre:PlayerService 
 				//\implies getWdt() == clone@pre.goDown.getWdt() \and getHgt() = clone@pre.goDown().getHgt()
-	//\post: getNextCommand()@pre == DigL
-			//\and clone@pre:PlayerService 
-				//\implies getWdt() == clone@pre.digL.getWdt() \and getHgt() = clone@pre.digL.getHgt()
-	//\post: getNextCommand()@pre == DigR
-			//\and clone@pre:PlayerService 
-				//\implies getWdt() == clone@pre.digR.getWdt() \and getHgt() = clone@pre.digR().getHgt()
 	//\post: getNextCommand()@pre == Neutral
 			//\and clone@pre:PlayerService 
 				//\implies getWdt() == clone@pre.doNeutral.getWdt() \and getHgt() = clone@pre.doNeutral.getHgt()

@@ -27,11 +27,11 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 		target = t;
 		timeInHole = 0;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public void setTime(int t) {
 		this.timeInHole = id;
 	}
@@ -89,12 +89,11 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				doNeutral();
 			}
 		}
-		
+
 		nextBehaviour();
 
-		
 	}
-	
+
 	public void nextBehaviour() {
 		Cell pos = env.getCellNature(width, height);
 		int hgtTarger = target.getHgt();
@@ -120,7 +119,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				}
 			}
 			Cell left = env.getCellNature(width - 1, height);
-			if (left == Cell.MTL || left == Cell.PLT ) {
+			if (left == Cell.MTL || left == Cell.PLT) {
 				canL = false;
 			}
 			if (down != Cell.MTL || down != Cell.PLT || !containGuarddown) {
@@ -148,7 +147,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 					canU = false;
 				}
 			}
-			Cell up = env.getCellNature(width , height+1);
+			Cell up = env.getCellNature(width, height + 1);
 			if (up == Cell.MTL || up == Cell.PLT) {
 				canU = false;
 			}
@@ -174,7 +173,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				behaviour = Move.NEUTRAL;
 			}
 		}
-		
+
 		if (pos == Cell.LAD && !canD) {
 			if (Math.abs(width - wdtTarger) <= Math.abs(height - hgtTarger)) {
 				if (hgtTarger > height) {
@@ -182,7 +181,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				}
 			}
 		}
-		
+
 		if ((pos == Cell.LAD) && (down != Cell.MTL && down != Cell.PLT && !containGuarddown)) {
 			if (Math.abs(width - wdtTarger) <= Math.abs(height - hgtTarger)) {
 				if ((hgtTarger < height)) {
@@ -190,7 +189,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				}
 			}
 		}
-		
+
 		if (pos == Cell.LAD && ((down == Cell.MTL || down == Cell.PLT) || containGuarddown)) {
 			if (Math.abs(width - wdtTarger) > Math.abs(height - hgtTarger)) {
 				if (wdtTarger > width) {
@@ -209,7 +208,7 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 				}
 			}
 		}
-		if ((pos == Cell.LAD) && (down != Cell.MTL && down != Cell.PLT && !containGuarddown) ) {
+		if ((pos == Cell.LAD) && (down != Cell.MTL && down != Cell.PLT && !containGuarddown)) {
 			if (Math.abs(width - wdtTarger) > Math.abs(height - hgtTarger)) {
 				if (wdtTarger > width) {
 					behaviour = Move.RIGHT;
@@ -256,11 +255,11 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 	@Override
 	public void climbLeft() {
 
-		if (env.getCellNature(width, height ) ==Cell.HOL && width > 0 && height < env.getHeight() - 1) {
+		if (env.getCellNature(width, height) == Cell.HOL && width > 0 && height < env.getHeight() - 1) {
 			boolean containGuardleft = false;
 			if (!env.getCellContent(width - 1, height).getCar().isEmpty()) {
 				for (CharacterService cs : env.getCellContent(width - 1, height).getCar()) {
-					if (cs.getClass() == (GuardImpl.class)){
+					if (cs.getClass() == (GuardImpl.class)) {
 						containGuardleft = true;
 					}
 				}
@@ -293,7 +292,8 @@ public class GuardImpl extends CharacterImpl implements GuardService {
 
 	@Override
 	public void climbRight() {
-		if ( env.getCellNature(width, height )==Cell.HOL && width < env.getWidth() - 1 && height < env.getHeight() - 1) {
+		if (env.getCellNature(width, height) == Cell.HOL && width < env.getWidth() - 1
+				&& height < env.getHeight() - 1) {
 			Cell upright = env.getCellNature(width + 1, height + 1);
 			Cell right = env.getCellNature(width + 1, height);
 			boolean containGuardright = false;

@@ -3,14 +3,14 @@ package lonelyrunner.decorators;
 import lonelyrunner.service.utils.Cell;
 import lonelyrunner.service.ScreenService;
 
-public class ScreenDecorator extends Decorator implements ScreenService{
+public class ScreenDecorator extends Decorator implements ScreenService {
 
 	public ScreenDecorator(ScreenService delegate) {
 		super(delegate);
 	}
 
 	public ScreenService getDelegate() {
-		return (ScreenService)super.getDelegate();
+		return (ScreenService) super.getDelegate();
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class ScreenDecorator extends Decorator implements ScreenService{
 	@Override
 	public void init(int h, int w) {
 		getDelegate().init(h, w);
-		
+
 	}
 
 	@Override
@@ -43,6 +43,5 @@ public class ScreenDecorator extends Decorator implements ScreenService{
 	public void fill(int x, int y) {
 		getDelegate().fill(x, y);
 	}
-	
-	
+
 }

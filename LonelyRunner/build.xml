@@ -1,49 +1,63 @@
 <project name="switch" default="compile" basedir=".">
-    <description>
+	<description>
         The build file for Lonely Runner
     </description>
-  <!-- set global properties for this build -->
-  <property name="src" location="src"/>
-  <property name="bin" location="bin"/>
-<property name="nom1" value="BAH_Thierno"/>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="nom1" value="BAH_Thierno" />
 
-  <target name="init">
-    <!-- Create the time stamp -->
-    <tstamp/>
-    <!-- Create the bin directory structure used by compile -->
-    <mkdir dir="${bin}"/>
-  </target>
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the bin directory structure used by compile -->
+		<mkdir dir="${bin}" />
+	</target>
 
-  <target name="compile" depends="init"
-        description="compile the source " >
-    <!-- Compile the java code from ${src} into ${bin} -->
-    <javac debug="true" srcdir="${src}" excludes="" destdir="${bin}" includeantruntime="false" />
-  </target>
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${bin} -->
+		<javac debug="true" srcdir="${src}" excludes="" destdir="${bin}" includeantruntime="false" />
+	</target>
 
-  <target name="run" depends="compile"
-          description="run example">
-    <java classname="lonelyrunner.main.lonelyRunnerMain" classpath="${bin}" />
-  </target>
-	 <target name="test" depends="compile"
-	          description="run example">
-	    <java classname="lonelyrunner.test.lonelyRunnerTest" classpath="${bin}" />
-	  </target>
+	<target name="run" depends="compile" description="run example">
+		<java classname="lonelyrunner.main.lonelyRunnerMain" classpath="${bin}" />
+	</target>
+	<target name="testCharacter" depends="compile" description="run example">
+		<java classname="lonelyrunner.test.CharacterTest" classpath="${bin}" />
+	</target>
+	<target name="testPlayer" depends="compile" description="run example">
+		<java classname="lonelyrunner.test.PlayerTest" classpath="${bin}" />
+	</target>
+	<target name="testGuard" depends="compile" description="run example">
+		<java classname="lonelyrunner.test.GuardTest" classpath="${bin}" />
+	</target>
+	<target name="testEngine" depends="compile" description="run example">
+		<java classname="lonelyrunner.test.EngineTest" classpath="${bin}" />
+	</target>
+	<target name="testScreen" depends="compile" description="run example">
+		<java classname="lonelyrunner.test.ScreenTest" classpath="${bin}" />
+	</target>
+	<target name="testEditableScreen" depends="compile" description="run example">
+		<java classname="lonelyrunner.test.EditableScreenTest" classpath="${bin}" />
+	</target>
+	<target name="testEnvironment" depends="compile" description="run example">
+		<java classname="lonelyrunner.test.EnviromentTest" classpath="${bin}" />
+	</target>
 
-  <target name="dist" depends="init,clean"
-        description="Generer la distribution" >
-    <!-- tout mettre dans l'archive -->
-  	<jar basedir="." jarfile="../LonelyRunnerBuild-${nom1}-${DSTAMP}.jar" />
-  </target>
+	<target name="dist" depends="init,clean" description="Generer la distribution">
+		<!-- tout mettre dans l'archive -->
+		<jar basedir="." jarfile="../LonelyRunnerBuild-${nom1}-${DSTAMP}.jar" />
+	</target>
 
-  <target name="clean"
-        description="clean up" >	
-	<echo>================ Removing temporary files... ================</echo>
-        <delete verbose="true"> <!-- Remove all *~ files -->
-	   <fileset dir="${basedir}" defaultexcludes="no">
-             <include name="**/*~"/>
-           </fileset>
-        </delete>
-        <echo>================ Removing bin directory ================</echo>    
-	<delete dir="${bin}"/>
-  </target>
+	<target name="clean" description="clean up">
+		<echo>================ Removing temporary files... ================</echo>
+		<delete verbose="true">
+			<!-- Remove all *~ files -->
+			<fileset dir="${basedir}" defaultexcludes="no">
+				<include name="**/*~" />
+			</fileset>
+		</delete>
+		<echo>================ Removing bin directory ================</echo>
+		<delete dir="${bin}" />
+	</target>
 </project>

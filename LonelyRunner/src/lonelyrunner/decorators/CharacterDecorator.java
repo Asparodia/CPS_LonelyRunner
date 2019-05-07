@@ -5,13 +5,13 @@ import lonelyrunner.service.EnvironmentService;
 import lonelyrunner.service.ScreenService;
 
 public class CharacterDecorator extends Decorator implements CharacterService {
-	
+
 	public CharacterDecorator(CharacterService c) {
 		super(c);
 	}
-	
+
 	public CharacterService getDelegate() {
-		return (CharacterService)super.getDelegate();
+		return (CharacterService) super.getDelegate();
 	}
 
 	@Override
@@ -32,30 +32,30 @@ public class CharacterDecorator extends Decorator implements CharacterService {
 	@Override
 	public void init(ScreenService s, int x, int y) {
 		getDelegate().init(s, x, y);
-		
+
 	}
 
 	@Override
 	public void goLeft() {
 		getDelegate().goLeft();
-		
+
 	}
 
 	@Override
 	public void goRight() {
 		getDelegate().goRight();
-		
+
 	}
 
 	@Override
 	public void goUp() {
 		getDelegate().goUp();
-		
+
 	}
 
 	@Override
 	public void goDown() {
 		getDelegate().goDown();
-		
+
 	}
 }

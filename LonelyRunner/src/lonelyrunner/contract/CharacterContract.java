@@ -31,9 +31,13 @@ public class CharacterContract extends CharacterDecorator {
 
 	@Override
 	public void init(ScreenService s, int x, int y) {
+
+		// pre
 		if (!(s.getCellNature(x, y) == Cell.EMP)) {
 			throw new PreconditionError("init( s, " + x + ", " + y + " )", "Cell is not empty");
 		}
+
+		// call
 		getDelegate().init(s, x, y);
 		checkInvariant();
 	}
@@ -50,6 +54,7 @@ public class CharacterContract extends CharacterDecorator {
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
 
+		// Call
 		checkInvariant();
 		getDelegate().goLeft();
 		checkInvariant();
@@ -96,6 +101,7 @@ public class CharacterContract extends CharacterDecorator {
 
 	@Override
 	public void goRight() {
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -104,13 +110,11 @@ public class CharacterContract extends CharacterDecorator {
 
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
-		
-		
+
+		// Call
 		checkInvariant();
 		getDelegate().goRight();
 		checkInvariant();
-
-		// Post
 
 		if (getWdt_atpre == getEnvi_atpre.getWidth() - 1) {
 			if (!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
@@ -122,11 +126,11 @@ public class CharacterContract extends CharacterDecorator {
 					|| getEnvi_atpre.getCellNature(getWdt_atpre + 1, getHgt_atpre) == Cell.PLT)) {
 				if (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD) {
 					if (!(getWdt_atpre == getDelegate().getWdt() && getHgt_atpre == getDelegate().getHgt()))
-					throw new PostconditionError("goRight()",
-							"getWdt()@pre < EnvironmentService::getWidth()-1 and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) in {MTL,PLT} and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD} should implie"
-									+ "getWdt()@pre == getWdt() and getHgt()@pre == getHgt()");
+						throw new PostconditionError("goRight()",
+								"getWdt()@pre < EnvironmentService::getWidth()-1 and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) in {MTL,PLT} and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD} should implie"
+										+ "getWdt()@pre == getWdt() and getHgt()@pre == getHgt()");
 				}
-				
+
 			}
 		}
 		if (cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
@@ -155,6 +159,7 @@ public class CharacterContract extends CharacterDecorator {
 
 	@Override
 	public void goUp() {
+		// Captures
 
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
@@ -165,6 +170,7 @@ public class CharacterContract extends CharacterDecorator {
 
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
 
+		// Call
 		checkInvariant();
 		getDelegate().goUp();
 		checkInvariant();
@@ -180,10 +186,10 @@ public class CharacterContract extends CharacterDecorator {
 			if (cell_up == Cell.MTL || cell_up == Cell.PLT || cell_up == Cell.HDR) {
 				if (cell_down == Cell.PLT || cell_down == Cell.MTL || cell_down == Cell.LAD) {
 					if (!(getHgt_atpre == getDelegate().getHgt() && getWdt_atpre == getDelegate().getWdt()))
-					throw new PostconditionError("goUp()",
-							"EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL, PLT, HDR} and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD} should implies getHgt() = getHgt()@pre and getWdt() == getWdt()@pre");
-					}
+						throw new PostconditionError("goUp()",
+								"EnvironmentService::getCellNature(getEnvi()@pre, getWdt()@pre, getHgt()@pre + 1) in {MTL, PLT, HDR} and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) in {PLT,MTL,LAD} should implies getHgt() = getHgt()@pre and getWdt() == getWdt()@pre");
 				}
+			}
 		}
 
 		if (cell_atpre != Cell.LAD && cell_atpre != Cell.HDR) {
@@ -210,6 +216,8 @@ public class CharacterContract extends CharacterDecorator {
 
 	@Override
 	public void goDown() {
+
+		// Captures
 		int getHgt_atpre = getDelegate().getHgt();
 		int getWdt_atpre = getDelegate().getWdt();
 
@@ -219,6 +227,7 @@ public class CharacterContract extends CharacterDecorator {
 		Cell cell_atpre = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt());
 		Cell cell_down = getDelegate().getEnvi().getCellNature(getDelegate().getWdt(), getDelegate().getHgt() - 1);
 
+		// Call
 		checkInvariant();
 		getDelegate().goDown();
 		checkInvariant();
