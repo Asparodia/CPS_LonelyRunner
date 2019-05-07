@@ -1,7 +1,7 @@
 Service : Player
 include : Character
 
-Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}, SetCharItem {Item + Character}
+Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}, SetCharItem {Item + Character}, Hole{ X, Y, Time}
 
 Observators:
 
@@ -14,56 +14,60 @@ init : [ScreenService]*int*int*[Engine] -> [Player]
 
 Operators :
 
-step : [Character] -> [Character]
+step : [Player] -> [Player]
 
-digL : [Character] -> [Character]
+digL : [Player] -> [Player]
 
-digR : [Character] -> [Character]
+digR : [Player] -> [Player]
 
-doNeutral : [Character] -> [Character]
+doNeutral : [Player] -> [Player]
 
 Observations :
 
 [Invariants]
-	Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)) in {EMP,HOL,LAD,HDR} 
-	exists Player x in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)) implies x = C
+	Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)) in [EMP,HOL,LAD,HDR] 
+	exists Player x in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)) implies x = P
 
 [init] : P in Engine::getEnvironment(getEngine(P))::getCellContent(getEnvi(P),getWdt(P),getHgt(P))
 
-[digL] :
+[digL] : Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)) not in [LAD,HDR] 
+			and Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P) - 1) not in [PLT,MTL,LAD]
+			and not exists Character c in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)-1)
+				implies getWdt(digL(P)) = getWdt(P) and getHgt(digL(P)) = getHgt(P) - 1
+	 getWdt(P) > 0 and (Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)-1) in [MTL,PLT] or exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)-1))
+			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)-1) = PLT 
+			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)) not in [PLT, MTL]
+			and not exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P)-1,getHgt(P) 
+			and not exist Item i in Environment::getCellContent(getEnvi(P),getWdt(P)-1,getHgt(P)))
+				implies  Environment::getCellNature(getEnvi(digL(P)),getWdt(digL(P))-1,getHgt(digL(P))-1) = HOL 
+					and getWdt(digL(P)) = getWdt(P) and getHgt(digL(P)) = getHgt(P) 
+					and Engine::getHoles(getEngine(digL(P))) =  Engine::getHoles(getEngine(P)) union Hole( getWdt(P)-1 ,getHgt(P)-1, 0)
+					and forall (x,y) in [0;Environment::getWidth(getEnvi(P)[×[0;Environment::getHeight(getEnvi(P)[,  (x!=u or y!=v) 
+						implies Environment::getCellNature(getEnvi(P),x,y) = getCellNature(getEnvi(digL(P)),x,y)
 
-[digR] :
+[digR] : Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)) not in [LAD,HDR] 
+			and Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P) - 1) not in [PLT,MTL,LAD]
+			and not exists Character c in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)-1)
+				implies getWdt(digR(P)) = getWdt(P) and getHgt(digR(P)) = getHgt(P) - 1
+	getWdt(P) < Environment::getWidth()-1 and (Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)-1) in [MTL,PLT] 
+				or exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)-1))
+			and Environment::getCellNature(getEnvi(P),getWdt(P)+1,getHgt(P)-1) = PLT 
+			and Environment::getCellNature(getEnvi(P),getWdt(P)-1,getHgt(P)) not in [PLT, MTL]
+			and not exist Character c in Environment::getCellContent(getEnvi(P),getWdt(P)+1,getHgt(P)) 
+			and not exist Item i in Environment::getCellContent(getEnvi(P),getWdt(P)+1,getHgt(P)))
+				implies  Environment::getCellNature(getEnvi(digR(P)),getWdt(digR(P))+1,getHgt(digR(P))-1) = HOL 
+					and getWdt(digR(P)) = getWdt(P) and getHgt(digR(P)) = getHgt(P) 
+					and Engine::getHoles(getEngine(digR(P))) =  Engine::getHoles(getEngine(P)) union Hole( getWdt(P)+1 ,getHgt(P)-1, 0)
+					and forall (x,y) in [0;Environment::getWidth(getEnvi(P)[×[0;Environment::getHeight(getEnvi(P)[,  (x!=u or y!=v) 
+						implies Environment::getCellNature(getEnvi(P),x,y) = getCellNature(getEnvi(digR(P)),x,y)
 
-[doNeutral] :
+[doNeutral] : Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P)) not in [LAD,HDR] 
+			and Environment::getCellNature(getEnvi(P),getWdt(P),getHgt(P) - 1) not in [PLT,MTL,LAD]
+			and not exists Character c in Environment::getCellContent(getEnvi(P),getWdt(P),getHgt(P)-1)
+				implies getWdt(doNeutral(P)) = getWdt(P) and getHgt(doNeutral(P)) = getHgt(P) - 1
 
-	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
-			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
-			//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
-				//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
-	//\post: getWdt()@pre > 0 \and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) \in {MTL,PLT} \or \exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1))
-			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre-1) == PLT 
-			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) not in {PLT, MTL}
-			//\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre 
-			//\and not exist i:Item in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre))
-				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()-1,getHgt()-1) == HOL
-					//\and getEngine().getHoles() ==  getEngine()@pre::getHoles() Union Hole(getWdt()@pre-1,getHgt()@pre-1,0)
-					//\and \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()  (x!=u or y!=v) EnvironmentService::getCellNature()@pre = getCellNature()
 
-	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
-			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
-			//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
-				//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
-	//\post: getWdt()@pre != EnvironmentService::getWidth()-1 \and (EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1) \in {MTL,PLT} \or \exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1))
-			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre-1) == PLT 
-			//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre-1,getHgt()@pre) not in {PLT, MTL}
-			//\and not exist Character c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre) 
-			//\and not exist i:Item in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre+1,getHgt()@pre))
-				//\implies  EnvironmentService::getCellNature(getEnvi(),getWdt()+1,getHgt()-1) == HOL 
-					//\and getEngine()::getHoles() ==  getEngine()@pre::getHoles() Union Hole(getWdt()@pre+1,getHgt()@pre-1,0)
-					//\and \forall x:int and y:int with 0<=x<getWidth() and 0<=y<getHeight()  (x!=u or y!=v) EnvironmentService::getCellNature()@pre = getCellNature()
+	
 
-	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
-		//\and EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre - 1) \not in {PLT,MTL,LAD}
-		//\and not exists CharacterService c in EnvironmentService::getCellContent(getEnvi()@pre,getWdt()@pre,getHgt()@pre-1)
-			//\implies getWdt() == getWdt()@pre \and getHgt() == getHgt()@pre - 1
+	
 

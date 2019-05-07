@@ -12,7 +12,6 @@ import lonelyrunner.contract.EditableScreenContract;
 import lonelyrunner.contract.EngineContract;
 import lonelyrunner.contract.EnvironmentContract;
 import lonelyrunner.contract.PlayerContract;
-import lonelyrunner.contract.contracterr.ContractError;
 import lonelyrunner.impl.EditableScreenImpl;
 import lonelyrunner.impl.EngineImpl;
 import lonelyrunner.impl.EnvironmentImpl;
