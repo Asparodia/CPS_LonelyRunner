@@ -1,0 +1,11 @@
+Service : Engine
+
+Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}, SetGharItem {Item + Character}, Move {RIGHT,UP,DOWN,NEUTRAL,LEFT,DigL,DigR}, Hole {X , Y, Time}, Status {Playing, Loss, Win}
+
+Observators :
+
+Constructors :
+
+Operators :
+
+Observations:
