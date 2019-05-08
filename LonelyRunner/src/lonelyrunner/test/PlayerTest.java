@@ -919,14 +919,14 @@ public class PlayerTest {
 			editscreen.setNature(x, 1, Cell.PLT);
 		}
 		env.init(editscreen);
+		PlayerContract p2 = new PlayerContract(new PlayerImpl());
 		ArrayList<Couple<Integer, Integer>> treasures = new ArrayList<Couple<Integer, Integer>>();
-		treasures.add(new Couple<Integer,Integer>(3,2));
+		treasures.add(new Couple<Integer,Integer>(13,2));
 		engine.init(editscreen, new Couple<Integer, Integer>(14, 2), 
 				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();
+		
 		player.init(env, 14, 2, engine);
-		PlayerContract p2 = new PlayerContract(new PlayerImpl());
-
 		Cell beforeDig = env.getCellNature(13, 1);
 		int xbefore = player.getWdt();
 		int ybefore = player.getHgt();
@@ -939,7 +939,6 @@ public class PlayerTest {
 		assertTrue(ybefore == player.getHgt());
 
 		env.init(editscreen);
-		treasures.add(new Couple<Integer,Integer>(9,2));
 		engine.init(editscreen, new Couple<Integer, Integer>(14, 2), 
 				new ArrayList<Couple<Integer, Integer>>(), treasures);
 		env = engine.getEnvironment();

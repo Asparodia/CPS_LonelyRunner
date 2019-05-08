@@ -231,7 +231,6 @@ public class GuardTest {
 		env.init(editscreen);
 		target.init(env, 9, 2);
 		guard.init(env, 1, 2,target);
-		
 		int xbefore = guard.getWdt();
 		int ybefore = guard.getHgt();
 		testInvariant();
@@ -239,12 +238,10 @@ public class GuardTest {
 		testInvariant();
 		assertTrue(xbefore == guard.getWdt());
 		assertTrue(ybefore == guard.getHgt());
-
 		editscreen.setNature(0, 2, Cell.MTL);
 		env.init(editscreen);
 		target.init(env, 9, 2);
 		guard.init(env, 1, 2,target);
-
 		xbefore = guard.getWdt();
 		ybefore = guard.getHgt();
 		testInvariant();
@@ -1216,15 +1213,14 @@ public class GuardTest {
 	public void testStepWhileInHOL2() {
 		editscreen.init(10, 15);
 		for (int x = 0; x < editscreen.getWidth(); x++) {
-			editscreen.setNature(x, 0, Cell.MTL);
-		}
+			editscreen.setNature(x, 0, Cell.MTL);}
 		for (int x = 0; x < editscreen.getWidth(); x++) {
-			editscreen.setNature(x, 1, Cell.PLT);
-		}
+			editscreen.setNature(x, 1, Cell.PLT);}
 		editscreen.setNature(4, 1, Cell.HOL);
+		
 		env.init(editscreen);
 		target.init(env, 2, 2);
-		guard.init(env, 5, 2,target);
+		guard.init(env, 5, 2,target);	
 		
 		assertTrue(guard.getBehaviour()==Move.NEUTRAL) ;
 		guard.step();
