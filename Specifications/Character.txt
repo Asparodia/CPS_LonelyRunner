@@ -1,0 +1,89 @@
+Service : Character
+
+Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}, SetCharItem {Item + Character}
+
+Observators:
+
+const getEnvi : [Character] -> [Environment]
+
+getHgt : [Character] -> int
+
+getWdt : [Character] -> int
+
+Constructors : 
+
+init : [ScreenService]*int*int -> Character
+	pre : init(S,x,y) requires Environment::getCellNature(S,x,y) = EMP 
+
+Operators :
+
+goLeft : [Character] -> [Character]
+
+goRight : [Character] -> [Character]
+
+goUp : [Character] -> [Character]
+
+goDown : [Character] -> [Character]
+
+Observations :
+
+
+[Invariants]
+	Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)) in {EMP,HOL,LAD,HDR} 
+	exists Character x in Environment::getCellContent(getEnvi(C),getWdt(C),getHgt(C)) implies x = C
+
+[goLeft] : getHgt(C) = 0 implies getHgt(goLeft(C)) = getHgt(C) and getWdt(goLeft(C)) = getWdt(C)
+	   getHgt(C) > 0 and Environment::getCellNature(getEnvi(C),getWdt(C) - 1,getHgt(C)) in [MTL,PLT] 
+			and Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C) - 1) in [MTL,PLT,LAD] 
+				implies getHgt(goLeft(C)) = getHgt(C) and getWdt(goLeft(C)) = getWdt(C)
+	   Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)) not in [LAD,HDR]
+			and Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)-1) not in [MTL,PLT,LAD] 
+			and not exists Character c in Environment::getCellContent(getEnvi(C),getWdt(C),getHgt(C)-1)
+				implies getHgt(goLeft(C)) = getHgt(C) - 1 and getWdt(goLeft(C)) = getWdt(C)
+	   getHgt(C) > 0 and Environment::getCellNature(getEnvi(C),getWdt(C) - 1,getHgt(C)) not in [MTL,PLT] 
+			and (Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)) in [LAD,HDR] 
+				or Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)-1) in [PLT,MTL,LAD]
+				or exists Character c in  Environment::getCellContent(getEnvi(C),getWdt(C),getHgt(C)-1) )
+			implies getHgt(goLeft(C)) = getHgt(C) and getWdt(goLeft(C)) = getWdt(C) - 1
+
+[goRight] :getHgt(C) = Environment::getWidth(getEnvi(C)) - 1 implies getHgt(goRight(C)) = getHgt(C) and getWdt(goRight(C)) = getWdt(C)
+	   getHgt(C) < Environment::getWidth(getEnvi(C)) - 1 and Environment::getCellNature(getEnvi(C),getWdt(C) + 1,getHgt(C)) in [MTL,PLT] 
+			and Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C) - 1) in [MTL,PLT,LAD] 
+				implies getHgt(goRight(C)) = getHgt(C) and getWdt(goRight(C)) = getWdt(C)
+	   Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)) not in [LAD,HDR]
+			and Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)-1) not in [MTL,PLT,LAD] 
+			and not exists Character c in Environment::getCellContent(getEnvi(C),getWdt(C),getHgt(C)-1)
+				implies getHgt(goRight(C)) = getHgt(C) - 1 and getWdt(goRight(C)) = getWdt(C)
+	   getHgt(C) < Environment::getWidth(getEnvi(C)) - 1 and Environment::getCellNature(getEnvi(C),getWdt(C) + 1,getHgt(C)) not in [MTL,PLT] 
+			and (Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)) in [LAD,HDR] 
+				or Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)-1) in [PLT,MTL,LAD]
+				or exists Character c in  Environment::getCellContent(getEnvi(C),getWdt(C),getHgt(C)-1) )
+			implies getHgt(goRight(C)) = getHgt(C) and getWdt(goRight(C)) = getWdt(C) + 1
+
+
+[goUp] : getHgt(C) = Environment::getHeight()-1 implies getHgt(goUp(C)) = getHgt(C) and getWdt(goUp(C)) = getWdt(C)
+	 getHgt(C) < Environment::getHeight()-1 and Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C) + 1) in [MTL,PLT,HDR] 
+			and Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)-1) in [PLT,MTL,LAD]
+				implies getWdt(C) = getWdt(goUp(C)) and getHgt(C) = getHgt(goUp(C))
+	 Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C)) not in [LAD,HDR]
+			and Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C) - 1) not in [MTL, PLT, LAD] 
+			not exists Character c in Environment::getCellContent(getEnvi(C), getWdt(C), getHgt(C) - 1)
+				implies getWdt(goUp(C)) = getWdt(C) and getHgt(goUp(C)) = getHgt(C) - 1
+	 getHgt(C) < Environment::getHeight()-1 and Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C)) = LAD
+			and Environment::CellNature(getEnvi(C), getWdt(C), getHgt(C) + 1) in [LAD,EMP] 
+				implies getHgt(goUp(C)) = getHgt(C) + 1 and getWdt(goUp(C)) = getWdt(C)
+
+
+[goDown]: getHgt(C) = 0 implies getHgt(goDown(C))=getHgt(C) and getWdt(goDown(C)) = getWdt(C)
+	  getHgt(C) > 0 and Environment::getCellNature(getEnvi(C),getWdt(C),getHgt(C)-1) in [PLT,MTL]
+				implies getWdt(C) = getWdt(goDown(C)) and getHgt(C) = getHgt(goDown(C))
+	  Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C)) not in [LAD,HDR]
+			and Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C)-1) not in [PLT,MTL,LAD]
+			and not exists Character c in Environment::getCellContent(getEnvi()@, getWdt(C), getHgt(C)-1))
+				implies getWdt(goDown(C)) = getWdt(C) and getHgt(goDown(C)) = getHgt(C) - 1
+	  getHgt(C) > 0 and Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C)) in [LAD,HDR,EMP,HOL]
+			and Environment::getCellNature(getEnvi(C), getWdt(C), getHgt(C)-1) in [EMP,LAD,HDR,HOL]
+				implies getHgt(goDown(C))=getHgt(C)-1 and getWdt(goDown(C)) = getWdt(C)
+
+
+

@@ -1,0 +1,103 @@
+Service : Engine
+
+Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}, SetGharItem {Item + Character}, Move {RIGHT,UP,DOWN,NEUTRAL,LEFT,DigL,DigR}, Hole {X + Y + Time},
+	 Status {Playing, Loss, Win}, Pos {X + Y}, Item {Treasure}, InitPos { Id + X + Y }
+
+Observators :
+
+getNbLives : [Engine] -> int
+	
+getScore : [Engine] -> int
+	
+getEnvironment : [Engine] -> [Environment]
+	
+getPlayer : [Engine] -> [Player]
+	
+getGuards : [Engine] -> { [Guard] }
+	
+getTreasures : [Engine] -> { Item } 
+	
+getStatus : [Engine] -> Status
+	
+getNextCommand : [Engine] -> Move
+	
+getHoles : [Engine] -> { Hole }
+	
+guardInitPos : [Engine] -> { InitPos }
+
+Constructors :
+
+init : [EditableScrenn]*Pos*{Pos}*{Pos} 
+	pre : init(ES,posChar,posGuards,posItems) requires EditableScreen::isPlayable(ES) = True 
+		and posItems != {}
+		and (getCellNature(ES,posChar.x,posChar.y) = EMP and (posChar::x, posChar::y) in [0;getWidth(ES)[×[0;getHeight(ES)[ )
+		and forall p:Pos in posGuards 
+			EditableScreen::getCellNature(ES,p::x,p::y) = EMP) and (p::x != posChar::x or p::y != posChar::y) and (p::x, p::y) in [0;getWidth(ES)[×[0;getHeight(ES)[
+		and forall p:Pos in posItems 
+			EditableScreen::getCellNature(ES,p::x,p::y) = EMP) and (p::x != posChar::x or p::y != posChar::y) and forall pG:Pos in posGuards p::x!= pG::x or p::y != pG::y
+			and (p::x, p::y) in [0;getWidth(ES)[×[0;getHeight(ES)[
+			and EditableScreen::getCellNature(ES,p::x,p::y-1) = [PLT,MTL]
+	
+
+Operators :
+
+setNbLives : [Engine]*int -> [Engine]
+
+setCommand : [Engine]*Move -> [Engine]
+
+step : [Engine] -> [Engine]
+
+Observations:
+
+[Invariants] :  getPlayer(E) in Environment::getCellContent(getEnvironment(E),Player::getWdt(getPlayer(E)),Player::getHgt(getPlayer(E)))
+		forall G:Guard in getGuards(E) 
+			G in Environment::getCellContent(getEnvironment(E),Guard::getWdt(G),Guard::getHgt(G))
+		forall T:Item in getTreasures(E) 
+			T in Environment::getCellContent(getEnvironment(E),T::getWdt, T::getHgt)
+		forall H:Hole in getHoles()
+			Environment::getCellNature(getEnvironment(E),H.x,H.y) = HOL
+		getTreasures(E) = {} implies getStatus(E) = Win
+		getNbLives(E) < 0 implies getStatus(E) == Loss
+
+[setNbLives] : getNbLives(setNbLives(E,x)) = x
+
+[setCommand] : getNextCommand(setCommand(E,c)) = c
+
+[init] : getPlayer(init(ES,posChar,posGuards,posItems)) in Environment::getCellContent(getEnvironment(init(ES,posChar,posGuards,posItems)),posChar.x,posChar.y) 
+		and forall (x, y) in [0;getWidth(ES)[×[0;getHeight(ES)[ and (x!= posChar.x and y!= posChar.y)
+			implies getPlayer(init(ES,posChar,posGuards,posItems)) not in Environment::getCellContent(getEnvironment(init(ES,posChar,posGuards,posItems)),x,y)4
+	 forall p:Pos in posGuards 
+		exist G:Guard in Environment::getCellContent(getEnvironment(init(ES,posChar,posGuards,posItems)),p::x,p::y)
+	 and forall p:Pos in posItems 
+		exist Item i in Environment::getCellContent(getEnvironment(init(ES,posChar,posGuards,posItems)),p::x,p::y)	
+	 getStatus(init(ES,posChar,posGuards,posItems)) = Playig
+	 getNbLives(init(ES,posChar,posGuards,posItems)) = 2
+	 getScore(init(ES,posChar,posGuards,posItems)) = 0
+	 Player::getEngine(getPlayer(init(ES,posChar,posGuards,posItems))) = init(ES,posChar,posGuards,posItems)
+	 forall p:InitPos in guardInitPos(init(ES,posChar,posGuards,posItems))
+		 exist G:Guard in getGuards(init(ES,posChar,posGuards,posItems)) with G::id = p::Id and Guard::getWdt(G) = p::X and Guard::getHgt(G) = p::Y
+
+[step] : getPlayer(step(E)) = Player::step(getPlayer(E))
+	 forall G:Guard in getGuards(step(E)) and G2 in getGuards(E)
+		G::id = G2::id implie G = Guard::step(G2)
+	 forall T:Item in getTreasures(E)
+		 T in Environment::getCellContent(getEnvironment(step(E)),Player::getWdt(getPlayer(step(E))),Player::getHgt(getPlayer(step(E))))
+			implies T not in getTreasures(step(E)) and getScore(step(E)) = getScore(E) + 1
+	 forall G:Guard in getGuards(step(E)) 
+		 G in Environment::getCellContent(getEnvironment(step(E)),Player::getWdt(getPlayer(step(E))),Player::getHgt(getPlayer(step(E))))
+			implies  getNbLives(step(E)) = getNbLives(E) - 1
+	 forall G:Guard in getGuards(E)
+		 exists t:Item in Environment::getCellContent(getEnvironment(G),Guard::getWdt(G),Guard::getHgt(G)) 
+				and forall G2:Guard in getGuards(step(E))
+					G2::id = G::id and (Environment::getCellNature(getEnvironment(step(E)),Guard::getWdt(G2),Guard::getHgt(G2)) = EMP 
+						and (Environment::getCellNature(getEnvironment(step(E)),Guard::getWdt(G2),Guard::getHgt(G2)-1) in [MTL, PLT]
+						 	or exist Character c in Environment::getCellContent(getEnvironment(step(E)),Guard::getWdt(G),Guard::getHgt(G2)-1) ) )
+				implies t in EnvironmentService::getCellContent(getEnvironment(step(E)),Guard::getWdt(G),Guard::getHgt(G))
+	 forall H:Hole in getHoles(E)
+		H::time < 14 implies H in getHoles(step(E)) and H::time+1 = getHoles(step(E))::get(H)::time
+		H::time = 14 and Player p in Environment::getCellContent(getEnvironment(step(E)),H::x,H::y)
+			implies getNbLives(step(E)) = getNbLives(E) - 1
+		H.time = 14 implies getHoles(step(E)) = getHoles(E) minus H
+		H.time = 14 and for G:Guard in getGuard(E) G in EnvironmentService::getCellContent(getEnvironment(E),H.x,H.y)
+			implies not exist Guard c in EnvironmentService::getCellContent(getEnvironment(E),H.x,H.y) 
+				and Guard::getHdt(G) = guardInitPos(E)::get(G)::x and  Guard::getWdt(G) = guardInitPos()::get(G)::y

@@ -1,0 +1,27 @@
+Service : Environment
+refine : Screen
+
+Type : Cell {EMP,PLT,HOL,LAD,HDR,MT}, SetCharItem {Item + Character}
+
+Observators:
+
+getCellContent : [Environment]*int*int -> setCharItem
+	pre : getCellContent(E,x,y) requires 0<=y < getHeight(S) and 0 <= x < getWidth(S)
+
+Constructors : 
+
+init : EditableScreen -> Environment
+
+
+Observations :
+
+[Invariants]
+	forall (x,y) in [0;getWidth(E)[×[0;getHeight(E)[, 
+		getCellNature(E,x,y) in [MTL,PLR] implies getCellContent(x,y) == {} 
+	forall (x,y) in [0;getWidth(E)[×[0;getHeight(E)[, 
+		exists Treasure t in getCellContent(E,x,y) implies (getCellNature(E,x,y) = EMP and getCellNature(E,x,y-1) in [PLT,MTL])
+
+[init] : forall (x,y) in [0;getWidth(E)[×[0;getHeight(E)[, 
+		getCellNature(init(S),x,y) = EditableScreen::getCellNature(S,x,y)
+
+
