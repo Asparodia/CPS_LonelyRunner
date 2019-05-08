@@ -123,19 +123,19 @@ public class EnvironmentTest {
 		Cell changeTo = Cell.PLT;
 		editscreen.setNature(1, 1, changeTo);
 		env.init(editscreen);
-
 		ArrayList<Cell> avants = new ArrayList<>();
 		for (int x = 0; x < env.getWidth(); x++) {
 			for (int y = 0; y < env.getHeight(); y++) {
 				avants.add(env.getCellNature(x, y));
 			}
 		}
-
 		Cell beforeDig = env.getCellNature(1, 1);
 		assertTrue(beforeDig == Cell.PLT);
+		
 		this.testInvariant();
 		env.dig(1, 1);
 		this.testInvariant();
+		
 		Cell afterDig = env.getCellNature(1, 1);
 		assertTrue(afterDig == Cell.HOL);
 		ArrayList<Cell> after = new ArrayList<>();
@@ -155,9 +155,7 @@ public class EnvironmentTest {
 				v++;
 			}
 		}
-	}
-
-
+	}	
 	
 	/*
 	 * Test negatif sur les precondition de dig, on verifie que faire une operation
@@ -179,27 +177,41 @@ public class EnvironmentTest {
 		editscreen.setNature(4, 1, hol);
 		env.init(editscreen);
 		testInvariant();
+		boolean caught = false;
 		try {
-
 			env.dig(0, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.dig(1, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.dig(2, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.dig(3, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.dig(4, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
 	}
 
 	/*
@@ -265,26 +277,41 @@ public class EnvironmentTest {
 		editscreen.setNature(4, 1, plt);
 		env.init(editscreen);
 		testInvariant();
+		boolean caught = false;
 		try {
 			env.fill(0, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.fill(1, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.fill(2, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.fill(3, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
+		caught = false;
 		try {
 			env.fill(4, 1);
 		} catch (ContractError e) {
+			caught = true;
 		}
+		assertTrue(caught);
 	}
 
 }

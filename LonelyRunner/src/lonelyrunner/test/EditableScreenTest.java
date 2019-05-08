@@ -263,31 +263,47 @@ public class EditableScreenTest {
 		editscreen.setNature(2, 1, emp);
 		editscreen.setNature(3, 1, lad);
 		editscreen.setNature(4, 1, hol);
+		boolean c = false;
 		try {
 			testInvariant();
 			editscreen.dig(0, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.dig(1, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.dig(2, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.dig(3, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.dig(4, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 	}
 
 	/*
@@ -350,30 +366,45 @@ public class EditableScreenTest {
 		editscreen.setNature(2, 1, emp);
 		editscreen.setNature(3, 1, lad);
 		editscreen.setNature(4, 1, plt);
+		boolean c = false;
 		try {
 			testInvariant();
 			editscreen.fill(0, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.fill(1, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.fill(2, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.fill(3, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
+		c = false;
 		try {
 			testInvariant();
 			editscreen.fill(4, 1);
 		} catch (ContractError e) {
+			c = true;
 		}
+		assertTrue(c);
 	}
 }
