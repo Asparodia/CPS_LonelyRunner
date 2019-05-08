@@ -29,7 +29,6 @@ public interface PlayerService extends/*include*/ CharacterService{
 	//\post: getNextCommand()@pre == Neutral
 			//\and clone@pre:PlayerService 
 				//\implies getWdt() == clone@pre.doNeutral.getWdt() \and getHgt() = clone@pre.doNeutral.getHgt()
-	
 	public void step();
 	
 	//\post: EnvironmentService::getCellNature(getEnvi()@pre,getWdt()@pre,getHgt()@pre) \not in {LAD,HDR} 
